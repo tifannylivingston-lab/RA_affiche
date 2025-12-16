@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <title>WebAR – Affiche déclencheuse</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <!-- A-Frame & AR.js -->
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar-nft.js"></script>
+  <style>
+    body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
+    #hint {
+      position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.6); color: #fff; padding: 10px 14px; border-radius: 10px;
+      font-size: 14px; z-index: 10;
+    }
+  </style>
+</head>
+<body>
+
+<div id="hint">Scanne le QR puis pointe l’affiche 📱</div>
+
+<a-scene
+  vr-mode-ui="enabled: false"
+  embedded
+  arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+>
+  
+  <!-- Caméra -->
+  <a-entity camera></a-entity>
+
+  <!-- Image déclencheuse (MARKER) -->
+  <!-- IMPORTANT : remplace 'marker-image.jpg' par TON image Canva -->
+  <a-nft
+    type="nft"
+    url="./affiche.png"
+    smooth="true"
+    smoothCount="10"
+    smoothTolerance="0.01"
+    smoothThreshold="5"
+  >
+    <!-- CONTENU AFFICHÉ EN RA -->
+    <!-- Remplace la vidéo par la tienne -->
+    <a-video
+      src="./video.mp4"
+      width="1"
+      height="0.5625"
+      position="0 0 0"
+      rotation="-90 0 0"
+      autoplay
+      loop
+    ></a-video>
+  </a-nft>
+
+</a-scene>
+
+</body>
+</html>
