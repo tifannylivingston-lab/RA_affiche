@@ -23,7 +23,7 @@
 <a-scene
   vr-mode-ui="enabled: false"
   embedded
-  arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+  arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: true;"
 >
   
   <!-- Caméra -->
@@ -41,15 +41,17 @@
   >
     <!-- CONTENU AFFICHÉ EN RA -->
     <!-- Remplace la vidéo par la tienne -->
-    <a-video
-      src="./video.mp4"
-      width="1"
-      height="0.5625"
-      position="0 0 0"
-      rotation="-90 0 0"
-      autoplay
-      loop
-    ></a-video>
+   <a-video
+  src="./video.mp4"
+  width="1"
+  height="0.5625"
+  position="0 0.5 0"
+  rotation="0 0 0"
+  autoplay
+  loop
+  crossorigin="anonymous"
+  webkit-playsinline="true"
+></a-video>
   </a-nft>
 
 </a-scene>
