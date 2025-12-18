@@ -51,13 +51,31 @@
   position="0 0 0"
   rotation="-90 0 0"
   loop
-  muted
+  muted="true"
   playsinline
   crossorigin="anonymous"
 ></a-video>
   </a-nft>
 
 </a-scene>
+<script>
+  const video = document.querySelector('#videoAR');
 
+  // sécurité absolue
+  video.pause();
+  video.currentTime = 0;
+  video.muted = true;
+
+  document.querySelector('a-nft').addEventListener('markerFound', () => {
+    video.muted = false; // on réactive le son
+    video.play();
+  });
+
+  document.querySelector('a-nft').addEventListener('markerLost', () => {
+    video.pause();
+    video.currentTime = 0;
+    video.muted = true;
+  });
+</script>
 </body>
 </html>
