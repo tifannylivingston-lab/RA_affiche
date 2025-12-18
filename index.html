@@ -21,22 +21,23 @@
   <!-- Caméra -->
   <a-entity camera></a-entity>
 
-  <!-- Vidéo AR format portrait plus visible -->
+  <!-- Vidéo AR avec animation -->
   <a-video
     id="videoAR"
     src="./video.mp4"
-    position="0 0.3 -2"     <!-- un peu plus proche de la caméra -->
-    width="1"               <!-- plus large, ratio portrait réaliste -->
-    height="1.8"
+    position="0 0.2 -2.5"
+    width="0.8"
+    height="0.45"
     loop
     muted
     playsinline
     crossorigin="anonymous"
-    scale="0.2 0.2 0.2"
+    scale="0.1 0.1 0.1"
   >
+    <!-- Animation d'apparition "scale" -->
     <a-animation
       attribute="scale"
-      from="0.2 0.2 0.2"
+      from="0.1 0.1 0.1"
       to="1 1 1"
       dur="800"
       easing="ease-out"
@@ -45,11 +46,12 @@
 </a-scene>
 
 <script>
-  // Lecture automatique uniquement après interaction utilisateur (mobile)
+  // Lecture automatique si autorisation donnée
   const video = document.querySelector('#videoAR');
   video.pause();
   video.currentTime = 0;
 
+  // Détecte si l'utilisateur clique pour activer la vidéo (mobile autoplay)
   document.body.addEventListener('click', () => {
     video.play();
   });
