@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -22,22 +21,22 @@
   <!-- Caméra -->
   <a-entity camera></a-entity>
 
-  <!-- Vidéo AR format portrait avec animation d'apparition -->
+  <!-- Vidéo AR format portrait plus visible -->
   <a-video
     id="videoAR"
     src="./video.mp4"
-    position="0 0.4 -2.5"   <!-- légèrement plus haut -->
-    width="0.5"             <!-- plus étroit pour ne pas prendre tout l'écran -->
-    height="0.9"            <!-- plus haut pour un ratio portrait réaliste -->
+    position="0 0.3 -2"     <!-- un peu plus proche de la caméra -->
+    width="1"               <!-- plus large, ratio portrait réaliste -->
+    height="1.8"
     loop
     muted
     playsinline
     crossorigin="anonymous"
-    scale="0.1 0.1 0.1"
+    scale="0.2 0.2 0.2"
   >
     <a-animation
       attribute="scale"
-      from="0.1 0.1 0.1"
+      from="0.2 0.2 0.2"
       to="1 1 1"
       dur="800"
       easing="ease-out"
