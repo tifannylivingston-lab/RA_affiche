@@ -32,25 +32,28 @@
   <!-- Image déclencheuse (MARKER) -->
   <!-- IMPORTANT : remplace 'marker-image.jpg' par TON image Canva -->
   <a-nft
-    type="nft"
-    url="./affiche.png"
-    smooth="true"
-    smoothCount="10"
-    smoothTolerance="0.01"
-    smoothThreshold="5"
-  >
+  type="nft"
+  url="./affiche"
+  smooth="true"
+  smoothCount="10"
+  smoothTolerance="0.01"
+  smoothThreshold="5"
+  markerFound="document.querySelector('#videoAR').play()"
+  markerLost="document.querySelector('#videoAR').pause()"
+>
     <!-- CONTENU AFFICHÉ EN RA -->
     <!-- Remplace la vidéo par la tienne -->
-   <a-video
+  <a-video
+  id="videoAR"
   src="./video.mp4"
   width="1"
   height="0.5625"
-  position="0 0.5 0"
-  rotation="0 0 0"
-  autoplay
+  position="0 0 0"
+  rotation="-90 0 0"
   loop
+  muted
+  playsinline
   crossorigin="anonymous"
-  webkit-playsinline="true"
 ></a-video>
   </a-nft>
 
