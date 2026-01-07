@@ -4,111 +4,134 @@
 <meta charset="UTF-8">
 <title>Découvre Serena Williams</title>
 <style>
-  body {
-    margin:0;
-    height:100vh;
-    background: linear-gradient(135deg,#7b1fa2,#ec407a);
-    overflow:hidden;
-    font-family: Arial, sans-serif;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    position: relative;
-  }
+body {
+  margin:0;
+  height:100vh;
+  background: linear-gradient(135deg,#7b1fa2,#ec407a);
+  overflow:hidden;
+  font-family: Arial, sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  position: relative;
+}
 
-  /* TITRE ANIMÉ */
-  h1{
-    font-size:2.2em;
-    color:white;
-    text-shadow:2px 2px 6px #000;
-    margin-bottom:40px;
-    animation:pulse 2s infinite;
-    text-align:center;
-  }
-  @keyframes pulse{
-    0%,100%{transform:scale(1);}
-    50%{transform:scale(1.1);}
-  }
+/* TITRE ANIMÉ */
+h1{
+  font-size:2.2em;
+  color:white;
+  text-shadow:2px 2px 6px #000;
+  margin-bottom:40px;
+  animation:pulse 2s infinite;
+  text-align:center;
+}
+@keyframes pulse{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.1);}
+}
 
-  /* BOUTON DÉCOUVRIR */
-  #discoverBtn{
-    padding:18px 40px;
-    font-size:1.3em;
-    border-radius:25px;
-    border:none;
-    cursor:pointer;
-    background: linear-gradient(45deg,#FFD700,#FFB600);
-    color:#000;
-    font-weight:bold;
-    box-shadow:0 6px 15px rgba(0,0,0,0.5);
-    transition:all 0.3s;
-    z-index:10;
-  }
-  #discoverBtn:hover{
-    transform: scale(1.1) rotate(-2deg);
-    box-shadow:0 8px 20px rgba(0,0,0,0.6);
-  }
+/* BOUTON DÉCOUVRIR */
+#discoverBtn{
+  padding:18px 40px;
+  font-size:1.3em;
+  border-radius:25px;
+  border:none;
+  cursor:pointer;
+  background: linear-gradient(45deg,#FFD700,#FFB600);
+  color:#000;
+  font-weight:bold;
+  box-shadow:0 6px 15px rgba(0,0,0,0.5);
+  transition:all 0.3s;
+  z-index:10;
+}
+#discoverBtn:hover{
+  transform: scale(1.1) rotate(-2deg);
+  box-shadow:0 8px 20px rgba(0,0,0,0.6);
+}
 
-  /* ICÔNES TENNIS */
-  .floating{
-    position:absolute;
-    width:60px;
-    height:60px;
-    background-size:cover;
-    background-position:center;
-    animation-iteration-count:infinite;
-  }
+/* COURT DE TENNIS (lignes simples) */
+.court {
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:80%;
+  height:60%;
+  transform:translate(-50%,-50%);
+  border:4px solid rgba(255,255,255,0.3);
+  box-sizing:border-box;
+  z-index:0;
+  border-radius:10px;
+}
 
-  /* BOUNCE - Balles */
-  .bouncing{
-    animation-name:bounce;
-    animation-duration:3s;
-    animation-timing-function: ease-in-out;
-    animation-iteration-count:infinite;
-  }
+/* ICÔNES TENNIS */
+.floating{
+  position:absolute;
+  background-size:cover;
+  background-position:center;
+  animation-iteration-count:infinite;
+}
 
-  @keyframes bounce{
-    0%,100%{transform:translateY(0);}
-    50%{transform:translateY(-40px);}
-  }
+/* BALLES - rebond aléatoire */
+.bounce {
+  width:40px;
+  height:40px;
+  animation:move 5s linear infinite;
+}
+@keyframes move {
+  0% {transform:translate(0,0);}
+  25% {transform:translate(100px,-80px);}
+  50% {transform:translate(200px,50px);}
+  75% {transform:translate(150px,-60px);}
+  100% {transform:translate(0,0);}
+}
 
-  /* RAQUETTES PIVOT */
-  .rotate{
-    animation:rotate 4s linear infinite;
-  }
+/* RAQUETTES */
+.rotate{
+  width:60px;
+  height:60px;
+  animation:rotate 4s linear infinite, floaty 3s ease-in-out infinite;
+}
+@keyframes rotate{
+  0%{transform:rotate(0deg);}
+  50%{transform:rotate(15deg);}
+  100%{transform:rotate(0deg);}
+}
 
-  @keyframes rotate{
-    0%{transform:rotate(0deg);}
-    50%{transform:rotate(15deg);}
-    100%{transform:rotate(0deg);}
-  }
-
-  /* SILHOUETTE */
-  .silhouette{
-    animation:floaty 3s ease-in-out infinite;
-  }
-
-  @keyframes floaty{
-    0%{transform:translateY(0);}
-    50%{transform:translateY(-15px);}
-    100%{transform:translateY(0);}
-  }
+/* SILHOUETTE */
+.silhouette{
+  width:90px;
+  height:90px;
+  animation:floaty 3s ease-in-out infinite;
+}
+@keyframes floaty{
+  0%{transform:translateY(0);}
+  50%{transform:translateY(-15px);}
+  100%{transform:translateY(0);}
+}
 </style>
 </head>
 <body>
 
 <h1>🎾 Découvre Serena Williams !</h1>
 
-<!-- BOUTON -->
 <button id="discoverBtn" onclick="window.location.href='serena.html'">Découvrir Serena Williams</button>
 
-<!-- ICÔNES FLOTTANTES / INTERACTIVES -->
-<div class="floating bouncing" style="top:15%; left:20%; background-image:url('balle_tennis.png'); width:50px; height:50px; animation-delay:0s;"></div>
-<div class="floating bouncing" style="top:35%; right:25%; background-image:url('balle_tennis.png'); width:45px; height:45px; animation-delay:1s;"></div>
-<div class="floating rotate" style="top:10%; left:70%; background-image:url('raquette_tennis.png'); width:60px; height:60px; animation-delay:0s;"></div>
-<div class="floating rotate" style="bottom:15%; right:15%; background-image:url('raquette_tennis.png'); width:55px; height:55px; animation-delay:0.5s;"></div>
-<div class="floating silhouette" style="top:50%; left:50%; background-image:url('silhouette_sportive.png'); width:90px; height:90px;"></div>
+<!-- COURT -->
+<div class="court"></div>
+
+<!-- BALLES -->
+<div class="floating bounce" style="background-image:url('balle_tennis.png'); top:10%; left:15%; animation-delay:0s;"></div>
+<div class="floating bounce" style="background-image:url('balle_tennis.png'); top:30%; left:70%; animation-delay:1s;"></div>
+<div class="floating bounce" style="background-image:url('balle_tennis.png'); top:60%; left:25%; animation-delay:2s;"></div>
+<div class="floating bounce" style="background-image:url('balle_tennis.png'); top:40%; left:50%; animation-delay:3s;"></div>
+
+<!-- RAQUETTES -->
+<div class="floating rotate" style="background-image:url('raquette_tennis.png'); top:15%; left:40%;"></div>
+<div class="floating rotate" style="background-image:url('raquette_tennis.png'); top:55%; left:60%;"></div>
+
+<!-- SILHOUETTE -->
+<div class="floating silhouette" style="background-image:url('silhouette_sportive.png'); top:50%; left:50%;"></div>
 
 </body>
 </html>
