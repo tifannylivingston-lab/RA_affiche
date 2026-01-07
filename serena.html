@@ -33,50 +33,72 @@ body { margin:0; overflow:hidden; background:black; }
 
 <a-entity id="target" mindar-image-target="targetIndex:0">
 
-  <!-- PLAN VIDEO (dimensions dynamiques) -->
+  <!-- VIDEO -->
   <a-plane
     id="videoPlane"
-    position="0 0.3 0"
+    position="0 0.35 0"
     material="shader: flat; src: #video-serena"
-    visible="false">
+    visible="false"
+    animation__in="property: scale; from: 0.8 0.8 0.8; to: 1 1 1; dur: 800; easing: easeOutCubic">
   </a-plane>
+
+  <!-- HALO LUMINEUX -->
+  <a-ring
+    id="halo"
+    radius-inner="0.9"
+    radius-outer="1.1"
+    color="#FFD700"
+    opacity="0.4"
+    position="0 0.35 -0.01"
+    visible="false"
+    animation="property: rotation; to: 0 360 0; loop: true; dur: 8000">
+  </a-ring>
 
   <!-- PALMARES -->
   <a-entity id="palmares" visible="false" position="0 0 0">
 
+    <a-plane
+      width="2.6"
+      height="1.6"
+      color="#000"
+      opacity="0.55"
+      position="0 0.1 -0.01"
+      animation="property: scale; from: 0.7 0.7 0.7; to: 1 1 1; dur: 700; easing: easeOutCubic">
+    </a-plane>
+
     <a-text
-      id="title"
       value="🏆 Serena Williams"
-      position="0 0.45 0"
+      position="0 0.5 0"
       align="center"
       width="3"
-      color="#FFD700">
+      color="#FFD700"
+      animation="property: position; from: 0 0.7 0; to: 0 0.5 0; dur: 600; easing: easeOutCubic">
     </a-text>
 
     <a-text
-      id="p1"
+      class="item"
       value="🎾 23 titres du Grand Chelem"
       position="0 0.15 0"
       align="center"
-      width="2.8"
+      width="2.6"
       color="#FFFFFF">
     </a-text>
 
     <a-text
-      id="p2"
+      class="item"
       value="🥇 4 médailles d’or olympiques"
       position="0 -0.1 0"
       align="center"
-      width="2.8"
+      width="2.6"
       color="#FFFFFF">
     </a-text>
 
     <a-text
-      id="p3"
+      class="item"
       value="👑 319 semaines n°1 mondiale"
       position="0 -0.35 0"
       align="center"
-      width="2.8"
+      width="2.6"
       color="#FFFFFF">
     </a-text>
 
@@ -90,37 +112,42 @@ const video = document.querySelector('#video-serena');
 const videoPlane = document.querySelector('#videoPlane');
 const palmares = document.querySelector('#palmares');
 const target = document.querySelector('#target');
+const halo = document.querySelector('#halo');
 
-// Ajuster le ratio réel de la vidéo
+// Ratio vidéo dynamique + agrandie
 video.addEventListener('loadedmetadata', () => {
   const ratio = video.videoWidth / video.videoHeight;
-  const height = 0.9;
+  const height = 1.25; // ← vidéo plus grande
   const width = height * ratio;
   videoPlane.setAttribute('width', width);
   videoPlane.setAttribute('height', height);
+  halo.setAttribute('radius-inner', width / 2 + 0.05);
+  halo.setAttribute('radius-outer', width / 2 + 0.25);
 });
 
-// Détection de la cible
+// Scan image
 target.addEventListener('targetFound', () => {
   palmares.setAttribute('visible', 'false');
   videoPlane.setAttribute('visible', 'true');
+  halo.setAttribute('visible', 'true');
   video.currentTime = 0;
   video.play();
 });
 
-// Perte de la cible
-target.addEventListener('targetLost', () => {
-  video.pause();
-});
-
-// Fin vidéo → palmarès animé
+// Fin vidéo → palmarès stylé
 video.addEventListener('ended', () => {
   videoPlane.setAttribute('visible', 'false');
+  halo.setAttribute('visible', 'false');
   palmares.setAttribute('visible', 'true');
 
-  document.querySelectorAll('#palmares a-text').forEach((el, i) => {
+  document.querySelectorAll('.item').forEach((el, i) => {
     el.setAttribute('animation',
-      `property: opacity; from: 0; to: 1; delay: ${i*400}; dur: 600`);
+      `property: position;
+       from: 0 ${-0.7 - i*0.2} 0;
+       to: 0 ${0.15 - i*0.25} 0;
+       dur: 700;
+       delay: ${i*300};
+       easing: easeOutCubic`);
   });
 });
 </script>
