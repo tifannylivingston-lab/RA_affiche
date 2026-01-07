@@ -1,79 +1,128 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Serena Williams – RA</title>
+<meta charset="UTF-8">
+<title>Serena Williams – RA</title>
 
-  <!-- A-FRAME -->
-  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+<script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-  <!-- MINDAR -->
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-
-  <style>
-    body { margin:0; overflow:hidden; }
-    a-text { font-family: Arial; }
-  </style>
+<style>
+body { margin:0; overflow:hidden; background:black; }
+</style>
 </head>
 
 <body>
 
 <a-scene
   mindar-image="imageTargetSrc: serena.mind;"
-  color-space="sRGB"
-  renderer="colorManagement: true;"
-  vr-mode-ui="enabled: false"
-  device-orientation-permission-ui="enabled: true">
+  vr-mode-ui="enabled:false"
+  device-orientation-permission-ui="enabled:true">
 
-  <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+<a-camera look-controls="false"></a-camera>
 
-  <a-assets>
-    <video id="video-serena" src="serena.mp4" preload="auto" muted playsinline crossorigin="anonymous"></video>
-  </a-assets>
+<a-assets>
+  <video
+    id="video-serena"
+    src="serena.mp4"
+    preload="auto"
+    playsinline
+    crossorigin="anonymous">
+  </video>
+</a-assets>
 
-  <a-entity mindar-image-target="targetIndex: 0" id="serenaTarget">
-    <a-video
-      id="serenaVideo"
-      src="#video-serena"
-      width="1.2"
-      height="0.7"
-      position="0 0.4 0"
-      loop
-      muted
-      playsinline>
-    </a-video>
+<a-entity id="target" mindar-image-target="targetIndex:0">
 
-    <a-text
-      value="🎾 Serena Williams\n\n🏆 23 Grands Chelems\n🥇 4 Or Olympiques\n👑 319 semaines n°1"
-      position="0 -0.4 0"
-      align="center"
-      width="2"
-      color="#ffffff">
-    </a-text>
+  <!-- PLAN VIDEO (dimensions dynamiques) -->
+  <a-plane
+    id="videoPlane"
+    position="0 0.3 0"
+    material="shader: flat; src: #video-serena"
+    visible="false">
+  </a-plane>
+
+  <!-- PALMARES -->
+  <a-entity id="palmares" visible="false" position="0 0 0">
 
     <a-text
-      value="« Le talent n’a pas de genre. »"
-      position="0 -0.75 0"
+      id="title"
+      value="🏆 Serena Williams"
+      position="0 0.45 0"
       align="center"
-      width="2"
+      width="3"
       color="#FFD700">
     </a-text>
+
+    <a-text
+      id="p1"
+      value="🎾 23 titres du Grand Chelem"
+      position="0 0.15 0"
+      align="center"
+      width="2.8"
+      color="#FFFFFF">
+    </a-text>
+
+    <a-text
+      id="p2"
+      value="🥇 4 médailles d’or olympiques"
+      position="0 -0.1 0"
+      align="center"
+      width="2.8"
+      color="#FFFFFF">
+    </a-text>
+
+    <a-text
+      id="p3"
+      value="👑 319 semaines n°1 mondiale"
+      position="0 -0.35 0"
+      align="center"
+      width="2.8"
+      color="#FFFFFF">
+    </a-text>
+
   </a-entity>
 
+</a-entity>
 </a-scene>
 
 <script>
-  const target = document.querySelector("#serenaTarget");
-  const video = document.querySelector("#video-serena");
+const video = document.querySelector('#video-serena');
+const videoPlane = document.querySelector('#videoPlane');
+const palmares = document.querySelector('#palmares');
+const target = document.querySelector('#target');
 
-  // Quand la cible est détectée → lance la vidéo
-  target.addEventListener("targetFound", async () => {
-    try { await video.play(); } 
-    catch(err){ console.log("Autoplay bloqué :", err); }
+// Ajuster le ratio réel de la vidéo
+video.addEventListener('loadedmetadata', () => {
+  const ratio = video.videoWidth / video.videoHeight;
+  const height = 0.9;
+  const width = height * ratio;
+  videoPlane.setAttribute('width', width);
+  videoPlane.setAttribute('height', height);
+});
+
+// Détection de la cible
+target.addEventListener('targetFound', () => {
+  palmares.setAttribute('visible', 'false');
+  videoPlane.setAttribute('visible', 'true');
+  video.currentTime = 0;
+  video.play();
+});
+
+// Perte de la cible
+target.addEventListener('targetLost', () => {
+  video.pause();
+});
+
+// Fin vidéo → palmarès animé
+video.addEventListener('ended', () => {
+  videoPlane.setAttribute('visible', 'false');
+  palmares.setAttribute('visible', 'true');
+
+  document.querySelectorAll('#palmares a-text').forEach((el, i) => {
+    el.setAttribute('animation',
+      `property: opacity; from: 0; to: 1; delay: ${i*400}; dur: 600`);
   });
-
-  // Quand la cible disparaît → pause la vidéo
-  target.addEventListener("targetLost", () => { video.pause(); });
+});
 </script>
 
 </body>
