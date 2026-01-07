@@ -8,7 +8,11 @@
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
 <style>
-body { margin:0; overflow:hidden; background:black; }
+body {
+  margin: 0;
+  overflow: hidden;
+  background: black;
+}
 </style>
 </head>
 
@@ -19,92 +23,79 @@ body { margin:0; overflow:hidden; background:black; }
   vr-mode-ui="enabled:false"
   device-orientation-permission-ui="enabled:true">
 
-<a-camera look-controls="false"></a-camera>
+  <a-camera look-controls="false"></a-camera>
 
-<a-assets>
-  <video
-    id="video-serena"
-    src="serena.mp4"
-    preload="auto"
-    playsinline
-    crossorigin="anonymous">
-  </video>
-</a-assets>
+  <a-assets>
+    <video
+      id="video-serena"
+      src="serena.mp4"
+      preload="auto"
+      playsinline
+      crossorigin="anonymous">
+    </video>
+  </a-assets>
 
-<a-entity id="target" mindar-image-target="targetIndex:0">
+  <a-entity id="target" mindar-image-target="targetIndex:0">
 
-  <!-- VIDEO -->
-  <a-plane
-    id="videoPlane"
-    position="0 0.35 0"
-    material="shader: flat; src: #video-serena"
-    visible="false"
-    animation__in="property: scale; from: 0.8 0.8 0.8; to: 1 1 1; dur: 800; easing: easeOutCubic">
-  </a-plane>
-
-  <!-- HALO LUMINEUX -->
-  <a-ring
-    id="halo"
-    radius-inner="0.9"
-    radius-outer="1.1"
-    color="#FFD700"
-    opacity="0.4"
-    position="0 0.35 -0.01"
-    visible="false"
-    animation="property: rotation; to: 0 360 0; loop: true; dur: 8000">
-  </a-ring>
-
-  <!-- PALMARES -->
-  <a-entity id="palmares" visible="false" position="0 0 0">
-
+    <!-- VIDEO PROPRE, GRANDE, CENTRÉE -->
     <a-plane
-      width="2.6"
-      height="1.6"
-      color="#000"
-      opacity="0.55"
-      position="0 0.1 -0.01"
-      animation="property: scale; from: 0.7 0.7 0.7; to: 1 1 1; dur: 700; easing: easeOutCubic">
+      id="videoPlane"
+      position="0 0 0"
+      material="shader: flat; src: #video-serena"
+      visible="false">
     </a-plane>
 
-    <a-text
-      value="🏆 Serena Williams"
-      position="0 0.5 0"
-      align="center"
-      width="3"
-      color="#FFD700"
-      animation="property: position; from: 0 0.7 0; to: 0 0.5 0; dur: 600; easing: easeOutCubic">
-    </a-text>
+    <!-- PALMARES SOBRE -->
+    <a-entity id="palmares" visible="false">
 
-    <a-text
-      class="item"
-      value="🎾 23 titres du Grand Chelem"
-      position="0 0.15 0"
-      align="center"
-      width="2.6"
-      color="#FFFFFF">
-    </a-text>
+      <!-- Fond -->
+      <a-plane
+        width="2.8"
+        height="1.6"
+        color="#000"
+        opacity="0.65"
+        position="0 0 0">
+      </a-plane>
 
-    <a-text
-      class="item"
-      value="🥇 4 médailles d’or olympiques"
-      position="0 -0.1 0"
-      align="center"
-      width="2.6"
-      color="#FFFFFF">
-    </a-text>
+      <!-- Texte -->
+      <a-text
+        value="Serena Williams"
+        position="0 0.5 0.01"
+        align="center"
+        width="3"
+        color="#FFD700">
+      </a-text>
 
-    <a-text
-      class="item"
-      value="👑 319 semaines n°1 mondiale"
-      position="0 -0.35 0"
-      align="center"
-      width="2.6"
-      color="#FFFFFF">
-    </a-text>
+      <a-text
+        class="item"
+        value="23 titres du Grand Chelem"
+        position="0 0.15 0.01"
+        align="center"
+        width="2.6"
+        color="#FFFFFF">
+      </a-text>
+
+      <a-text
+        class="item"
+        value="4 médailles d’or olympiques"
+        position="0 -0.1 0.01"
+        align="center"
+        width="2.6"
+        color="#FFFFFF">
+      </a-text>
+
+      <a-text
+        class="item"
+        value="319 semaines n°1 mondiale"
+        position="0 -0.35 0.01"
+        align="center"
+        width="2.6"
+        color="#FFFFFF">
+      </a-text>
+
+    </a-entity>
 
   </a-entity>
-
-</a-entity>
 </a-scene>
 
 <script>
@@ -112,42 +103,35 @@ const video = document.querySelector('#video-serena');
 const videoPlane = document.querySelector('#videoPlane');
 const palmares = document.querySelector('#palmares');
 const target = document.querySelector('#target');
-const halo = document.querySelector('#halo');
 
-// Ratio vidéo dynamique + agrandie
+// Ajustement PROPRE du ratio + agrandissement réel
 video.addEventListener('loadedmetadata', () => {
   const ratio = video.videoWidth / video.videoHeight;
-  const height = 1.25; // ← vidéo plus grande
+  const height = 1.6;   // ← PLUS GRAND
   const width = height * ratio;
+
   videoPlane.setAttribute('width', width);
   videoPlane.setAttribute('height', height);
-  halo.setAttribute('radius-inner', width / 2 + 0.05);
-  halo.setAttribute('radius-outer', width / 2 + 0.25);
 });
 
-// Scan image
+// Scan image → vidéo
 target.addEventListener('targetFound', () => {
   palmares.setAttribute('visible', 'false');
   videoPlane.setAttribute('visible', 'true');
-  halo.setAttribute('visible', 'true');
   video.currentTime = 0;
   video.play();
 });
 
-// Fin vidéo → palmarès stylé
+// Fin vidéo → palmarès élégant
 video.addEventListener('ended', () => {
   videoPlane.setAttribute('visible', 'false');
-  halo.setAttribute('visible', 'false');
   palmares.setAttribute('visible', 'true');
 
   document.querySelectorAll('.item').forEach((el, i) => {
-    el.setAttribute('animation',
-      `property: position;
-       from: 0 ${-0.7 - i*0.2} 0;
-       to: 0 ${0.15 - i*0.25} 0;
-       dur: 700;
-       delay: ${i*300};
-       easing: easeOutCubic`);
+    el.setAttribute(
+      'animation',
+      `property: opacity; from: 0; to: 1; dur: 600; delay: ${i * 300}`
+    );
   });
 });
 </script>
