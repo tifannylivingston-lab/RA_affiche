@@ -2,90 +2,39 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Serena Williams – RA</title>
-
-  <!-- A-FRAME -->
-  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-
-  <!-- MINDAR -->
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-
+  <title>Découvre Serena Williams</title>
   <style>
-    body { margin: 0; overflow: hidden; }
-    a-text { font-family: Arial; }
+    body { 
+      display:flex; justify-content:center; align-items:center; height:100vh; 
+      background: linear-gradient(135deg,#7b1fa2,#ec407a); 
+      font-family: Arial; flex-direction:column; 
+    }
+    button { 
+      padding: 20px 40px; font-size:1.5em; border-radius:25px; 
+      border:none; cursor:pointer; background:gold; font-weight:bold;
+    }
+    video { width:80%; max-width:600px; margin-top:20px; border:3px solid #fff; border-radius:10px; }
   </style>
 </head>
-
 <body>
 
-<a-scene
-  mindar-image="imageTargetSrc: serena.mind;"
-  color-space="sRGB"
-  renderer="colorManagement: true;"
-  vr-mode-ui="enabled: false"
-  device-orientation-permission-ui="enabled: true">
+<h1>🎾 Découvre Serena Williams !</h1>
+<button id="playBtn">Lancer la vidéo</button>
 
-  <!-- CAMÉRA -->
-  <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+<video id="serenaVideo" src="serena.mp4" controls loop muted playsinline style="display:none;"></video>
 
-  <!-- ASSETS -->
-  <a-assets>
-    <!-- VIDÉO : ajout muted et playsinline -->
-    <video id="video-serena" src="serena.mp4" preload="auto" muted playsinline></video>
-  </a-assets>
-
-  <!-- CIBLE RA -->
-  <a-entity mindar-image-target="targetIndex: 0" id="serenaTarget">
-
-    <!-- VIDÉO -->
-    <a-video
-      id="serenaVideo"
-      src="#video-serena"
-      width="1.2"
-      height="0.7"
-      position="0 0.4 0"
-      loop
-      muted
-      playsinline>
-    </a-video>
-
-    <!-- TEXTE PALMARÈS -->
-    <a-text
-      value="🎾 Serena Williams\n\n🏆 23 Grands Chelems\n🥇 4 Or Olympiques\n👑 319 semaines n°1"
-      position="0 -0.4 0"
-      align="center"
-      width="2"
-      color="#ffffff">
-    </a-text>
-
-    <!-- MESSAGE INSPIRANT -->
-    <a-text
-      value="« Le talent n’a pas de genre. »"
-      position="0 -0.75 0"
-      align="center"
-      width="2"
-      color="#FFD700">
-    </a-text>
-
-  </a-entity>
-
-</a-scene>
-
-<!-- SCRIPT pour lancer la vidéo à la détection -->
 <script>
-  const target = document.querySelector("#serenaTarget");
-  const video = document.querySelector("#serenaVideo");
+  const btn = document.getElementById("playBtn");
+  const video = document.getElementById("serenaVideo");
 
-  // Dès que la cible RA est détectée, la vidéo se lance
-  target.addEventListener("targetFound", () => {
-    video.play();
-  });
-
-  // Optionnel : pause quand la cible disparaît
-  target.addEventListener("targetLost", () => {
-    video.pause();
+  btn.addEventListener("click", () => {
+    video.style.display = "block";
+    video.play().catch(() => {
+      alert("Cliquez sur la vidéo pour lancer le son si nécessaire !");
+    });
   });
 </script>
 
 </body>
 </html>
+
