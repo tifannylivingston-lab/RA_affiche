@@ -94,7 +94,7 @@ const target = document.querySelector('#target');
 // Ajuster le ratio réel de la vidéo
 video.addEventListener('loadedmetadata', () => {
   const ratio = video.videoWidth / video.videoHeight;
-  const height = 0.9;
+  const height = 1.5;
   const width = height * ratio;
   videoPlane.setAttribute('width', width);
   videoPlane.setAttribute('height', height);
