@@ -4,10 +4,7 @@
   <meta charset="UTF-8">
   <title>Serena Williams – RA</title>
 
-  <!-- A-Frame -->
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-
-  <!-- MindAR -->
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
   <style>
@@ -26,10 +23,8 @@
   vr-mode-ui="enabled:false"
   device-orientation-permission-ui="enabled:true">
 
-  <!-- Caméra -->
   <a-camera look-controls="false"></a-camera>
 
-  <!-- Assets -->
   <a-assets>
     <video
       id="video-serena"
@@ -41,9 +36,11 @@
   </a-assets>
 
   <!-- CIBLE RA -->
-  <a-entity mindar-image-target="targetIndex:0">
+  <a-entity
+    id="target"
+    mindar-image-target="targetIndex:0">
 
-    <!-- VIDEO (ratio 16:9, animée) -->
+    <!-- VIDEO -->
     <a-video
       id="videoPlane"
       src="#video-serena"
@@ -54,26 +51,8 @@
       animation__in="property: scale; from: 0.3 0.3 0.3; to: 1 1 1; dur: 900; easing: easeOutElastic">
     </a-video>
 
-    <!-- BOUTON LECTURE -->
-    <a-plane
-      id="playBtn"
-      position="0 -0.3 0"
-      width="0.9"
-      height="0.28"
-      color="#FFD700"
-      animation="property: scale; dir: alternate; dur: 800; loop: true; to: 1.05 1.05 1.05">
-    </a-plane>
-
-    <a-text
-      value="▶ Lancer la vidéo"
-      position="0 -0.3 0.01"
-      align="center"
-      width="2.5"
-      color="#000">
-    </a-text>
-
-    <!-- PALMARÈS (après la vidéo) -->
-    <a-entity id="palmares" visible="false" position="0 0 0">
+    <!-- PALMARÈS -->
+    <a-entity id="palmares" visible="false">
 
       <a-text
         value="🏆 Serena Williams"
@@ -119,16 +98,23 @@
 <script>
   const video = document.querySelector('#video-serena');
   const videoPlane = document.querySelector('#videoPlane');
-  const playBtn = document.querySelector('#playBtn');
   const palmares = document.querySelector('#palmares');
+  const target = document.querySelector('#target');
 
-  playBtn.addEventListener('click', () => {
-    playBtn.setAttribute('visible', 'false');
+  // Quand l'image est détectée
+  target.addEventListener('targetFound', () => {
+    palmares.setAttribute('visible', 'false');
     videoPlane.setAttribute('visible', 'true');
     video.currentTime = 0;
     video.play();
   });
 
+  // Quand l'image est perdue
+  target.addEventListener('targetLost', () => {
+    video.pause();
+  });
+
+  // Fin de vidéo → palmarès
   video.addEventListener('ended', () => {
     videoPlane.setAttribute('visible', 'false');
     palmares.setAttribute('visible', 'true');
