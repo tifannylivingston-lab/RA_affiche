@@ -17,7 +17,6 @@ body {
   position: relative;
 }
 
-/* TITRE ANIMÉ */
 h1{
   font-size:2.2em;
   color:white;
@@ -31,7 +30,7 @@ h1{
   50%{transform:scale(1.1);}
 }
 
-/* BOUTON DÉCOUVRIR */
+/* Bouton */
 #discoverBtn{
   padding:18px 40px;
   font-size:1.3em;
@@ -50,8 +49,8 @@ h1{
   box-shadow:0 8px 20px rgba(0,0,0,0.6);
 }
 
-/* COURT DE TENNIS (lignes simples) */
-.court {
+/* Mini-court */
+#court {
   position:absolute;
   top:50%;
   left:50%;
@@ -59,46 +58,27 @@ h1{
   height:60%;
   transform:translate(-50%,-50%);
   border:4px solid rgba(255,255,255,0.3);
+  border-radius:10px;
   box-sizing:border-box;
   z-index:0;
-  border-radius:10px;
 }
 
-/* ICÔNES TENNIS */
-.floating{
+/* Balles, raquettes, silhouette */
+.moving {
   position:absolute;
   background-size:cover;
   background-position:center;
-  animation-iteration-count:infinite;
+  width:50px;
+  height:50px;
 }
-
-/* BALLES - rebond aléatoire */
-.bounce {
-  width:40px;
-  height:40px;
-  animation:move 5s linear infinite;
-}
-@keyframes move {
-  0% {transform:translate(0,0);}
-  25% {transform:translate(100px,-80px);}
-  50% {transform:translate(200px,50px);}
-  75% {transform:translate(150px,-60px);}
-  100% {transform:translate(0,0);}
-}
-
-/* RAQUETTES */
-.rotate{
-  width:60px;
-  height:60px;
-  animation:rotate 4s linear infinite, floaty 3s ease-in-out infinite;
+.rotate {
+  animation:rotate 4s linear infinite;
 }
 @keyframes rotate{
   0%{transform:rotate(0deg);}
   50%{transform:rotate(15deg);}
   100%{transform:rotate(0deg);}
 }
-
-/* SILHOUETTE */
 .silhouette{
   width:90px;
   height:90px;
@@ -114,24 +94,67 @@ h1{
 <body>
 
 <h1>🎾 Découvre Serena Williams !</h1>
-
 <button id="discoverBtn" onclick="window.location.href='serena.html'">Découvrir Serena Williams</button>
+<div id="court"></div>
 
-<!-- COURT -->
-<div class="court"></div>
+<script>
+// Variables court
+const court = document.getElementById('court');
+const courtRect = court.getBoundingClientRect();
 
-<!-- BALLES -->
-<div class="floating bounce" style="background-image:url('balle_tennis.png'); top:10%; left:15%; animation-delay:0s;"></div>
-<div class="floating bounce" style="background-image:url('balle_tennis.png'); top:30%; left:70%; animation-delay:1s;"></div>
-<div class="floating bounce" style="background-image:url('balle_tennis.png'); top:60%; left:25%; animation-delay:2s;"></div>
-<div class="floating bounce" style="background-image:url('balle_tennis.png'); top:40%; left:50%; animation-delay:3s;"></div>
+// Créer balles
+for(let i=0;i<5;i++){
+  let ball = document.createElement('div');
+  ball.className='moving';
+  ball.style.backgroundImage="url('balle_tennis.png')";
+  ball.style.width='40px';
+  ball.style.height='40px';
+  ball.style.left=Math.random()*(courtRect.width-40)+'px';
+  ball.style.top=Math.random()*(courtRect.height-40)+'px';
+  court.appendChild(ball);
 
-<!-- RAQUETTES -->
-<div class="floating rotate" style="background-image:url('raquette_tennis.png'); top:15%; left:40%;"></div>
-<div class="floating rotate" style="background-image:url('raquette_tennis.png'); top:55%; left:60%;"></div>
+  let dx = (Math.random()*2+1)*(Math.random()<0.5?1:-1);
+  let dy = (Math.random()*2+1)*(Math.random()<0.5?1:-1);
 
-<!-- SILHOUETTE -->
-<div class="floating silhouette" style="background-image:url('silhouette_sportive.png'); top:50%; left:50%;"></div>
+  function moveBall(){
+    let x = parseFloat(ball.style.left);
+    let y = parseFloat(ball.style.top);
 
+    x += dx;
+    y += dy;
+
+    // Rebonds court
+    if(x<0 || x>courtRect.width-40) dx*=-1;
+    if(y<0 || y>courtRect.height-40) dy*=-1;
+
+    ball.style.left=x+'px';
+    ball.style.top=y+'px';
+    requestAnimationFrame(moveBall);
+  }
+  moveBall();
+}
+
+// Créer raquettes
+for(let i=0;i<2;i++){
+  let racket = document.createElement('div');
+  racket.className='moving rotate';
+  racket.style.backgroundImage="url('raquette_tennis.png')";
+  racket.style.width='60px';
+  racket.style.height='60px';
+  racket.style.left=Math.random()*(courtRect.width-60)+'px';
+  racket.style.top=Math.random()*(courtRect.height-60)+'px';
+  court.appendChild(racket);
+}
+
+// Silhouette Serena
+let silhouette = document.createElement('div');
+silhouette.className='silhouette';
+silhouette.style.backgroundImage="url('silhouette_sportive.png')";
+silhouette.style.left='50%';
+silhouette.style.top='50%';
+silhouette.style.transform='translate(-50%,-50%)';
+court.appendChild(silhouette);
+
+</script>
 </body>
 </html>
