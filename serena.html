@@ -17,34 +17,20 @@
 </head>
 
 <body>
-<button id="startBtn" style="position:absolute;top:20px;left:20px;z-index:999;padding:10px 20px;font-size:16px;">
-  Lancer la vidéo
-</button>
-  
+
 <a-scene
   mindar-image="imageTargetSrc: serena.mind;"
   color-space="sRGB"
   renderer="colorManagement: true;"
   vr-mode-ui="enabled: false"
   device-orientation-permission-ui="enabled: true">
-  
-<script>
-  const video = document.querySelector("#video-serena");
-  const btn = document.getElementById("startBtn");
 
-  btn.addEventListener("click", () => {
-    video.play();         // démarre la vidéo
-    btn.style.display = "none"; // cache le bouton
-  });
-</script>
-
-  
   <!-- CAMÉRA -->
   <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
   <!-- ASSETS -->
   <a-assets>
-    <!-- VIDÉO : ajout muted et playsinline -->
+    <!-- VIDÉO : muted et playsinline pour garantir lecture -->
     <video id="video-serena" src="serena.mp4" preload="auto" muted playsinline></video>
   </a-assets>
 
@@ -85,17 +71,20 @@
 
 </a-scene>
 
-<!-- SCRIPT pour lancer la vidéo à la détection -->
+<!-- SCRIPT pour lancer la vidéo dès que la cible RA est détectée -->
 <script>
   const target = document.querySelector("#serenaTarget");
-  const video = document.querySelector("#serenaVideo");
+  const video = document.querySelector("#video-serena");
 
-  // Dès que la cible RA est détectée, la vidéo se lance
+  // Lecture dès que la cible est détectée
   target.addEventListener("targetFound", () => {
-    video.play();
+    video.play().catch(err => {
+      console.log("Autoplay bloqué, cliquer pour lancer la vidéo :", err);
+      alert("Cliquez pour lancer la vidéo !");
+    });
   });
 
-  // Optionnel : pause quand la cible disparaît
+  // Pause quand la cible disparaît
   target.addEventListener("targetLost", () => {
     video.pause();
   });
@@ -103,3 +92,4 @@
 
 </body>
 </html>
+
