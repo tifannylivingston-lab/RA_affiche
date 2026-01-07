@@ -30,8 +30,8 @@
 
   <!-- ASSETS -->
   <a-assets>
-    <!-- VIDÉO : muted et playsinline pour garantir lecture -->
-    <video id="video-serena" src="serena.mp4" preload="auto" muted playsinline></video>
+    <!-- VIDÉO : muted, playsinline et crossorigin pour MindAR -->
+    <video id="video-serena" src="serena.mp4" preload="auto" muted playsinline crossorigin="anonymous"></video>
   </a-assets>
 
   <!-- CIBLE RA -->
@@ -71,15 +71,19 @@
 
 </a-scene>
 
-<!-- SCRIPT pour lancer la vidéo dès que la cible RA est détectée -->
+<!-- SCRIPT pour lancer la vidéo correctement -->
 <script>
   const target = document.querySelector("#serenaTarget");
   const video = document.querySelector("#video-serena");
+  const aVideo = document.querySelector("#serenaVideo");
 
-  // Lecture dès que la cible est détectée
+  // Dès que la cible RA est détectée
   target.addEventListener("targetFound", () => {
-    video.play().catch(err => {
-      console.log("Autoplay bloqué, cliquer pour lancer la vidéo :", err);
+    video.play().then(() => {
+      // Forcer A-Frame à utiliser la vidéo comme texture
+      aVideo.setAttribute('src', '#video-serena');
+    }).catch(err => {
+      console.log("Autoplay bloqué, cliquez pour lancer la vidéo :", err);
       alert("Cliquez pour lancer la vidéo !");
     });
   });
