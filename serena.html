@@ -30,7 +30,7 @@
 
   <!-- ASSETS -->
   <a-assets>
-    <!-- VIDÉO : muted, playsinline et crossorigin pour MindAR -->
+    <!-- VIDÉO : muted, playsinline, crossorigin pour MindAR -->
     <video id="video-serena" src="serena.mp4" preload="auto" muted playsinline crossorigin="anonymous"></video>
   </a-assets>
 
@@ -71,24 +71,28 @@
 
 </a-scene>
 
-<!-- SCRIPT pour lancer la vidéo correctement -->
+<!-- SCRIPT pour forcer l'affichage de la vidéo -->
 <script>
   const target = document.querySelector("#serenaTarget");
   const video = document.querySelector("#video-serena");
   const aVideo = document.querySelector("#serenaVideo");
 
-  // Dès que la cible RA est détectée
-  target.addEventListener("targetFound", () => {
-    video.play().then(() => {
-      // Forcer A-Frame à utiliser la vidéo comme texture
+  target.addEventListener("targetFound", async () => {
+    try {
+      // Joue la vidéo
+      await video.play();
+
+      // Force la mise à jour de la texture WebGL
       aVideo.setAttribute('src', '#video-serena');
-    }).catch(err => {
-      console.log("Autoplay bloqué, cliquez pour lancer la vidéo :", err);
+      if(aVideo.components.material && aVideo.components.material.material.map){
+        aVideo.components.material.material.map.needsUpdate = true;
+      }
+    } catch(err){
+      console.log("Autoplay bloqué, clique pour lancer la vidéo :", err);
       alert("Cliquez pour lancer la vidéo !");
-    });
+    }
   });
 
-  // Pause quand la cible disparaît
   target.addEventListener("targetLost", () => {
     video.pause();
   });
