@@ -43,24 +43,50 @@
     font-weight:bold;
     box-shadow:0 6px 15px rgba(0,0,0,0.5);
     transition:all 0.3s;
-    z-index:1;
+    z-index:10;
   }
   #discoverBtn:hover{
     transform: scale(1.1) rotate(-2deg);
     box-shadow:0 8px 20px rgba(0,0,0,0.6);
   }
 
-  /* ICÔNES FLOTTANTES TENNIS */
+  /* ICÔNES TENNIS */
   .floating{
     position:absolute;
     width:60px;
     height:60px;
     background-size:cover;
     background-position:center;
-    animation-name:floaty;
-    animation-duration:4s;
     animation-iteration-count:infinite;
-    animation-timing-function:ease-in-out;
+  }
+
+  /* BOUNCE - Balles */
+  .bouncing{
+    animation-name:bounce;
+    animation-duration:3s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count:infinite;
+  }
+
+  @keyframes bounce{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-40px);}
+  }
+
+  /* RAQUETTES PIVOT */
+  .rotate{
+    animation:rotate 4s linear infinite;
+  }
+
+  @keyframes rotate{
+    0%{transform:rotate(0deg);}
+    50%{transform:rotate(15deg);}
+    100%{transform:rotate(0deg);}
+  }
+
+  /* SILHOUETTE */
+  .silhouette{
+    animation:floaty 3s ease-in-out infinite;
   }
 
   @keyframes floaty{
@@ -77,12 +103,12 @@
 <!-- BOUTON -->
 <button id="discoverBtn" onclick="window.location.href='serena.html'">Découvrir Serena Williams</button>
 
-<!-- ICÔNES FLOTTANTES TENNIS -->
-<div class="floating" style="top:10%; left:15%; background-image:url('raquette_tennis.png');"></div>
-<div class="floating" style="top:20%; right:15%; background-image:url('ballon_foot.png'); display:none;"></div> <!-- masqué -->
-<div class="floating" style="bottom:15%; left:20%; background-image:url('balle_tennis.png');"></div>
-<div class="floating" style="bottom:25%; right:25%; background-image:url('filet_tennis.png');"></div>
-<div class="floating" style="top:50%; left:50%; background-image:url('silhouette_sportive.png'); width:80px; height:80px;"></div>
+<!-- ICÔNES FLOTTANTES / INTERACTIVES -->
+<div class="floating bouncing" style="top:15%; left:20%; background-image:url('balle_tennis.png'); width:50px; height:50px; animation-delay:0s;"></div>
+<div class="floating bouncing" style="top:35%; right:25%; background-image:url('balle_tennis.png'); width:45px; height:45px; animation-delay:1s;"></div>
+<div class="floating rotate" style="top:10%; left:70%; background-image:url('raquette_tennis.png'); width:60px; height:60px; animation-delay:0s;"></div>
+<div class="floating rotate" style="bottom:15%; right:15%; background-image:url('raquette_tennis.png'); width:55px; height:55px; animation-delay:0.5s;"></div>
+<div class="floating silhouette" style="top:50%; left:50%; background-image:url('silhouette_sportive.png'); width:90px; height:90px;"></div>
 
 </body>
 </html>
