@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Serena Williams – RA</title>
+<meta charset="UTF-8">
+<title>Serena Williams – RA</title>
 
-  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+<script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: black;
-    }
-  </style>
+<style>
+body { margin:0; overflow:hidden; background:black; }
+</style>
 </head>
 
 <body>
@@ -23,102 +19,110 @@
   vr-mode-ui="enabled:false"
   device-orientation-permission-ui="enabled:true">
 
-  <a-camera look-controls="false"></a-camera>
+<a-camera look-controls="false"></a-camera>
 
-  <a-assets>
-    <video
-      id="video-serena"
-      src="serena.mp4"
-      preload="auto"
-      playsinline
-      crossorigin="anonymous">
-    </video>
-  </a-assets>
+<a-assets>
+  <video
+    id="video-serena"
+    src="serena.mp4"
+    preload="auto"
+    playsinline
+    crossorigin="anonymous">
+  </video>
+</a-assets>
 
-  <!-- CIBLE RA -->
-  <a-entity
-    id="target"
-    mindar-image-target="targetIndex:0">
+<a-entity id="target" mindar-image-target="targetIndex:0">
 
-    <!-- VIDEO -->
-    <a-video
-      id="videoPlane"
-      src="#video-serena"
-      width="1.6"
-      height="0.9"
-      position="0 0.35 0"
-      visible="false"
-      animation__in="property: scale; from: 0.3 0.3 0.3; to: 1 1 1; dur: 900; easing: easeOutElastic">
-    </a-video>
+  <!-- PLAN VIDEO (dimensions dynamiques) -->
+  <a-plane
+    id="videoPlane"
+    position="0 0.3 0"
+    material="shader: flat; src: #video-serena"
+    visible="false">
+  </a-plane>
 
-    <!-- PALMARÈS -->
-    <a-entity id="palmares" visible="false">
+  <!-- PALMARES -->
+  <a-entity id="palmares" visible="false" position="0 0 0">
 
-      <a-text
-        value="🏆 Serena Williams"
-        position="0 0.45 0"
-        align="center"
-        width="3"
-        color="#FFD700"
-        animation__title="property: scale; from: 0.2 0.2 0.2; to: 1 1 1; dur: 900; easing: easeOutElastic">
-      </a-text>
+    <a-text
+      id="title"
+      value="🏆 Serena Williams"
+      position="0 0.45 0"
+      align="center"
+      width="3"
+      color="#FFD700">
+    </a-text>
 
-      <a-text
-        value="🎾 23 titres du Grand Chelem"
-        position="0 0.15 0"
-        align="center"
-        width="2.8"
-        color="#FFFFFF"
-        animation="property: opacity; from: 0; to: 1; delay: 400; dur: 600">
-      </a-text>
+    <a-text
+      id="p1"
+      value="🎾 23 titres du Grand Chelem"
+      position="0 0.15 0"
+      align="center"
+      width="2.8"
+      color="#FFFFFF">
+    </a-text>
 
-      <a-text
-        value="🥇 4 médailles d’or olympiques"
-        position="0 -0.1 0"
-        align="center"
-        width="2.8"
-        color="#FFFFFF"
-        animation="property: opacity; from: 0; to: 1; delay: 800; dur: 600">
-      </a-text>
+    <a-text
+      id="p2"
+      value="🥇 4 médailles d’or olympiques"
+      position="0 -0.1 0"
+      align="center"
+      width="2.8"
+      color="#FFFFFF">
+    </a-text>
 
-      <a-text
-        value="👑 319 semaines n°1 mondiale"
-        position="0 -0.35 0"
-        align="center"
-        width="2.8"
-        color="#FFFFFF"
-        animation="property: opacity; from: 0; to: 1; delay: 1200; dur: 600">
-      </a-text>
-
-    </a-entity>
+    <a-text
+      id="p3"
+      value="👑 319 semaines n°1 mondiale"
+      position="0 -0.35 0"
+      align="center"
+      width="2.8"
+      color="#FFFFFF">
+    </a-text>
 
   </a-entity>
+
+</a-entity>
 </a-scene>
 
 <script>
-  const video = document.querySelector('#video-serena');
-  const videoPlane = document.querySelector('#videoPlane');
-  const palmares = document.querySelector('#palmares');
-  const target = document.querySelector('#target');
+const video = document.querySelector('#video-serena');
+const videoPlane = document.querySelector('#videoPlane');
+const palmares = document.querySelector('#palmares');
+const target = document.querySelector('#target');
 
-  // Quand l'image est détectée
-  target.addEventListener('targetFound', () => {
-    palmares.setAttribute('visible', 'false');
-    videoPlane.setAttribute('visible', 'true');
-    video.currentTime = 0;
-    video.play();
-  });
+// Ajuster le ratio réel de la vidéo
+video.addEventListener('loadedmetadata', () => {
+  const ratio = video.videoWidth / video.videoHeight;
+  const height = 0.9;
+  const width = height * ratio;
+  videoPlane.setAttribute('width', width);
+  videoPlane.setAttribute('height', height);
+});
 
-  // Quand l'image est perdue
-  target.addEventListener('targetLost', () => {
-    video.pause();
-  });
+// Détection de la cible
+target.addEventListener('targetFound', () => {
+  palmares.setAttribute('visible', 'false');
+  videoPlane.setAttribute('visible', 'true');
+  video.currentTime = 0;
+  video.play();
+});
 
-  // Fin de vidéo → palmarès
-  video.addEventListener('ended', () => {
-    videoPlane.setAttribute('visible', 'false');
-    palmares.setAttribute('visible', 'true');
+// Perte de la cible
+target.addEventListener('targetLost', () => {
+  video.pause();
+});
+
+// Fin vidéo → palmarès animé
+video.addEventListener('ended', () => {
+  videoPlane.setAttribute('visible', 'false');
+  palmares.setAttribute('visible', 'true');
+
+  document.querySelectorAll('#palmares a-text').forEach((el, i) => {
+    el.setAttribute('animation',
+      `property: opacity; from: 0; to: 1; delay: ${i*400}; dur: 600`);
   });
+});
 </script>
 
 </body>
