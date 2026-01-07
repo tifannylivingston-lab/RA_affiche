@@ -12,7 +12,7 @@
 
   <style>
     body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
-
+    
     /* PAGE D'ATTENTE */
     #waiting{
       position:absolute;
@@ -37,26 +37,6 @@
     #waiting p{
       text-align:center;
       font-size:1.1em;
-    }
-
-    /* BOUTON DEMARRER RA */
-    #startAR{
-      padding:12px 25px;
-      border-radius:12px;
-      font-size:1.2em;
-      cursor:pointer;
-      background-color:#FFD700;
-      color:#000;
-      font-weight:bold;
-      border:none;
-      box-shadow:0 5px 15px rgba(0,0,0,0.5);
-      transition:all 0.3s;
-      margin-top:20px;
-    }
-
-    #startAR:hover{
-      background-color:#FFB600;
-      transform: scale(1.05);
     }
 
     /* ICÔNES FLOTTANTES */
@@ -113,20 +93,16 @@
   <div class="scan-box">
     Place ton marqueur ici
   </div>
-
-  <!-- BOUTON DEMARRER RA -->
-  <button id="startAR">Démarrer RA</button>
 </div>
 
 <!-- SCÈNE RA -->
 <a-scene
-  mindar-image="imageTargetSrc: serena.mind;"
+  mindar-image="imageTargetSrc: serena.mind; autoStart:true;"
   color-space="sRGB"
   renderer="colorManagement: true;"
   vr-mode-ui="enabled: false"
   device-orientation-permission-ui="enabled: true"
-  arjs="trackingMethod: best;"
-  embedded>
+  arjs="trackingMethod: best;">
 
   <!-- CAMÉRA -->
   <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -172,23 +148,14 @@
 </a-scene>
 
 <script>
+  // Cacher la page d'attente quand RA détecte le marqueur
   const target = document.querySelector("#ra-target");
   const waitingDiv = document.querySelector("#waiting");
-  const startBtn = document.querySelector("#startAR");
-  const scene = document.querySelector("a-scene");
 
-  // DEMARRER RA AU CLIC
-  startBtn.addEventListener("click", () => {
-    scene.components['mindar-image'].start();
-    alert("RA démarrée ! Place ton marqueur devant la caméra.");
-  });
-
-  // CACHER LA PAGE D'ATTENTE QUAND LE MARQUEUR EST DETECTÉ
   target.addEventListener("targetFound", () => {
     waitingDiv.style.display = "none";
   });
 
-  // REAFFICHER LA PAGE D'ATTENTE QUAND LE MARQUEUR EST PERDU
   target.addEventListener("targetLost", () => {
     waitingDiv.style.display = "flex";
   });
