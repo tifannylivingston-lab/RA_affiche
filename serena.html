@@ -8,11 +8,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
 <style>
-body {
-  margin: 0;
-  overflow: hidden;
-  background: black;
-}
+body { margin: 0; overflow: hidden; background: black; }
 </style>
 </head>
 
@@ -37,18 +33,18 @@ body {
 
   <a-entity id="target" mindar-image-target="targetIndex:0">
 
-    <!-- VIDEO PROPRE, GRANDE, CENTRÉE -->
-    <a-plane
-      id="videoPlane"
-      position="0 0 0"
-      material="shader: flat; src: #video-serena"
-      visible="false">
-    </a-plane>
+    <!-- VIDEO CENTRÉE -->
+    <a-entity id="videoWrapper" position="0 0 0" visible="false">
+      <a-plane
+        id="videoPlane"
+        material="shader: flat; src: #video-serena"
+        geometry="primitive: plane; width: 1; height: 1"
+        position="0 0 0">
+      </a-plane>
+    </a-entity>
 
     <!-- PALMARES SOBRE -->
     <a-entity id="palmares" visible="false">
-
-      <!-- Fond -->
       <a-plane
         width="2.8"
         height="1.6"
@@ -57,7 +53,6 @@ body {
         position="0 0 0">
       </a-plane>
 
-      <!-- Texte -->
       <a-text
         value="Serena Williams"
         position="0 0.5 0.01"
@@ -101,30 +96,31 @@ body {
 <script>
 const video = document.querySelector('#video-serena');
 const videoPlane = document.querySelector('#videoPlane');
+const videoWrapper = document.querySelector('#videoWrapper');
 const palmares = document.querySelector('#palmares');
 const target = document.querySelector('#target');
 
-// Ajustement PROPRE du ratio + agrandissement réel
+// Ajustement ratio et agrandissement
 video.addEventListener('loadedmetadata', () => {
   const ratio = video.videoWidth / video.videoHeight;
-  const height = 1.6;   // ← PLUS GRAND
+  const height = 1.6; // hauteur finale
   const width = height * ratio;
 
-  videoPlane.setAttribute('width', width);
-  videoPlane.setAttribute('height', height);
+  videoPlane.setAttribute('geometry', `primitive: plane; width: ${width}; height: ${height}`);
+  videoWrapper.setAttribute('position', '0 0 0'); // centré exactement
 });
 
 // Scan image → vidéo
 target.addEventListener('targetFound', () => {
   palmares.setAttribute('visible', 'false');
-  videoPlane.setAttribute('visible', 'true');
+  videoWrapper.setAttribute('visible', 'true');
   video.currentTime = 0;
   video.play();
 });
 
-// Fin vidéo → palmarès élégant
+// Fin vidéo → palmarès
 video.addEventListener('ended', () => {
-  videoPlane.setAttribute('visible', 'false');
+  videoWrapper.setAttribute('visible', 'false');
   palmares.setAttribute('visible', 'true');
 
   document.querySelectorAll('.item').forEach((el, i) => {
