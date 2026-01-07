@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Serena Williams – RA</title>
+  <title>Serena Williams – RA Animée</title>
 
   <!-- A-FRAME -->
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
@@ -12,7 +12,6 @@
 
   <style>
     body { margin:0; overflow:hidden; }
-    a-text { font-family: Arial; }
   </style>
 </head>
 
@@ -32,32 +31,19 @@
   </a-assets>
 
   <a-entity mindar-image-target="targetIndex: 0" id="serenaTarget">
+
+    <!-- VIDÉO ANIMÉE -->
     <a-video
       id="serenaVideo"
       src="#video-serena"
       width="1.2"
       height="0.7"
       position="0 0.4 0"
-      loop
+      loop="false"
       muted
       playsinline>
     </a-video>
 
-    <a-text
-      value="🎾 Serena Williams\n\n🏆 23 Grands Chelems\n🥇 4 Or Olympiques\n👑 319 semaines n°1"
-      position="0 -0.4 0"
-      align="center"
-      width="2"
-      color="#ffffff">
-    </a-text>
-
-    <a-text
-      value="« Le talent n’a pas de genre. »"
-      position="0 -0.75 0"
-      align="center"
-      width="2"
-      color="#FFD700">
-    </a-text>
   </a-entity>
 
 </a-scene>
@@ -65,15 +51,34 @@
 <script>
   const target = document.querySelector("#serenaTarget");
   const video = document.querySelector("#video-serena");
+  const aVideo = document.querySelector("#serenaVideo");
 
-  // Quand la cible est détectée → lance la vidéo
+  // Animation simple : zoom rebond
+  function animateVideo() {
+    aVideo.setAttribute('animation', 'property: scale; from: 0.5 0.5 0.5; to: 1 1 1; dur: 1000; easing: easeOutElastic');
+    aVideo.setAttribute('animation__bounce', 'property: position; dir: alternate; dur: 1000; loop: 2; to: 0 0.45 0; easing: easeInOutSine');
+  }
+
+  // Quand la cible est détectée → lance la vidéo + animation
   target.addEventListener("targetFound", async () => {
-    try { await video.play(); } 
-    catch(err){ console.log("Autoplay bloqué :", err); }
+    try { 
+      await video.play(); 
+      animateVideo();
+    } catch(err){ 
+      console.log("Autoplay bloqué :", err); 
+    }
   });
 
   // Quand la cible disparaît → pause la vidéo
-  target.addEventListener("targetLost", () => { video.pause(); });
+  target.addEventListener("targetLost", () => { 
+    video.pause(); 
+  });
+
+  // Après la fin de la vidéo → on pourra déclencher le palmarès
+  video.addEventListener("ended", () => {
+    alert("Vidéo terminée ! Ici on pourra afficher le palmarès interactif");
+    // Ici, on pourra remplacer par un passage à une autre scène ou animation du palmarès
+  });
 </script>
 
 </body>
