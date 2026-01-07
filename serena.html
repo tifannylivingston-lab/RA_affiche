@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Serena Williams – RA</title>
+  <title>Serena Williams – RA Simple</title>
 
   <!-- A-FRAME -->
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
@@ -19,7 +19,7 @@
 <body>
 
 <a-scene
-  mindar-image="imageTargetSrc: serena.mind;"
+  mindar-image="imageTargetSrc: targets.mind;"
   color-space="sRGB"
   renderer="colorManagement: true;"
   vr-mode-ui="enabled: false"
@@ -30,7 +30,6 @@
 
   <!-- ASSETS -->
   <a-assets>
-    <!-- VIDÉO : muted, playsinline, crossorigin pour MindAR -->
     <video id="video-serena" src="serena.mp4" preload="auto" muted playsinline crossorigin="anonymous"></video>
   </a-assets>
 
@@ -71,28 +70,25 @@
 
 </a-scene>
 
-<!-- SCRIPT pour forcer l'affichage de la vidéo -->
 <script>
   const target = document.querySelector("#serenaTarget");
   const video = document.querySelector("#video-serena");
   const aVideo = document.querySelector("#serenaVideo");
 
+  // Démarre la vidéo dès que la cible est détectée
   target.addEventListener("targetFound", async () => {
     try {
-      // Joue la vidéo
       await video.play();
-
-      // Force la mise à jour de la texture WebGL
-      aVideo.setAttribute('src', '#video-serena');
       if(aVideo.components.material && aVideo.components.material.material.map){
         aVideo.components.material.material.map.needsUpdate = true;
       }
     } catch(err){
-      console.log("Autoplay bloqué, clique pour lancer la vidéo :", err);
+      console.log("Autoplay bloqué, cliquez sur l’écran pour lancer la vidéo :", err);
       alert("Cliquez pour lancer la vidéo !");
     }
   });
 
+  // Pause quand la cible n’est plus visible
   target.addEventListener("targetLost", () => {
     video.pause();
   });
