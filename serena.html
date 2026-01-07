@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Serena Williams – RA</title>
+
+  <!-- A-FRAME -->
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+
+  <!-- MINDAR -->
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+  <style>
+    body { margin: 0; overflow: hidden; }
+  </style>
+</head>
+
+<body>
+
+<a-scene
+  mindar-image="imageTargetSrc: serena.mind;"
+  color-space="sRGB"
+  renderer="colorManagement: true;"
+  vr-mode-ui="enabled: false"
+  device-orientation-permission-ui="enabled: true">
+
+  <!-- CAMÉRA -->
+  <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+  <!-- CIBLE -->
+  <a-entity mindar-image-target="targetIndex: 0">
+
+    <!-- VIDEO -->
+    <a-video
+      src="#video-serena"
+      width="1.2"
+      height="0.7"
+      position="0 0.4 0"
+      autoplay
+      loop>
+    </a-video>
+
+    <!-- TEXTE PALMARÈS -->
+    <a-text
+      value="🎾 Serena Williams\n\n🏆 23 Grands Chelems\n🥇 4 Or Olympiques\n👑 319 semaines n°1"
+      position="0 -0.4 0"
+      align="center"
+      width="2"
+      color="#ffffff">
+    </a-text>
+
+    <!-- MESSAGE -->
+    <a-text
+      value="« Le talent n’a pas de genre. »"
+      position="0 -0.75 0"
+      align="center"
+      width="2"
+      color="#FFD700">
+    </a-text>
+
+  </a-entity>
+
+  <!-- ASSETS -->
+  <a-assets>
+    <video id="video-serena" src="serena.mp4" preload="auto"></video>
+  </a-assets>
+
+</a-scene>
+
+</body>
+</html>
