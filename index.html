@@ -48,7 +48,7 @@ h1{
   box-shadow:0 8px 20px rgba(0,0,0,0.6);
 }
 
-/* Mini-court */
+/* Cadre blanc */
 #court {
   position:absolute;
   top:50%;
@@ -56,32 +56,12 @@ h1{
   width:90%;
   height:50%;
   transform:translate(-50%,-50%);
-  background-color:#228B22;
+  background-color: rgba(255,255,255,0.05);
   border:4px solid white;
-  border-radius:8px;
+  border-radius:12px;
   box-sizing:border-box;
   z-index:0;
 }
-#lineH1, #lineH2{
-  position:absolute;
-  height:2px;
-  width:90%;
-  background:white;
-  left:50%;
-  transform:translateX(-50%);
-}
-#lineH1{top:25%;}
-#lineH2{top:75%;}
-#lineV1, #lineV2{
-  position:absolute;
-  width:2px;
-  height:50%;
-  background:white;
-  top:50%;
-  transform:translateY(-50%);
-}
-#lineV1{left:25%;}
-#lineV2{left:75%;}
 
 /* Balles et raquettes */
 .moving {
@@ -100,15 +80,18 @@ h1{
 
 /* Silhouette Serena */
 .silhouette{
-  width:90px;
-  height:90px;
+  width:150px;
+  height:150px;
   animation:floaty 3s ease-in-out infinite;
-  z-index:1;
+  z-index:100;
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
 }
 @keyframes floaty{
-  0%{transform:translateY(0);}
-  50%{transform:translateY(-15px);}
-  100%{transform:translateY(0);}
+  0%{transform:translate(-50%,-50%) translateY(0);}
+  50%{transform:translate(-50%,-50%) translateY(-15px);}
+  100%{transform:translate(-50%,-50%) translateY(0);}
 }
 
 /* Confettis */
@@ -116,8 +99,6 @@ h1{
   position:absolute;
   width:8px;
   height:8px;
-  background: #FFD700;
-  opacity:0.8;
   border-radius:50%;
   pointer-events:none;
   z-index:20;
@@ -129,14 +110,9 @@ h1{
 <h1>🎾 Découvre Serena Williams !</h1>
 <button id="discoverBtn">Découvrir Serena Williams</button>
 
-<div id="court">
-  <div id="lineH1"></div>
-  <div id="lineH2"></div>
-  <div id="lineV1"></div>
-  <div id="lineV2"></div>
-</div>
+<div id="court"></div>
 
-<!-- Son de balle -->
+<!-- Son optionnel -->
 <audio id="ping" src="ping.mp3" preload="auto"></audio>
 
 <script>
@@ -181,7 +157,6 @@ window.onload = function() {
   silhouette.style.backgroundImage="url('silhouette_sportive.png')";
   silhouette.style.left='50%';
   silhouette.style.top='50%';
-  silhouette.style.transform='translate(-50%,-50%)';
   court.appendChild(silhouette);
 
   // Animation des balles avec collision simple raquette
@@ -219,7 +194,6 @@ window.onload = function() {
       conf.style.backgroundColor=`hsl(${Math.random()*360},100%,60%)`;
       court.appendChild(conf);
 
-      // chute
       let ty=parseFloat(conf.style.top);
       let vx=(Math.random()-0.5)*2;
       let vy=Math.random()*3+2;
@@ -235,7 +209,7 @@ window.onload = function() {
       fall();
     }
 
-    // Ouvre la page Serena après un petit délai
+    // ouvre la page Serena après un petit délai
     setTimeout(()=>{window.location.href='serena.html';},500);
   });
 };
