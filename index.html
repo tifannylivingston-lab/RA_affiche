@@ -7,76 +7,82 @@
   body {
     margin:0;
     height:100vh;
-    background: linear-gradient(135deg,#7b1fa2,#ec407a); /* fond violet/rose */
+    background: linear-gradient(135deg,#7b1fa2,#ec407a);
+    overflow:hidden;
+    font-family: Arial, sans-serif;
     display:flex;
-    flex-direction:column;
     justify-content:center;
     align-items:center;
-    font-family: Arial, sans-serif;
-    color:white;
-    overflow:hidden;
+    flex-direction:column;
     position: relative;
   }
 
-  /* Animation icônes flottantes */
-  .floating{
-    position:absolute;
-    width:80px;
-    height:80px;
-    background-size:cover;
-    background-position:center;
-    animation:float 3s ease-in-out infinite;
-  }
-
-  @keyframes float{
-    0%{transform:translateY(0);}
-    50%{transform:translateY(-12px);}
-    100%{transform:translateY(0);}
-  }
-
-  /* Titre */
+  /* TITRE ANIMÉ */
   h1{
-    z-index:1;
+    font-size:2.2em;
+    color:white;
     text-shadow:2px 2px 6px #000;
-    font-size:2em;
-    margin-bottom:20px;
+    margin-bottom:40px;
+    animation:pulse 2s infinite;
     text-align:center;
   }
-
-  /* Bouton Découvrir */
-  #discoverBtn{
-    z-index:1;
-    padding:15px 35px;
-    font-size:1.2em;
-    border-radius:12px;
-    border:none;
-    cursor:pointer;
-    background-color:#FFD700;
-    color:#000;
-    font-weight:bold;
-    box-shadow:0 5px 15px rgba(0,0,0,0.5);
-    transition:all 0.3s;
-    margin-top:20px;
+  @keyframes pulse{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.1);}
   }
 
+  /* BOUTON DÉCOUVRIR */
+  #discoverBtn{
+    padding:18px 40px;
+    font-size:1.3em;
+    border-radius:25px;
+    border:none;
+    cursor:pointer;
+    background: linear-gradient(45deg,#FFD700,#FFB600);
+    color:#000;
+    font-weight:bold;
+    box-shadow:0 6px 15px rgba(0,0,0,0.5);
+    transition:all 0.3s;
+    z-index:1;
+  }
   #discoverBtn:hover{
-    background-color:#FFB600;
-    transform: scale(1.05);
+    transform: scale(1.1) rotate(-2deg);
+    box-shadow:0 8px 20px rgba(0,0,0,0.6);
+  }
+
+  /* ICÔNES FLOTTANTES TENNIS */
+  .floating{
+    position:absolute;
+    width:60px;
+    height:60px;
+    background-size:cover;
+    background-position:center;
+    animation-name:floaty;
+    animation-duration:4s;
+    animation-iteration-count:infinite;
+    animation-timing-function:ease-in-out;
+  }
+
+  @keyframes floaty{
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-15px);}
+    100%{transform:translateY(0);}
   }
 </style>
 </head>
 <body>
 
-<h1>📸 Découvre Serena Williams !</h1>
+<h1>🎾 Découvre Serena Williams !</h1>
 
-<!-- Icônes flottantes -->
-<div class="floating" style="top:15%; left:10%; background-image:url('ballon_foot.png');"></div>
-<div class="floating" style="top:40%; right:15%; background-image:url('raquette_tennis.png');"></div>
-<div class="floating" style="bottom:20%; left:25%; background-image:url('halteres.png');"></div>
-<div class="floating" style="bottom:25%; right:20%; background-image:url('gymnaste.png');"></div>
-
-<!-- Bouton pour lancer la RA -->
+<!-- BOUTON -->
 <button id="discoverBtn" onclick="window.location.href='serena.html'">Découvrir Serena Williams</button>
+
+<!-- ICÔNES FLOTTANTES TENNIS -->
+<div class="floating" style="top:10%; left:15%; background-image:url('raquette_tennis.png');"></div>
+<div class="floating" style="top:20%; right:15%; background-image:url('ballon_foot.png'); display:none;"></div> <!-- masqué -->
+<div class="floating" style="bottom:15%; left:20%; background-image:url('balle_tennis.png');"></div>
+<div class="floating" style="bottom:25%; right:25%; background-image:url('filet_tennis.png');"></div>
+<div class="floating" style="top:50%; left:50%; background-image:url('silhouette_sportive.png'); width:80px; height:80px;"></div>
 
 </body>
 </html>
