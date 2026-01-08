@@ -8,7 +8,8 @@
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
 <style>
-body { margin:0; overflow:hidden; background:black; }
+body { margin:0; overflow:hidden; background:black; font-family: Arial; }
+.clickable { cursor: pointer; }
 </style>
 </head>
 
@@ -19,83 +20,106 @@ body { margin:0; overflow:hidden; background:black; }
   vr-mode-ui="enabled:false"
   device-orientation-permission-ui="enabled:true">
 
-<a-camera look-controls="false"></a-camera>
+  <a-camera look-controls="false"></a-camera>
 
-<a-assets>
-  <video id="video-serena" src="serena.mp4" preload="auto" playsinline></video>
-</a-assets>
+  <a-assets>
+    <video id="video-serena" src="serena.mp4" preload="auto" playsinline></video>
+  </a-assets>
 
-<a-entity id="target" mindar-image-target="targetIndex:0">
+  <a-entity id="target" mindar-image-target="targetIndex:0">
 
-  <!-- VIDEO -->
-  <a-plane id="videoPlane"
-    material="shader: flat; src: #video-serena"
-    visible="false">
-  </a-plane>
-
-  <!-- PALMARES -->
-  <a-entity id="palmares" visible="false">
-
-    <!-- CARTE -->
-    <a-plane id="card"
-      width="3.3" height="2.1"
-      color="#222"
-      opacity="0.95"
-      scale="0 0 0">
+    <!-- VIDEO -->
+    <a-plane id="videoPlane"
+      material="shader: flat; src: #video-serena"
+      visible="false">
     </a-plane>
 
-    <!-- TITRE -->
-    <a-text value="🏆 Serena Williams"
-      position="0 0.75 0.02"
-      align="center"
-      width="3.2"
-      color="#FFD700"
-      opacity="0"
-      id="title">
-    </a-text>
+    <!-- PALMARES -->
+    <a-entity id="palmares" visible="false">
 
-    <!-- BADGES -->
-    <a-circle class="badge" id="b1"
-      radius="0.26" color="#FFD700"
-      position="-1 0.15 0.03"
-      scale="0 0 0"></a-circle>
+      <!-- CARTE -->
+      <a-plane id="card"
+        width="3.3" height="2.1"
+        color="#222"
+        opacity="0.95"
+        scale="0 0 0">
+      </a-plane>
 
-    <a-circle class="badge" id="b2"
-      radius="0.26" color="#FFD700"
-      position="0 0.15 0.03"
-      scale="0 0 0"></a-circle>
+      <!-- TITRE -->
+      <a-text value="🏆 Serena Williams"
+        position="0 0.75 0.02"
+        align="center"
+        width="3.2"
+        color="#FFD700"
+        opacity="0"
+        id="title">
+      </a-text>
 
-    <a-circle class="badge" id="b3"
-      radius="0.26" color="#FFD700"
-      position="1 0.15 0.03"
-      scale="0 0 0"></a-circle>
+      <!-- BADGES FIXES -->
+      <a-circle class="badge" id="b1"
+        radius="0.26" color="#FFD700"
+        position="-1 0.15 0.03"
+        scale="0 0 0"></a-circle>
 
-    <!-- ICÔNES -->
-    <a-text value="🎾" position="-1 0.15 0.06" align="center" width="2"></a-text>
-    <a-text value="🥇" position="0 0.15 0.06" align="center" width="2"></a-text>
-    <a-text value="👑" position="1 0.15 0.06" align="center" width="2"></a-text>
+      <a-circle class="badge" id="b2"
+        radius="0.26" color="#FFD700"
+        position="0 0.15 0.03"
+        scale="0 0 0"></a-circle>
 
-    <!-- DETAIL -->
-    <a-text id="detail"
-      position="0 -0.45 0.04"
-      align="center"
-      width="3.2"
-      color="#ffffff"
-      opacity="0">
-    </a-text>
+      <a-circle class="badge" id="b3"
+        radius="0.26" color="#FFD700"
+        position="1 0.15 0.03"
+        scale="0 0 0"></a-circle>
 
-    <!-- QUIZ -->
-    <a-entity id="quiz" visible="false" position="0 -0.85 0.04">
-      <a-text value="🎮 Combien de titres du Grand Chelem ?"
-        align="center" width="3" color="#FFD700"></a-text>
+      <!-- ICÔNES -->
+      <a-text value="🎾" position="-1 0.15 0.06" align="center" width="2"></a-text>
+      <a-text value="🥇" position="0 0.15 0.06" align="center" width="2"></a-text>
+      <a-text value="👑" position="1 0.15 0.06" align="center" width="2"></a-text>
 
-      <a-text value="18" position="-0.9 -0.3 0" width="2" color="#fff"></a-text>
-      <a-text value="23 ✅" position="0 -0.3 0" width="2" color="#00ff99"></a-text>
-      <a-text value="30" position="0.9 -0.3 0" width="2" color="#fff"></a-text>
+      <!-- DETAIL -->
+      <a-text id="detail"
+        position="0 -0.45 0.04"
+        align="center"
+        width="3.2"
+        color="#ffffff"
+        opacity="0">
+      </a-text>
+
+      <!-- QUIZ -->
+      <a-entity id="quiz" visible="false" position="0 -0.85 0.04">
+        <a-text value="🎮 Combien de titres du Grand Chelem ?"
+          align="center" width="3" color="#FFD700"></a-text>
+
+        <a-text value="18" position="-0.9 -0.3 0" width="2" color="#fff"></a-text>
+        <a-text value="23 ✅" position="0 -0.3 0" width="2" color="#00ff99"></a-text>
+        <a-text value="30" position="0.9 -0.3 0" width="2" color="#fff"></a-text>
+      </a-entity>
+
+      <!-- BOUTON VOIR PALMARES -->
+      <a-plane id="btnDetail"
+        position="0 -0.3 0.05"
+        width="1.2" height="0.4"
+        color="#FFD700"
+        class="clickable"
+        visible="false"
+        opacity="0.9">
+      </a-plane>
+
+      <a-text id="btnText"
+        value="Voir le palmarès"
+        position="0 -0.3 0.06"
+        align="center"
+        width="2"
+        color="#000"
+        visible="false">
+      </a-text>
+
+      <!-- CONFETTIS -->
+      <a-entity id="confettis"></a-entity>
+
     </a-entity>
 
   </a-entity>
-</a-entity>
 </a-scene>
 
 <script>
@@ -107,16 +131,19 @@ const title = document.querySelector('#title');
 const detail = document.querySelector('#detail');
 const quiz = document.querySelector('#quiz');
 const badges = document.querySelectorAll('.badge');
+const confettis = document.querySelector('#confettis');
+const btnDetail = document.querySelector('#btnDetail');
+const btnText = document.querySelector('#btnText');
 const target = document.querySelector('#target');
 
-// Ratio vidéo
+// Ajuster le ratio de la vidéo
 video.addEventListener('loadedmetadata', () => {
   const r = video.videoWidth / video.videoHeight;
   const h = 1.6;
   videoPlane.setAttribute('geometry', `primitive: plane; width:${h*r}; height:${h}`);
 });
 
-// Scan image
+// Quand l'image est détectée
 target.addEventListener('targetFound', () => {
   palmares.setAttribute('visible','false');
   videoPlane.setAttribute('visible','true');
@@ -124,38 +151,59 @@ target.addEventListener('targetFound', () => {
   video.play();
 });
 
-// Fin vidéo
+// Quand la vidéo se termine
 video.addEventListener('ended', () => {
   videoPlane.setAttribute('visible','false');
   palmares.setAttribute('visible','true');
 
+  // Carte et titre
   card.setAttribute('animation',
     'property: scale; from:0 0 0; to:1 1 1; dur:700; easing:easeOutBack');
-
   title.setAttribute('animation',
     'property: opacity; from:0; to:1; dur:600; delay:400');
 
+  // Pop badges
   badges.forEach((b,i)=>{
     b.setAttribute('animation__pop',
-      `property: scale; from:0 0 0; to:1 1 1;
-       dur:600; delay:${800+i*300}; easing:easeOutElastic`);
-
-    b.setAttribute('animation__float',
-      'property: position; dir:alternate; dur:2500; loop:true; easing:easeInOutSine');
+      `property: scale; from:0 0 0; to:1 1 1; dur:600; delay:${800+i*300}; easing:easeOutElastic`);
   });
+
+  // Confettis
+  for(let i=0;i<30;i++){
+    const c = document.createElement('a-sphere');
+    c.setAttribute('radius',0.03);
+    c.setAttribute('color',`hsl(${Math.random()*360},100%,60%)`);
+    c.setAttribute('position',`${(Math.random()-0.5)*2} 1 ${(Math.random()-0.5)*2}`);
+    confettis.appendChild(c);
+    let vy = Math.random()*0.02+0.01;
+    function fall(){
+      let pos = c.getAttribute('position');
+      pos.y -= vy;
+      if(pos.y>-1){
+        c.setAttribute('position',pos);
+        requestAnimationFrame(fall);
+      } else c.remove();
+    }
+    fall();
+  }
+
+  // Affiche bouton après animation des badges
+  btnDetail.setAttribute('visible', 'true');
+  btnText.setAttribute('visible', 'true');
 });
 
-// Interaction
-document.querySelector('#b1').addEventListener('click',()=>show("🎾 23 titres du Grand Chelem"));
-document.querySelector('#b2').addEventListener('click',()=>show("🥇 4 médailles d’or olympiques"));
-document.querySelector('#b3').addEventListener('click',()=>show("👑 319 semaines n°1 mondiale"));
-
-function show(txt){
-  detail.setAttribute('value', txt);
+// Interaction bouton pour montrer le détail + quiz
+btnDetail.addEventListener('click', ()=>{
+  detail.setAttribute('value', "🎾 23 titres du Grand Chelem\n🥇 4 médailles d’or olympiques\n👑 319 semaines n°1 mondiale");
   detail.setAttribute('animation',
-    'property: opacity; from:0; to:1; dur:400');
+    'property: scale; from:0 0 0; to:1 1 1; dur:500; easing:easeOutElastic');
+
   quiz.setAttribute('visible','true');
-}
+
+  // Masque le bouton après clic
+  btnDetail.setAttribute('visible','false');
+  btnText.setAttribute('visible','false');
+});
 </script>
 
 </body>
