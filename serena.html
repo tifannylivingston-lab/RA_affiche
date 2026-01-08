@@ -28,65 +28,85 @@ body { margin:0; overflow:hidden; background:black; }
 <a-entity id="target" mindar-image-target="targetIndex:0">
 
   <!-- VIDEO -->
-  <a-plane
-    id="videoPlane"
+  <a-plane id="videoPlane"
     material="shader: flat; src: #video-serena"
     visible="false">
   </a-plane>
 
-  <!-- PALMARES LUDIQUE -->
-  <a-entity id="palmares" visible="false" position="0 0 0">
+  <!-- PALMARES -->
+  <a-entity id="palmares" visible="false">
 
     <!-- CARTE -->
-    <a-plane
-      id="card"
-      width="3"
-      height="1.8"
-      color="#111"
-      opacity="0.85"
-      position="0 0 0"
-      rotation="0 0 0"
+    <a-plane id="card"
+      width="3.2" height="2"
+      color="#1c1c1c"
+      opacity="0.95"
       scale="0 0 0">
     </a-plane>
 
     <!-- TITRE -->
-    <a-text
-      id="title"
-      value="🏆 Serena Williams"
-      position="0 0.6 0.01"
+    <a-text value="🏆 Serena Williams"
+      position="0 0.7 0.02"
       align="center"
       width="3"
       color="#FFD700"
-      opacity="0">
+      opacity="0"
+      id="title">
     </a-text>
 
     <!-- BADGES -->
-    <a-text class="badge" value="🎾 23 Grands Chelems"
-      position="0 0.2 0.01"
+    <a-entity id="badges">
+
+      <a-circle class="badge" id="b1"
+        radius="0.23" color="#FFD700"
+        position="-0.9 0.1 0.03"
+        scale="0 0 0"></a-circle>
+
+      <a-circle class="badge" id="b2"
+        radius="0.23" color="#FFD700"
+        position="0 0.1 0.03"
+        scale="0 0 0"></a-circle>
+
+      <a-circle class="badge" id="b3"
+        radius="0.23" color="#FFD700"
+        position="0.9 0.1 0.03"
+        scale="0 0 0"></a-circle>
+
+    </a-entity>
+
+    <!-- ICÔNES -->
+    <a-text value="🎾" position="-0.9 0.1 0.05" align="center" width="1.5"></a-text>
+    <a-text value="🥇" position="0 0.1 0.05" align="center" width="1.5"></a-text>
+    <a-text value="👑" position="0.9 0.1 0.05" align="center" width="1.5"></a-text>
+
+    <!-- DETAIL -->
+    <a-text id="detail"
+      value=""
+      position="0 -0.6 0.03"
       align="center"
-      width="2.6"
+      width="3"
       color="#FFFFFF"
       opacity="0">
     </a-text>
 
-    <a-text class="badge" value="🥇 4 Or Olympiques"
-      position="0 -0.1 0.01"
-      align="center"
-      width="2.6"
-      color="#FFFFFF"
-      opacity="0">
-    </a-text>
+    <!-- QUIZ -->
+    <a-entity id="quiz" visible="false" position="0 -0.8 0.03">
 
-    <a-text class="badge" value="👑 319 semaines n°1 mondiale"
-      position="0 -0.4 0.01"
-      align="center"
-      width="2.6"
-      color="#FFFFFF"
-      opacity="0">
-    </a-text>
+      <a-text value="🎮 Quiz : Combien de titres du Grand Chelem ?"
+        align="center" width="3" color="#FFD700"></a-text>
+
+      <a-text class="answer" value="18" position="-0.8 -0.3 0"
+        color="#fff" width="2"></a-text>
+
+      <a-text class="answer" value="23 ✅" position="0 -0.3 0"
+        color="#00ff99" width="2"></a-text>
+
+      <a-text class="answer" value="30" position="0.8 -0.3 0"
+        color="#fff" width="2"></a-text>
+
+    </a-entity>
 
   </a-entity>
-
 </a-entity>
 </a-scene>
 
@@ -94,19 +114,21 @@ body { margin:0; overflow:hidden; background:black; }
 const video = document.querySelector('#video-serena');
 const videoPlane = document.querySelector('#videoPlane');
 const palmares = document.querySelector('#palmares');
-const target = document.querySelector('#target');
 const card = document.querySelector('#card');
 const title = document.querySelector('#title');
+const detail = document.querySelector('#detail');
+const quiz = document.querySelector('#quiz');
 const badges = document.querySelectorAll('.badge');
+const target = document.querySelector('#target');
 
 // Ratio vidéo
 video.addEventListener('loadedmetadata', () => {
-  const ratio = video.videoWidth / video.videoHeight;
+  const r = video.videoWidth / video.videoHeight;
   const h = 1.6;
-  videoPlane.setAttribute('geometry', `primitive: plane; width:${h*ratio}; height:${h}`);
+  videoPlane.setAttribute('geometry', `primitive: plane; width:${h*r}; height:${h}`);
 });
 
-// Scan image → vidéo
+// Scan
 target.addEventListener('targetFound', () => {
   palmares.setAttribute('visible', 'false');
   videoPlane.setAttribute('visible', 'true');
@@ -114,27 +136,44 @@ target.addEventListener('targetFound', () => {
   video.play();
 });
 
-// Fin vidéo → PALMARES
+// Fin vidéo
 video.addEventListener('ended', () => {
   videoPlane.setAttribute('visible', 'false');
   palmares.setAttribute('visible', 'true');
 
-  // Carte arrive
   card.setAttribute('animation',
-    'property: scale; from: 0 0 0; to: 1 1 1; dur: 600; easing: easeOutBack');
+    'property: scale; from:0 0 0; to:1 1 1; dur:700; easing:easeOutBack');
 
-  // Titre
   title.setAttribute('animation',
-    'property: opacity; from: 0; to: 1; dur: 600; delay: 400');
+    'property: opacity; from:0; to:1; dur:600; delay:400');
 
-  // Badges fun
-  badges.forEach((b, i) => {
-    b.setAttribute('animation__scale',
-      `property: scale; from: 0 0 0; to: 1 1 1; dur: 500; delay:${700+i*350}; easing: easeOutElastic`);
-    b.setAttribute('animation__opacity',
-      `property: opacity; from: 0; to: 1; dur: 400; delay:${700+i*350}`);
+  badges.forEach((b,i)=>{
+    b.setAttribute('animation__pop',
+      `property: scale; from:0 0 0; to:1 1 1;
+       dur:600; delay:${800+i*300}; easing:easeOutElastic`);
+
+    b.setAttribute('animation__float',
+      'property: position; dir:alternate; dur:3000; loop:true; easing:easeInOutSine; to: 0 '+(0.15+i*0.02)+' 0.03');
   });
 });
+
+// Interaction badges
+document.querySelector('#b1').addEventListener('click',()=>{
+  showDetail("🎾 23 titres du Grand Chelem");
+});
+document.querySelector('#b2').addEventListener('click',()=>{
+  showDetail("🥇 4 médailles d’or olympiques");
+});
+document.querySelector('#b3').addEventListener('click',()=>{
+  showDetail("👑 319 semaines n°1 mondiale");
+});
+
+function showDetail(text){
+  detail.setAttribute('value', text);
+  detail.setAttribute('animation',
+    'property: opacity; from:0; to:1; dur:400');
+  quiz.setAttribute('visible','true');
+}
 </script>
 
 </body>
