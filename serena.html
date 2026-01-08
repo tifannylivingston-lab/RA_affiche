@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Serena Williams – RA</title>
 
+<!-- A-FRAME et MindAR -->
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
@@ -18,7 +19,9 @@ body { margin:0; overflow:hidden; font-family: Arial; }
   mindar-image="imageTargetSrc: serena.mind;"
   vr-mode-ui="enabled:false"
   device-orientation-permission-ui="enabled:true"
-  
+  embedded
+  renderer="antialias: true; alpha: true"> <!-- Fond transparent -->
+
   <a-camera look-controls="false"></a-camera>
 
   <a-assets>
@@ -27,7 +30,7 @@ body { margin:0; overflow:hidden; font-family: Arial; }
 
   <a-entity id="target" mindar-image-target="targetIndex:0">
 
-    <!-- VIDEO -->
+    <!-- VIDEO attachée à la cible -->
     <a-plane id="videoPlane"
       material="shader: flat; src: #video-serena"
       visible="false">
@@ -41,22 +44,20 @@ body { margin:0; overflow:hidden; font-family: Arial; }
         position="0 0.75 0"
         align="center"
         width="3.2"
-        color="#FFB6C1"  <!-- rose clair -->
+        color="#FFB6C1"
         opacity="0"
         id="title">
       </a-text>
 
-      <!-- BADGES FIXES -->
+      <!-- BADGES -->
       <a-circle class="badge" id="b1"
         radius="0.26" color="#FF69B4"
         position="-1 0.15 0"
         scale="0 0 0"></a-circle>
-
       <a-circle class="badge" id="b2"
         radius="0.26" color="#FF69B4"
         position="0 0.15 0"
         scale="0 0 0"></a-circle>
-
       <a-circle class="badge" id="b3"
         radius="0.26" color="#FF69B4"
         position="1 0.15 0"
@@ -107,11 +108,12 @@ const target = document.querySelector('#target');
 
 let videoPlayed = false;
 
-// Ajuster le ratio de la vidéo pour qu'elle soit centrée et proportionnée
+// Ajuster ratio de la vidéo pour qu'elle soit centrée et proportionnée
 video.addEventListener('loadedmetadata', () => {
   const r = video.videoWidth / video.videoHeight;
   const h = 1.6;
   videoPlane.setAttribute('geometry', `primitive: plane; width:${h*r}; height:${h}`);
+  videoPlane.setAttribute('position','0 0 0'); // centrer sur la cible
 });
 
 // Lancer automatiquement la vidéo dès que l'image est détectée
