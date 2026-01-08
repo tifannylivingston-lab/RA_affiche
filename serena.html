@@ -18,7 +18,7 @@ body { margin:0; overflow:hidden; font-family: Arial; }
   mindar-image="imageTargetSrc: serena.mind;"
   vr-mode-ui="enabled:false"
   device-orientation-permission-ui="enabled:true"
-  background="color: #ec407a">
+  background="color: #ec407a"> <!-- fond rose/violet -->
 
   <a-camera look-controls="false"></a-camera>
 
@@ -42,49 +42,49 @@ body { margin:0; overflow:hidden; font-family: Arial; }
         position="0 0.75 0"
         align="center"
         width="3.2"
-        color="#FFD1F0"
+        color="#FFB6C1"  <!-- rose clair -->
         opacity="0"
         id="title">
       </a-text>
 
       <!-- BADGES FIXES -->
       <a-circle class="badge" id="b1"
-        radius="0.26" color="#FFB6C1"
+        radius="0.26" color="#FF69B4"
         position="-1 0.15 0"
         scale="0 0 0"></a-circle>
 
       <a-circle class="badge" id="b2"
-        radius="0.26" color="#FFB6C1"
+        radius="0.26" color="#FF69B4"
         position="0 0.15 0"
         scale="0 0 0"></a-circle>
 
       <a-circle class="badge" id="b3"
-        radius="0.26" color="#FFB6C1"
+        radius="0.26" color="#FF69B4"
         position="1 0.15 0"
         scale="0 0 0"></a-circle>
 
       <!-- ICÔNES -->
-      <a-text value="🎾" position="-1 0.15 0.03" align="center" width="2"></a-text>
-      <a-text value="🥇" position="0 0.15 0.03" align="center" width="2"></a-text>
-      <a-text value="👑" position="1 0.15 0.03" align="center" width="2"></a-text>
+      <a-text value="🎾" position="-1 0.15 0.03" align="center" width="2" color="#FFB6C1"></a-text>
+      <a-text value="🥇" position="0 0.15 0.03" align="center" width="2" color="#FFB6C1"></a-text>
+      <a-text value="👑" position="1 0.15 0.03" align="center" width="2" color="#FFB6C1"></a-text>
 
       <!-- DETAIL -->
       <a-text id="detail"
         position="0 -0.45 0"
         align="center"
         width="3.2"
-        color="#FFFFFF"
+        color="#FFB6C1"
         opacity="0">
       </a-text>
 
       <!-- QUIZ -->
       <a-entity id="quiz" visible="false" position="0 -0.85 0">
         <a-text value="🎮 Combien de titres du Grand Chelem ?"
-          align="center" width="3" color="#FFD1F0"></a-text>
+          align="center" width="3" color="#FFB6C1"></a-text>
 
-        <a-text value="18" position="-0.9 -0.3 0" width="2" color="#fff"></a-text>
+        <a-text value="18" position="-0.9 -0.3 0" width="2" color="#FFB6C1"></a-text>
         <a-text value="23 ✅" position="0 -0.3 0" width="2" color="#00ff99"></a-text>
-        <a-text value="30" position="0.9 -0.3 0" width="2" color="#fff"></a-text>
+        <a-text value="30" position="0.9 -0.3 0" width="2" color="#FFB6C1"></a-text>
       </a-entity>
 
       <!-- CONFETTIS -->
@@ -106,19 +106,23 @@ const badges = document.querySelectorAll('.badge');
 const confettis = document.querySelector('#confettis');
 const target = document.querySelector('#target');
 
-// Ajuster le ratio de la vidéo
+let videoPlayed = false;
+
+// Ajuster le ratio de la vidéo pour qu'elle soit centrée et proportionnée
 video.addEventListener('loadedmetadata', () => {
   const r = video.videoWidth / video.videoHeight;
   const h = 1.6;
   videoPlane.setAttribute('geometry', `primitive: plane; width:${h*r}; height:${h}`);
 });
 
-// Quand l'image est détectée
+// Lancer automatiquement la vidéo dès que l'image est détectée
 target.addEventListener('targetFound', () => {
-  palmares.setAttribute('visible','false');
-  videoPlane.setAttribute('visible','true');
-  video.currentTime = 0;
-  video.play();
+  if(!videoPlayed){
+    videoPlane.setAttribute('visible','true');
+    video.currentTime = 0;
+    video.play();
+    videoPlayed = true;
+  }
 });
 
 // Quand la vidéo se termine
@@ -126,7 +130,7 @@ video.addEventListener('ended', () => {
   videoPlane.setAttribute('visible','false');
   palmares.setAttribute('visible','true');
 
-  // Pop titre
+  // Animation titre
   title.setAttribute('animation',
     'property: opacity; from:0; to:1; dur:600; delay:200');
 
@@ -156,7 +160,7 @@ video.addEventListener('ended', () => {
   }
 });
 
-// TAP ANYWHERE pour voir le détail et le quiz
+// Tap anywhere pour afficher détail + quiz, sans relancer la vidéo
 window.addEventListener('click', () => {
   if(!detail.getAttribute('value')) {
     detail.setAttribute('value', "🎾 23 titres du Grand Chelem\n🥇 4 médailles d’or olympiques\n👑 319 semaines n°1 mondiale");
