@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Serena Williams – Palmarès 3D</title>
+<title>Serena Williams – Palmarès RA 3D</title>
 
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -27,10 +27,10 @@ body {
   <a-camera look-controls="false"></a-camera>
 
   <a-assets>
-    <!-- Remplace ces fichiers par tes modèles 3D -->
-    <a-asset-item id="trophyModel" src="assets/trophy.glb"></a-asset-item>
-    <a-asset-item id="medalModel" src="assets/medal.glb"></a-asset-item>
-    <a-asset-item id="ballModel" src="assets/ball.glb"></a-asset-item>
+    <!-- Tes fichiers existants -->
+    <a-asset-item id="trophyModel" src="Trophy.glb"></a-asset-item>
+    <a-asset-item id="medalModel" src="medal.glb"></a-asset-item>
+    <a-asset-item id="ballModel" src="ball.glb"></a-asset-item>
     <video id="video-serena" src="serena.mp4" preload="auto" playsinline muted></video>
   </a-assets>
 
@@ -45,15 +45,15 @@ body {
     <!-- PALMARES 3D -->
     <a-entity id="palmares3D" visible="false">
 
-      <!-- Trophée (319 semaines n°1) -->
+      <!-- Trophée -->
       <a-entity id="trophy"
         gltf-model="#trophyModel"
         position="-0.8 0 0"
         scale="0 0 0"></a-entity>
-      <a-text value="319 sem. n°1" position="-0.8 -0.6 0.05"
+      <a-text value="319 sem. N°1" position="-0.8 -0.6 0.05"
         align="center" color="#FF4FD8"></a-text>
 
-      <!-- Médaille (4 médailles olympiques) -->
+      <!-- Médaille -->
       <a-entity id="medal"
         gltf-model="#medalModel"
         position="0 0 0"
@@ -61,7 +61,7 @@ body {
       <a-text value="4 médailles 🥇" position="0 -0.55 0.05"
         align="center" color="#FFD700"></a-text>
 
-      <!-- Balle (23 titres GC) -->
+      <!-- Balle de tennis -->
       <a-entity id="ball"
         gltf-model="#ballModel"
         position="0.8 0 0"
@@ -84,14 +84,14 @@ const pal3D = document.querySelector('#palmares3D');
 const target = document.querySelector('#target');
 const confettis = document.querySelector('#confettis');
 
-// Ajuster ratio vidéo
+// Ajuste le ratio de la vidéo
 video.addEventListener('loadedmetadata', () => {
   const r = video.videoWidth / video.videoHeight;
   const h = 1.6;
   videoPlane.setAttribute('geometry', `primitive: plane; width:${h*r}; height:${h}`);
 });
 
-// Fonction pour “pop” les objets
+// Fonction pour faire "pop" les objets 3D
 function animatePop(entity, finalScale, delay) {
   entity.setAttribute('animation__scale', 
     `property: scale; from:0 0 0; to:${finalScale} ${finalScale} ${finalScale}; dur:700; delay:${delay}; easing:easeOutElastic`);
@@ -125,7 +125,7 @@ target.addEventListener('targetFound', () => {
   video.play();
 });
 
-// Fin vidéo → animation du palmarès
+// Quand la vidéo se termine
 video.addEventListener('ended', () => {
   videoPlane.setAttribute('visible','false');
   pal3D.setAttribute('visible','true');
