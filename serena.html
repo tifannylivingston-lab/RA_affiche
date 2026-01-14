@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Serena Williams – RA (Animated Counters)</title>
+<title>Serena Williams – RA (Hologram)</title>
 
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -43,87 +43,23 @@ body {
       visible="false">
     </a-plane>
 
-    <!-- COMPTEURS -->
-    <a-entity id="counters" visible="false">
+    <!-- HOLOGRAMME -->
+    <a-entity id="hologram" visible="false">
 
-      <!-- TITRE -->
-      <a-text value="👑 SERENA WILLIAMS"
-        position="0 0.7 0.05"
-        align="center"
-        width="4"
-        color="#FF4FD8">
-      </a-text>
+      <!-- Anneau lumineux -->
+      <a-ring position="0 0 0"
+              radius-inner="0.7" radius-outer="0.75"
+              color="#FF2EB3" 
+              material="shader: flat; opacity:0.6">
+      </a-ring>
 
-      <!-- COUNTER 1 -->
-      <a-entity position="-1 0 0">
-        <a-text value="🎾"
-          position="0 0.25 0.05"
-          align="center"
-          width="2.5">
-        </a-text>
+      <!-- Stats flottantes sur le cercle -->
+      <a-entity id="stats">
 
-        <a-text id="count-gc"
-          value="0"
-          position="0 -0.05 0.05"
-          align="center"
-          width="3.5"
-          color="#FFFFFF">
-        </a-text>
+        <a-text id="stat1" value="🎾 23" position="0.7 0 0" align="center" color="#FFFFFF"></a-text>
+        <a-text id="stat2" value="🥇 4" position="-0.35 0.6 0" align="center" color="#FFFFFF"></a-text>
+        <a-text id="stat3" value="👑 319" position="-0.35 -0.6 0" align="center" color="#FFFFFF"></a-text>
 
-        <a-text value="GRAND CHELEM"
-          position="0 -0.45 0.05"
-          align="center"
-          width="2"
-          color="#FF6FEA">
-        </a-text>
-      </a-entity>
-
-      <!-- COUNTER 2 -->
-      <a-entity position="0 0 0">
-        <a-text value="🥇"
-          position="0 0.25 0.05"
-          align="center"
-          width="2.5">
-        </a-text>
-
-        <a-text id="count-olympic"
-          value="0"
-          position="0 -0.05 0.05"
-          align="center"
-          width="3.5"
-          color="#FFFFFF">
-        </a-text>
-
-        <a-text value="OR OLYMPIQUE"
-          position="0 -0.45 0.05"
-          align="center"
-          width="2"
-          color="#FF6FEA">
-        </a-text>
-      </a-entity>
-
-      <!-- COUNTER 3 -->
-      <a-entity position="1 0 0">
-        <a-text value="👑"
-          position="0 0.25 0.05"
-          align="center"
-          width="2.5">
-        </a-text>
-
-        <a-text id="count-weeks"
-          value="0"
-          position="0 -0.05 0.05"
-          align="center"
-          width="3.5"
-          color="#FFFFFF">
-        </a-text>
-
-        <a-text value="SEM. N°1"
-          position="0 -0.45 0.05"
-          align="center"
-          width="2"
-          color="#FF6FEA">
-        </a-text>
       </a-entity>
 
     </a-entity>
@@ -134,14 +70,11 @@ body {
 <script>
 const video = document.querySelector('#video-serena');
 const videoPlane = document.querySelector('#videoPlane');
-const counters = document.querySelector('#counters');
+const hologram = document.querySelector('#hologram');
+const stats = document.querySelector('#stats');
 const target = document.querySelector('#target');
 
-const countGC = document.querySelector('#count-gc');
-const countOlympic = document.querySelector('#count-olympic');
-const countWeeks = document.querySelector('#count-weeks');
-
-// Ajuster le ratio vidéo
+// Ajuster ratio vidéo
 video.addEventListener('loadedmetadata', () => {
   const r = video.videoWidth / video.videoHeight;
   const h = 1.6;
@@ -151,43 +84,25 @@ video.addEventListener('loadedmetadata', () => {
   );
 });
 
-// Animation compteur
-function animateCounter(el, end, duration) {
-  let start = 0;
-  const stepTime = Math.max(Math.floor(duration / end), 30);
-  const increment = end / (duration / stepTime);
-
-  const timer = setInterval(() => {
-    start += increment;
-    if (start >= end) {
-      start = end;
-      clearInterval(timer);
-    }
-    el.setAttribute('value', Math.floor(start));
-  }, stepTime);
-}
-
-// Image détectée
+// Détection image
 target.addEventListener('targetFound', () => {
-  counters.setAttribute('visible','false');
+  hologram.setAttribute('visible','false');
   videoPlane.setAttribute('visible','true');
   video.currentTime = 0;
   video.play();
 });
 
-// Fin vidéo → compteurs
+// Fin vidéo → hologramme
 video.addEventListener('ended', () => {
   videoPlane.setAttribute('visible','false');
-  counters.setAttribute('visible','true');
+  hologram.setAttribute('visible','true');
 
-  // Apparition douce
-  counters.setAttribute('animation',
-    'property: scale; from:0.8 0.8 0.8; to:1 1 1; dur:500; easing:easeOutBack');
+  // Animation rotation continue du cercle + stats
+  stats.setAttribute('animation__rotate',
+    'property: rotation; from:0 0 0; to:0 360 0; dur:6000; easing:linear; loop:true');
 
-  // Lancement des compteurs (séquencés)
-  setTimeout(() => animateCounter(countGC, 23, 900), 200);
-  setTimeout(() => animateCounter(countOlympic, 4, 600), 800);
-  setTimeout(() => animateCounter(countWeeks, 319, 1200), 1200);
+  hologram.setAttribute('animation__scale',
+    'property: scale; from:0 0 0; to:1 1 1; dur:800; easing:easeOutBack');
 });
 </script>
 
