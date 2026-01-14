@@ -14,7 +14,6 @@ body {
   background: black;
   font-family: Arial, Helvetica, sans-serif;
 }
-.clickable { cursor: pointer; }
 </style>
 </head>
 
@@ -47,7 +46,7 @@ body {
     <!-- PALMARES -->
     <a-entity id="palmares" visible="false">
 
-      <!-- CARTE NEON -->
+      <!-- CARTE -->
       <a-plane id="card"
         width="3.4" height="2.2"
         material="shader: flat; color:#1a002e; opacity:0.95"
@@ -64,7 +63,7 @@ body {
         opacity="0">
       </a-text>
 
-      <!-- BADGES NEON -->
+      <!-- BADGES -->
       <a-circle class="badge"
         radius="0.28"
         material="color:#9D00FF; emissive:#FF2EB3; emissiveIntensity:0.9"
@@ -88,7 +87,7 @@ body {
       <a-text value="🥇" position="0 0.2 0.08" align="center" width="2"></a-text>
       <a-text value="🔥" position="1 0.2 0.08" align="center" width="2"></a-text>
 
-      <!-- DETAIL -->
+      <!-- DETAIL PALMARES -->
       <a-text id="detail"
         position="0 -0.35 0.06"
         align="center"
@@ -124,30 +123,10 @@ body {
         </a-text>
       </a-entity>
 
-      <!-- BOUTON -->
-      <a-plane id="btnDetail"
-        position="0 -0.15 0.07"
-        width="1.5" height="0.45"
-        material="color:#FF2EB3; emissive:#FF6FEA; emissiveIntensity:0.8"
-        class="clickable"
-        visible="false"
-        opacity="0.95">
-      </a-plane>
-
-      <a-text id="btnText"
-        value="✨ Voir le palmarès"
-        position="0 -0.15 0.08"
-        align="center"
-        width="2.6"
-        color="#1a002e"
-        visible="false">
-      </a-text>
-
       <!-- CONFETTIS -->
       <a-entity id="confettis"></a-entity>
 
     </a-entity>
-
   </a-entity>
 </a-scene>
 
@@ -161,16 +140,16 @@ const detail = document.querySelector('#detail');
 const quiz = document.querySelector('#quiz');
 const badges = document.querySelectorAll('.badge');
 const confettis = document.querySelector('#confettis');
-const btnDetail = document.querySelector('#btnDetail');
-const btnText = document.querySelector('#btnText');
 const target = document.querySelector('#target');
 
 // Ajustement ratio vidéo
 video.addEventListener('loadedmetadata', () => {
   const r = video.videoWidth / video.videoHeight;
   const h = 1.6;
-  videoPlane.setAttribute('geometry',
-    `primitive: plane; width:${h*r}; height:${h}`);
+  videoPlane.setAttribute(
+    'geometry',
+    `primitive: plane; width:${h*r}; height:${h}`
+  );
 });
 
 // Image détectée
@@ -186,19 +165,22 @@ video.addEventListener('ended', () => {
   videoPlane.setAttribute('visible','false');
   palmares.setAttribute('visible','true');
 
+  // Carte
   card.setAttribute('animation',
     'property: scale; from:0 0 0; to:1 1 1; dur:700; easing:easeOutBack');
 
+  // Titre
   title.setAttribute('animation',
     'property: opacity; from:0; to:1; dur:600; delay:400');
 
+  // Badges
   badges.forEach((b,i)=>{
     b.setAttribute('animation__pop',
       `property: scale; from:0 0 0; to:1 1 1;
        dur:600; delay:${800+i*250}; easing:easeOutElastic`);
   });
 
-  // Confettis néon
+  // Confettis
   for(let i=0;i<35;i++){
     const c = document.createElement('a-sphere');
     c.setAttribute('radius',0.03);
@@ -219,22 +201,22 @@ video.addEventListener('ended', () => {
     fall();
   }
 
-  btnDetail.setAttribute('visible','true');
-  btnText.setAttribute('visible','true');
+  // Affichage automatique du palmarès + quiz
+  setTimeout(showPalmares, 1800);
 });
 
-// Bouton détail
-btnDetail.addEventListener('click', ()=>{
-  detail.setAttribute('value',
-    "🎾 23 titres du Grand Chelem\n🥇 4 médailles d’or olympiques\n👑 319 semaines n°1 mondiale");
+// Fonction palmarès auto
+function showPalmares(){
+  detail.setAttribute(
+    'value',
+    "🎾 23 titres du Grand Chelem\n🥇 4 médailles d’or olympiques\n👑 319 semaines n°1 mondiale"
+  );
 
   detail.setAttribute('animation',
-    'property: opacity; from:0; to:1; dur:400');
+    'property: opacity; from:0; to:1; dur:600');
 
   quiz.setAttribute('visible','true');
-  btnDetail.setAttribute('visible','false');
-  btnText.setAttribute('visible','false');
-});
+}
 </script>
 
 </body>
