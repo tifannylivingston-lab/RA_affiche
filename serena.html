@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Serena Williams – Palmarès RA Magique</title>
+<title>Serena Williams – Palmarès RA séquentiel</title>
 
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -41,34 +41,31 @@ body {
       visible="false">
     </a-plane>
 
-    <!-- PALMARES MAGIQUE 3D -->
+    <!-- PALMARES 3D SÉQUENTIEL -->
     <a-entity id="palmares3D" visible="false">
 
-      <!-- Trophée central -->
+      <!-- Trophée -->
       <a-entity id="trophy" gltf-model="#trophyModel" position="0 0.6 0" scale="0 0 0">
-        <a-ring radius-inner="0.7" radius-outer="0.9" color="#FF4FD8" opacity="0.3" rotation="-90 0 0"></a-ring>
-        <a-plane position="0 1 0" width="1.2" height="0.5" color="#FF4FD8" opacity="0.8" radius="0.3">
+        <a-plane position="0 1 0" width="1.2" height="0.5" color="#FF4FD8" opacity="0.85" radius="0.3">
           <a-text value="319 sem. N°1" align="center" color="#fff" position="0 0 0.01" width="1.1"></a-text>
         </a-plane>
       </a-entity>
 
-      <!-- Médaille gauche -->
+      <!-- Médaille -->
       <a-entity id="medal" gltf-model="#medalModel" position="-1.5 0.4 0" scale="0 0 0">
-        <a-ring radius-inner="0.5" radius-outer="0.7" color="#FFD700" opacity="0.25" rotation="-90 0 0"></a-ring>
         <a-plane position="0 0.9 0" width="1" height="0.45" color="#FFD700" opacity="0.85" radius="0.3">
           <a-text value="4 médailles 🥇" align="center" color="#000" position="0 0 0.01" width="0.95"></a-text>
         </a-plane>
       </a-entity>
 
-      <!-- Balle droite -->
+      <!-- Balle -->
       <a-entity id="ball" gltf-model="#ballModel" position="1.5 0.4 0" scale="0 0 0">
-        <a-ring radius-inner="0.5" radius-outer="0.7" color="#00ffcc" opacity="0.25" rotation="-90 0 0"></a-ring>
         <a-plane position="0 0.9 0" width="1" height="0.45" color="#00ffcc" opacity="0.85" radius="0.3">
           <a-text value="23 titres GC" align="center" color="#000" position="0 0 0.01" width="0.95"></a-text>
         </a-plane>
       </a-entity>
 
-      <!-- Confettis orbitants -->
+      <!-- Confettis -->
       <a-entity id="confettis"></a-entity>
 
     </a-entity>
@@ -83,51 +80,43 @@ const pal3D = document.querySelector('#palmares3D');
 const target = document.querySelector('#target');
 const confettis = document.querySelector('#confettis');
 
-// Ajuste ratio vidéo
+// Ajuste le ratio vidéo
 video.addEventListener('loadedmetadata', () => {
   const r = video.videoWidth / video.videoHeight;
   const h = 1.6;
   videoPlane.setAttribute('geometry', `primitive: plane; width:${h*r}; height:${h}`);
 });
 
-// Animation pop + rotation douce + bounce
+// Animation pop simple
 function animatePop(entity, finalScale, delay) {
-  entity.setAttribute('animation__scale', 
-    `property: scale; from:0 0 0; to:${finalScale} ${finalScale} ${finalScale}; dur:700; delay:${delay}; easing:easeOutElastic`);
-  entity.setAttribute('animation__rotate', 
-    `property: rotation; from:0 0 0; to:0 360 0; dur:8000; delay:${delay}; loop:true; easing:linear`);
-  entity.setAttribute('animation__bounce',
-    `property: position; dir: alternate; dur:1500; delay:${delay}; loop:true; to:0 ${entity.getAttribute('position').y + 0.05} 0`);
+  setTimeout(()=>{
+    entity.setAttribute('animation__scale', 
+      `property: scale; from:0 0 0; to:${finalScale} ${finalScale} ${finalScale}; dur:700; easing:easeOutElastic`);
+    spawnConfettis(entity.getAttribute('position'));
+  }, delay);
 }
 
-// Confettis orbitant autour des modèles
-function spawnConfettisOrbit() {
-  const objs = ['#trophy','#medal','#ball'];
-  objs.forEach((id)=>{
-    const obj = pal3D.querySelector(id);
-    for(let i=0;i<15;i++){
-      const c = document.createElement('a-sphere');
-      const angle = Math.random() * 360;
-      const radius = 0.5 + Math.random() * 0.5;
-      c.setAttribute('radius',0.03);
-      c.setAttribute('color',`hsl(${Math.random()*360},100%,65%)`);
-      c.setAttribute('position',`${Math.cos(angle)*radius} ${0.5 + Math.random()*0.5} ${Math.sin(angle)*radius}`);
-      obj.appendChild(c);
-      let theta = angle;
-      function orbit(){
-        theta += 0.02;
-        const pos = c.getAttribute('position');
-        pos.x = Math.cos(theta)*radius;
-        pos.z = Math.sin(theta)*radius;
-        c.setAttribute('position', pos);
-        requestAnimationFrame(orbit);
-      }
-      orbit();
+// Confettis autour d’une position donnée
+function spawnConfettis(center) {
+  for(let i=0;i<15;i++){
+    const c = document.createElement('a-sphere');
+    c.setAttribute('radius',0.03);
+    c.setAttribute('color',`hsl(${Math.random()*360},100%,65%)`);
+    c.setAttribute('position',`${center.x + (Math.random()-0.5)*1} ${center.y + Math.random()*0.5} ${center.z + (Math.random()-0.5)*1}`);
+    confettis.appendChild(c);
+
+    let vy = Math.random()*0.02+0.01;
+    function fall(){
+      let pos = c.getAttribute('position');
+      pos.y -= vy;
+      if(pos.y > -1){ c.setAttribute('position',pos); requestAnimationFrame(fall); } 
+      else c.remove();
     }
-  });
+    fall();
+  }
 }
 
-// Détection image
+// Détection de l’image
 target.addEventListener('targetFound', () => {
   pal3D.setAttribute('visible', 'false');
   videoPlane.setAttribute('visible','true');
@@ -135,16 +124,14 @@ target.addEventListener('targetFound', () => {
   video.play();
 });
 
-// Fin vidéo → pop + confettis orbitants
+// Fin vidéo → affichage séquentiel
 video.addEventListener('ended', () => {
   videoPlane.setAttribute('visible','false');
   pal3D.setAttribute('visible','true');
 
   animatePop(pal3D.querySelector('#trophy'), 0.6, 0);
-  animatePop(pal3D.querySelector('#medal'), 0.5, 400);
-  animatePop(pal3D.querySelector('#ball'), 0.5, 800);
-
-  setTimeout(spawnConfettisOrbit, 1000);
+  animatePop(pal3D.querySelector('#medal'), 0.5, 1200);
+  animatePop(pal3D.querySelector('#ball'), 0.5, 2400);
 });
 </script>
 
