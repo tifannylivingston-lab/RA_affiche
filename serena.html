@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Serena Williams – RA Fun Palmarès</title>
+<title>Serena Williams – Palmarès 3D</title>
 
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -27,6 +27,10 @@ body {
   <a-camera look-controls="false"></a-camera>
 
   <a-assets>
+    <!-- Remplace ces fichiers par tes modèles 3D -->
+    <a-asset-item id="trophyModel" src="assets/trophy.glb"></a-asset-item>
+    <a-asset-item id="medalModel" src="assets/medal.glb"></a-asset-item>
+    <a-asset-item id="ballModel" src="assets/ball.glb"></a-asset-item>
     <video id="video-serena" src="serena.mp4" preload="auto" playsinline muted></video>
   </a-assets>
 
@@ -38,26 +42,32 @@ body {
       visible="false">
     </a-plane>
 
-    <!-- PALMARES FUN -->
-    <a-entity id="funPalmares" visible="false">
+    <!-- PALMARES 3D -->
+    <a-entity id="palmares3D" visible="false">
 
-      <!-- Ballon Tennis -->
-      <a-entity id="tennis" position="-1 0 0" scale="0 0 0">
-        <a-text value="🎾" position="0 0.25 0.02" align="center" width="2.5"></a-text>
-        <a-text value="23 GC" position="0 -0.2 0.02" align="center" width="2" color="#FF4FD8"></a-text>
-      </a-entity>
+      <!-- Trophée (319 semaines n°1) -->
+      <a-entity id="trophy"
+        gltf-model="#trophyModel"
+        position="-0.8 0 0"
+        scale="0 0 0"></a-entity>
+      <a-text value="319 sem. n°1" position="-0.8 -0.6 0.05"
+        align="center" color="#FF4FD8"></a-text>
 
-      <!-- Médaille -->
-      <a-entity id="medal" position="0 0 0" scale="0 0 0">
-        <a-text value="🥇" position="0 0.25 0.02" align="center" width="2.5"></a-text>
-        <a-text value="4 OR" position="0 -0.2 0.02" align="center" width="2" color="#FFD700"></a-text>
-      </a-entity>
+      <!-- Médaille (4 médailles olympiques) -->
+      <a-entity id="medal"
+        gltf-model="#medalModel"
+        position="0 0 0"
+        scale="0 0 0"></a-entity>
+      <a-text value="4 médailles 🥇" position="0 -0.55 0.05"
+        align="center" color="#FFD700"></a-text>
 
-      <!-- Trophée -->
-      <a-entity id="trophy" position="1 0 0" scale="0 0 0">
-        <a-text value="🏆" position="0 0.25 0.02" align="center" width="2.5"></a-text>
-        <a-text value="319 sem. N°1" position="0 -0.2 0.02" align="center" width="2" color="#FF4FD8"></a-text>
-      </a-entity>
+      <!-- Balle (23 titres GC) -->
+      <a-entity id="ball"
+        gltf-model="#ballModel"
+        position="0.8 0 0"
+        scale="0 0 0"></a-entity>
+      <a-text value="23 titres GC" position="0.8 -0.6 0.05"
+        align="center" color="#00ffcc"></a-text>
 
       <!-- Confettis -->
       <a-entity id="confettis"></a-entity>
@@ -70,26 +80,24 @@ body {
 <script>
 const video = document.querySelector('#video-serena');
 const videoPlane = document.querySelector('#videoPlane');
-const funPalmares = document.querySelector('#funPalmares');
-const tennis = document.querySelector('#tennis');
-const medal = document.querySelector('#medal');
-const trophy = document.querySelector('#trophy');
-const confettis = document.querySelector('#confettis');
+const pal3D = document.querySelector('#palmares3D');
 const target = document.querySelector('#target');
+const confettis = document.querySelector('#confettis');
 
+// Ajuster ratio vidéo
 video.addEventListener('loadedmetadata', () => {
   const r = video.videoWidth / video.videoHeight;
   const h = 1.6;
   videoPlane.setAttribute('geometry', `primitive: plane; width:${h*r}; height:${h}`);
 });
 
-// Animation "pop" simple
-function animatePop(entity, delay) {
+// Fonction pour “pop” les objets
+function animatePop(entity, finalScale, delay) {
   entity.setAttribute('animation__scale', 
-    `property: scale; from:0 0 0; to:1 1 1; dur:600; delay:${delay}; easing:easeOutElastic`);
+    `property: scale; from:0 0 0; to:${finalScale} ${finalScale} ${finalScale}; dur:700; delay:${delay}; easing:easeOutElastic`);
 }
 
-// Confettis
+// Confettis aléatoires
 function spawnConfettis() {
   for(let i=0;i<30;i++){
     const c = document.createElement('a-sphere');
@@ -109,23 +117,25 @@ function spawnConfettis() {
   }
 }
 
+// Détection de l’image
 target.addEventListener('targetFound', () => {
-  funPalmares.setAttribute('visible','false');
+  pal3D.setAttribute('visible', 'false');
   videoPlane.setAttribute('visible','true');
   video.currentTime = 0;
   video.play();
 });
 
+// Fin vidéo → animation du palmarès
 video.addEventListener('ended', () => {
   videoPlane.setAttribute('visible','false');
-  funPalmares.setAttribute('visible','true');
+  pal3D.setAttribute('visible','true');
 
-  // Pop des icônes en séquence
-  animatePop(tennis, 0);
-  animatePop(medal, 400);
-  animatePop(trophy, 800);
+  // Pop des objets 3D en séquence
+  animatePop(pal3D.querySelector('#trophy'), 0.5, 0);
+  animatePop(pal3D.querySelector('#medal'), 0.4, 400);
+  animatePop(pal3D.querySelector('#ball'), 0.4, 800);
 
-  // Confettis après animations
+  // Confettis après animation
   setTimeout(spawnConfettis, 1000);
 });
 </script>
