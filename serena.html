@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Serena Williams – RA (Neon Queen)</title>
+<title>Serena Williams – RA (Collector Cards)</title>
 
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -43,88 +43,65 @@ body {
       visible="false">
     </a-plane>
 
-    <!-- PALMARES -->
-    <a-entity id="palmares" visible="false">
+    <!-- CARTES COLLECTOR -->
+    <a-entity id="cards" visible="false">
 
-      <!-- CARTE -->
-      <a-plane id="card"
-        width="3.4" height="2.2"
-        material="shader: flat; color:#1a002e; opacity:0.95"
-        scale="0 0 0">
-      </a-plane>
+      <!-- CARTE 1 -->
+      <a-entity class="card" position="-1 0 0" rotation="0 15 0" scale="0 0 0">
+        <a-plane width="0.9" height="1.3"
+          material="shader: flat; color:#1a002e; opacity:0.25">
+        </a-plane>
 
-      <!-- TITRE -->
-      <a-text id="title"
-        value="👑 Serena Williams"
-        position="0 0.8 0.04"
-        align="center"
-        width="3.5"
-        color="#FF4FD8"
-        opacity="0">
-      </a-text>
+        <a-plane width="0.95" height="1.35"
+          material="shader: flat; color:#FF2EB3; opacity:0.6"
+          position="0 0 -0.01">
+        </a-plane>
 
-      <!-- BADGES -->
-      <a-circle class="badge"
-        radius="0.28"
-        material="color:#9D00FF; emissive:#FF2EB3; emissiveIntensity:0.9"
-        position="-1 0.2 0.05"
-        scale="0 0 0"></a-circle>
-
-      <a-circle class="badge"
-        radius="0.28"
-        material="color:#9D00FF; emissive:#FF2EB3; emissiveIntensity:0.9"
-        position="0 0.2 0.05"
-        scale="0 0 0"></a-circle>
-
-      <a-circle class="badge"
-        radius="0.28"
-        material="color:#9D00FF; emissive:#FF2EB3; emissiveIntensity:0.9"
-        position="1 0.2 0.05"
-        scale="0 0 0"></a-circle>
-
-      <!-- ICÔNES -->
-      <a-text value="🎾" position="-1 0.2 0.08" align="center" width="2"></a-text>
-      <a-text value="🥇" position="0 0.2 0.08" align="center" width="2"></a-text>
-      <a-text value="🔥" position="1 0.2 0.08" align="center" width="2"></a-text>
-
-      <!-- DETAIL PALMARES -->
-      <a-text id="detail"
-        position="0 -0.35 0.06"
-        align="center"
-        width="3.2"
-        color="#FFFFFF"
-        opacity="0">
-      </a-text>
-
-      <!-- QUIZ -->
-      <a-entity id="quiz" visible="false" position="0 -0.9 0.05">
-        <a-text value="🎮 Combien de titres du Grand Chelem ?"
-          align="center"
-          width="3"
-          color="#FF4FD8">
-        </a-text>
-
-        <a-text value="18"
-          position="-0.9 -0.35 0"
-          width="2"
-          color="#ffffff">
-        </a-text>
-
-        <a-text value="23 ✅"
-          position="0 -0.35 0"
-          width="2"
-          color="#00ffcc">
-        </a-text>
-
-        <a-text value="30"
-          position="0.9 -0.35 0"
-          width="2"
-          color="#ffffff">
-        </a-text>
+        <a-text value="🎾" position="0 0.4 0.02" align="center" width="2"></a-text>
+        <a-text value="23" position="0 0.05 0.02" align="center"
+          width="3" color="#ffffff"></a-text>
+        <a-text value="GRAND CHELEM"
+          position="0 -0.45 0.02" align="center"
+          width="2" color="#FF4FD8"></a-text>
       </a-entity>
 
-      <!-- CONFETTIS -->
-      <a-entity id="confettis"></a-entity>
+      <!-- CARTE 2 -->
+      <a-entity class="card" position="0 0 0" scale="0 0 0">
+        <a-plane width="0.9" height="1.3"
+          material="shader: flat; color:#1a002e; opacity:0.25">
+        </a-plane>
+
+        <a-plane width="0.95" height="1.35"
+          material="shader: flat; color:#9D00FF; opacity:0.6"
+          position="0 0 -0.01">
+        </a-plane>
+
+        <a-text value="🥇" position="0 0.4 0.02" align="center" width="2"></a-text>
+        <a-text value="4" position="0 0.05 0.02" align="center"
+          width="3" color="#ffffff"></a-text>
+        <a-text value="OR OLYMPIQUE"
+          position="0 -0.45 0.02" align="center"
+          width="2" color="#FF4FD8"></a-text>
+      </a-entity>
+
+      <!-- CARTE 3 -->
+      <a-entity class="card" position="1 0 0" rotation="0 -15 0" scale="0 0 0">
+        <a-plane width="0.9" height="1.3"
+          material="shader: flat; color:#1a002e; opacity:0.25">
+        </a-plane>
+
+        <a-plane width="0.95" height="1.35"
+          material="shader: flat; color:#FF6FEA; opacity:0.6"
+          position="0 0 -0.01">
+        </a-plane>
+
+        <a-text value="👑" position="0 0.4 0.02" align="center" width="2"></a-text>
+        <a-text value="319" position="0 0.05 0.02" align="center"
+          width="3" color="#ffffff"></a-text>
+        <a-text value="SEM. N°1"
+          position="0 -0.45 0.02" align="center"
+          width="2" color="#FF4FD8"></a-text>
+      </a-entity>
 
     </a-entity>
   </a-entity>
@@ -133,13 +110,8 @@ body {
 <script>
 const video = document.querySelector('#video-serena');
 const videoPlane = document.querySelector('#videoPlane');
-const palmares = document.querySelector('#palmares');
-const card = document.querySelector('#card');
-const title = document.querySelector('#title');
-const detail = document.querySelector('#detail');
-const quiz = document.querySelector('#quiz');
-const badges = document.querySelectorAll('.badge');
-const confettis = document.querySelector('#confettis');
+const cards = document.querySelector('#cards');
+const cardEls = document.querySelectorAll('.card');
 const target = document.querySelector('#target');
 
 // Ajustement ratio vidéo
@@ -152,71 +124,29 @@ video.addEventListener('loadedmetadata', () => {
   );
 });
 
-// Image détectée
+// Détection image
 target.addEventListener('targetFound', () => {
-  palmares.setAttribute('visible','false');
+  cards.setAttribute('visible','false');
   videoPlane.setAttribute('visible','true');
   video.currentTime = 0;
   video.play();
 });
 
-// Fin vidéo
+// Fin vidéo → cartes
 video.addEventListener('ended', () => {
   videoPlane.setAttribute('visible','false');
-  palmares.setAttribute('visible','true');
+  cards.setAttribute('visible','true');
 
-  // Carte
-  card.setAttribute('animation',
-    'property: scale; from:0 0 0; to:1 1 1; dur:700; easing:easeOutBack');
+  cardEls.forEach((card, i) => {
+    card.setAttribute('animation__flip',
+      `property: rotation; from:0 90 0; to:${card.getAttribute('rotation').x} ${card.getAttribute('rotation').y} ${card.getAttribute('rotation').z};
+       dur:600; delay:${i*300}; easing:easeOutBack`);
 
-  // Titre
-  title.setAttribute('animation',
-    'property: opacity; from:0; to:1; dur:600; delay:400');
-
-  // Badges
-  badges.forEach((b,i)=>{
-    b.setAttribute('animation__pop',
+    card.setAttribute('animation__scale',
       `property: scale; from:0 0 0; to:1 1 1;
-       dur:600; delay:${800+i*250}; easing:easeOutElastic`);
+       dur:600; delay:${i*300}; easing:easeOutBack`);
   });
-
-  // Confettis
-  for(let i=0;i<35;i++){
-    const c = document.createElement('a-sphere');
-    c.setAttribute('radius',0.03);
-    c.setAttribute('color',`hsl(${Math.random()*360},100%,65%)`);
-    c.setAttribute('position',
-      `${(Math.random()-0.5)*2} 1 ${(Math.random()-0.5)*2}`);
-    confettis.appendChild(c);
-
-    let vy = Math.random()*0.025+0.01;
-    function fall(){
-      let pos = c.getAttribute('position');
-      pos.y -= vy;
-      if(pos.y > -1){
-        c.setAttribute('position', pos);
-        requestAnimationFrame(fall);
-      } else c.remove();
-    }
-    fall();
-  }
-
-  // Affichage automatique du palmarès + quiz
-  setTimeout(showPalmares, 1800);
 });
-
-// Fonction palmarès auto
-function showPalmares(){
-  detail.setAttribute(
-    'value',
-    "🎾 23 titres du Grand Chelem\n🥇 4 médailles d’or olympiques\n👑 319 semaines n°1 mondiale"
-  );
-
-  detail.setAttribute('animation',
-    'property: opacity; from:0; to:1; dur:600');
-
-  quiz.setAttribute('visible','true');
-}
 </script>
 
 </body>
