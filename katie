@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Katie Ledecky – Palmarès RA Natation</title>
+
+<script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+<style>
+body {
+  margin: 0;
+  overflow: hidden;
+  background: black;
+}
+</style>
+</head>
+
+<body>
+
+<a-scene
+  mindar-image="imageTargetSrc: katie.mind;"
+  vr-mode-ui="enabled:false"
+  device-orientation-permission-ui="enabled:true">
+
+  <a-camera look-controls="false"></a-camera>
+
+  <a-assets>
+    <a-asset-item id="trophyModel" src="Trophy.glb"></a-asset-item>
+    <a-asset-item id="poolModel" src="pool.glb"></a-asset-item>
+    <video id="video-katie" src="katie.mp4" preload="auto" playsinline muted></video>
+  </a-assets>
+
+  <a-entity mindar-image-target="targetIndex:0">
+
+    <!-- VIDEO -->
+    <a-plane
+      id="videoPlane"
+      material="shader: flat; src: #video-katie"
+      visible="false">
+    </a-plane>
+
+    <!-- PALMARÈS -->
+    <a-entity id="palmares" visible="false">
+
+      <!-- TROPHÉE -->
+      <a-entity position="-2 0.3 0">
+        <a-entity
+          gltf-model="#trophyModel"
+          scale="0.6 0.6 0.6">
+        </a-entity>
+
+        <a-text
+          value="7 medailles d or olympiques"
+          position="0 -0.8 0.05"
+          align="center"
+          color="#00eaff"
+          width="3.5"
+          outline-color="#00333a"
+          outline-width="4">
+        </a-text>
+      </a-entity>
+
+      <!-- MÉDAILLE (version dessinée, fiable) -->
+      <a-entity position="0 0.3 0" scale="0.6 0.6 0.6">
+
+        <!-- Ruban -->
+        <a-cylinder
+          height="0.6"
+          radius="0.05"
+          color="#00eaff"
+          position="0 0.4 0">
+        </a-cylinder>
+
+        <!-- Médaille -->
+        <a-circle
+          radius="0.25"
+          color="#ffd700"
+          position="0 0 0.01">
+        </a-circle>
+
+        <a-text
+          value="15 titres mondiaux"
+          position="0 -0.8 0.05"
+          align="center"
+          color="#ffd700"
+          width="3.5"
+          outline-color="#3a2a00"
+          outline-width="4">
+        </a-text>
+      </a-entity>
+
+      <!-- PISCINE -->
+      <a-entity position="2 0.3 0">
+        <a-entity
+          gltf-model="#poolModel"
+          scale="0.6 0.6 0.6">
+        </a-entity>
+
+        <a-text
+          value="Records du monde sur longues distances"
+          position="0 -0.8 0.05"
+          align="center"
+          color="#00ffd5"
+          width="3.5"
+          outline-color="#003830"
+          outline-width="4">
+        </a-text>
+      </a-entity>
+
+    </a-entity>
+
+  </a-entity>
+</a-scene>
+
+<script>
+const video = document.querySelector('#video-katie');
+const videoPlane = document.querySelector('#videoPlane');
+const palmares = document.querySelector('#palmares');
+
+// Ajustement ratio vidéo
+video.addEventListener('loadedmetadata', () => {
+  const r = video.videoWidth / video.videoHeight;
+  const h = 1.6;
+  videoPlane.setAttribute(
+    'geometry',
+    `primitive: plane; width:${h*r}; height:${h}`
+  );
+});
+
+// Détection image
+document.querySelector('[mindar-image-target]')
+  .addEventListener('targetFound', () => {
+    palmares.setAttribute('visible','false');
+    videoPlane.setAttribute('visible','true');
+    video.currentTime = 0;
+    video.play();
+  });
+
+// Fin vidéo → palmarès
+video.addEventListener('ended', () => {
+  videoPlane.setAttribute('visible','false');
+  palmares.setAttribute('visible','true');
+});
+</script>
+
+</body>
+</html>
