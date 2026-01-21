@@ -8,11 +8,7 @@
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
 <style>
-body {
-  margin: 0;
-  overflow: hidden;
-  background: black;
-}
+body { margin:0; overflow:hidden; background:black; }
 </style>
 </head>
 
@@ -21,7 +17,8 @@ body {
 <a-scene
   mindar-image="imageTargetSrc: simone.mind;"
   vr-mode-ui="enabled:false"
-  device-orientation-permission-ui="enabled:true">
+  device-orientation-permission-ui="enabled:true"
+  mindar-image-ui="enabled:true"> <!-- CADRAN SCAN -->
 
   <a-camera look-controls="false"></a-camera>
 
@@ -34,10 +31,7 @@ body {
   <a-entity mindar-image-target="targetIndex:0">
 
     <!-- VIDEO -->
-    <a-plane id="videoPlane"
-      material="shader: flat; src: #video-simone"
-      visible="false">
-    </a-plane>
+    <a-plane id="videoPlane" material="shader: flat; src: #video-simone" visible="false"></a-plane>
 
     <!-- PALMARES -->
     <a-entity id="palmares" visible="false">
@@ -45,45 +39,28 @@ body {
       <!-- TROPHÉE -->
       <a-entity position="-2 0.3 0">
         <a-entity gltf-model="#trophyModel" scale="0.6 0.6 0.6"></a-entity>
-        <a-text
-          value="37 titres mondiaux et olympiques"
-          position="0 -0.8 0.05"
-          align="center"
-          color="#ff4fd8"
-          width="3.5"
-          outline-color="#2a0016"
-          outline-width="4">
+        <a-text value="37 titres mondiaux et olympiques" position="0 -0.8 0.05"
+          align="center" color="#ff4fd8" width="3.5"
+          outline-color="#2a0016" outline-width="4">
         </a-text>
       </a-entity>
 
-      <!-- MEDAILLE -->
+      <!-- MÉDAILLE -->
       <a-entity position="0 0.3 0" scale="0.6 0.6 0.6">
-
         <a-cylinder height="0.6" radius="0.05" color="#ff4fd8" position="0 0.4 0"></a-cylinder>
         <a-circle radius="0.25" color="#ffd700" position="0 0 0.01"></a-circle>
-
-        <a-text
-          value="7 medailles olympiques"
-          position="0 -0.8 0.05"
-          align="center"
-          color="#ffd700"
-          width="3.5"
-          outline-color="#3a2a00"
-          outline-width="4">
+        <a-text value="7 médailles olympiques" position="0 -0.8 0.05"
+          align="center" color="#ffd700" width="3.5"
+          outline-color="#3a2a00" outline-width="4">
         </a-text>
       </a-entity>
 
       <!-- GYM -->
       <a-entity position="2 0.3 0">
         <a-entity gltf-model="#ballModel" scale="0.6 0.6 0.6"></a-entity>
-        <a-text
-          value="Figure legendaire en gymnastique"
-          position="0 -0.8 0.05"
-          align="center"
-          color="#00ffd5"
-          width="3.5"
-          outline-color="#003830"
-          outline-width="4">
+        <a-text value="Figure légendaire en gymnastique" position="0 -0.8 0.05"
+          align="center" color="#00ffd5" width="3.5"
+          outline-color="#003830" outline-width="4">
         </a-text>
       </a-entity>
 
@@ -103,13 +80,12 @@ video.addEventListener('loadedmetadata', () => {
   videoPlane.setAttribute('geometry', `primitive: plane; width:${h*r}; height:${h}`);
 });
 
-document.querySelector('[mindar-image-target]')
-  .addEventListener('targetFound', () => {
-    palmares.setAttribute('visible','false');
-    videoPlane.setAttribute('visible','true');
-    video.currentTime = 0;
-    video.play();
-  });
+document.querySelector('[mindar-image-target]').addEventListener('targetFound', () => {
+  palmares.setAttribute('visible','false');
+  videoPlane.setAttribute('visible','true');
+  video.currentTime = 0;
+  video.play();
+});
 
 video.addEventListener('ended', () => {
   videoPlane.setAttribute('visible','false');
