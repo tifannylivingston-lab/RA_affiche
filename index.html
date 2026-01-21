@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Découvre Serena Williams</title>
+<title>Découvre les championnes</title>
 <style>
 body {
   margin:0;
@@ -30,7 +30,7 @@ h1{
   50%{transform:scale(1.1);}
 }
 
-#discoverBtn{
+button.discoverBtn{
   padding:18px 40px;
   font-size:1.3em;
   border-radius:25px;
@@ -42,8 +42,9 @@ h1{
   box-shadow:0 6px 15px rgba(0,0,0,0.5);
   transition:all 0.3s;
   z-index:10;
+  margin:10px;
 }
-#discoverBtn:hover{
+button.discoverBtn:hover{
   transform: scale(1.1) rotate(-2deg);
   box-shadow:0 8px 20px rgba(0,0,0,0.6);
 }
@@ -63,7 +64,7 @@ h1{
   z-index:0;
 }
 
-/* Balles et raquettes */
+/* Balles et accessoires */
 .moving {
   position:absolute;
   background-size:cover;
@@ -78,7 +79,7 @@ h1{
   100%{transform:rotate(0deg);}
 }
 
-/* Silhouette Serena */
+/* Silhouettes */
 .silhouette{
   width:150px;
   height:150px;
@@ -107,8 +108,9 @@ h1{
 </head>
 <body>
 
-<h1>🎾 Découvre Serena Williams !</h1>
-<button id="discoverBtn">Découvrir Serena Williams</button>
+<h1>Découvre nos championnes !</h1>
+<button class="discoverBtn" id="discoverSerena">Découvrir Serena Williams 🎾</button>
+<button class="discoverBtn" id="discoverMegan">Découvrir Megan Rapinoe ⚽️</button>
 
 <div id="court"></div>
 
@@ -121,60 +123,72 @@ window.onload = function() {
   const courtRect = court.getBoundingClientRect();
   const ping = document.getElementById('ping');
 
-  // BALLS
-  let balls=[];
-  for(let i=0;i<5;i++){
-    let ball = document.createElement('div');
-    ball.className='moving';
-    ball.style.backgroundImage="url('balle_tennis.png')";
-    ball.style.width='40px';
-    ball.style.height='40px';
-    ball.style.left=Math.random()*(courtRect.width-40)+'px';
-    ball.style.top=Math.random()*(courtRect.height-40)+'px';
-    court.appendChild(ball);
-    let dx = (Math.random()*2+1)*(Math.random()<0.5?1:-1);
-    let dy = (Math.random()*2+1)*(Math.random()<0.5?1:-1);
-    balls.push({el:ball, dx, dy});
+  function createMovingElements(imgSrc, count, width, height){
+    let elements = [];
+    for(let i=0;i<count;i++){
+      let el = document.createElement('div');
+      el.className='moving';
+      el.style.backgroundImage=`url('${imgSrc}')`;
+      el.style.width=width+'px';
+      el.style.height=height+'px';
+      el.style.left=Math.random()*(courtRect.width-width)+'px';
+      el.style.top=Math.random()*(courtRect.height-height)+'px';
+      court.appendChild(el);
+      let dx = (Math.random()*2+1)*(Math.random()<0.5?1:-1);
+      let dy = (Math.random()*2+1)*(Math.random()<0.5?1:-1);
+      elements.push({el, dx, dy});
+    }
+    return elements;
   }
 
-  // RAQUETTES
-  let rackets=[];
-  for(let i=0;i<5;i++){
-    let racket = document.createElement('div');
-    racket.className='moving rotate';
-    racket.style.backgroundImage="url('raquette_tennis.png')";
-    racket.style.width='60px';
-    racket.style.height='60px';
-    racket.style.left=Math.random()*(courtRect.width-60)+'px';
-    racket.style.top=Math.random()*(courtRect.height-60)+'px';
-    court.appendChild(racket);
-    rackets.push(racket);
-  }
+  // Balles tennis
+  let balls = createMovingElements('balle_tennis.png',5,40,40);
+  // Raquettes
+  let rackets = createMovingElements('raquette_tennis.png',5,60,60);
+  rackets.forEach(r=>r.el.classList.add('rotate'));
 
-  // SILHOUETTE SERENA
-  let silhouette = document.createElement('div');
-  silhouette.className='silhouette';
-  silhouette.style.backgroundImage="url('silhouette_sportive.png')";
-  silhouette.style.left='50%';
-  silhouette.style.top='50%';
-  court.appendChild(silhouette);
+  // Silhouette Serena
+  let silhouetteSerena = document.createElement('div');
+  silhouetteSerena.className='silhouette';
+  silhouetteSerena.style.backgroundImage="url('silhouette_sportive.png')";
+  silhouetteSerena.style.left='30%';
+  silhouetteSerena.style.top='50%';
+  court.appendChild(silhouetteSerena);
 
-  // Animation des balles avec collision simple raquette
+  // Ballons foot
+  let ballsFoot = createMovingElements('ball_foot.png',5,40,40);
+  // Accessoires foot (chaussures)
+  let shoes = createMovingElements('shoe_foot.png',5,60,60);
+  shoes.forEach(r=>r.el.classList.add('rotate'));
+
+  // Silhouette Megan
+  let silhouetteMegan = document.createElement('div');
+  silhouetteMegan.className='silhouette';
+  silhouetteMegan.style.backgroundImage="url('silhouette_foot.png')";
+  silhouetteMegan.style.left='70%';
+  silhouetteMegan.style.top='50%';
+  court.appendChild(silhouetteMegan);
+
+  // Animation simple rebond
   function animate(){
-    balls.forEach(b=>{
+    let allMoving = balls.concat(rackets, ballsFoot, shoes);
+    allMoving.forEach(b=>{
       let x=parseFloat(b.el.style.left);
       let y=parseFloat(b.el.style.top);
       x+=b.dx; y+=b.dy;
 
-      // rebond sur les murs
-      if(x<0 || x>courtRect.width-40){b.dx*=-1; ping.play();}
-      if(y<0 || y>courtRect.height-40){b.dy*=-1; ping.play();}
+      if(x<0 || x>courtRect.width-parseFloat(b.el.style.width)){b.dx*=-1; ping.play();}
+      if(y<0 || y>courtRect.height-parseFloat(b.el.style.height)){b.dy*=-1; ping.play();}
 
-      // collision simple raquette
-      rackets.forEach(r=>{
-        let rx=parseFloat(r.style.left), ry=parseFloat(r.style.top);
-        let rw=parseFloat(r.style.width), rh=parseFloat(r.style.height);
-        if(x+40>rx && x<rx+rw && y+40>ry && y<ry+rh){b.dx*=-1; b.dy*=-1; ping.play();}
+      // collision simple
+      [rackets, shoes].forEach(group=>{
+        group.forEach(r=>{
+          let rx=parseFloat(r.el.style.left), ry=parseFloat(r.el.style.top);
+          let rw=parseFloat(r.el.style.width), rh=parseFloat(r.el.style.height);
+          if(x+parseFloat(b.el.style.width)>rx && x<rx+rw && y+parseFloat(b.el.style.height)>ry && y<ry+rh){
+            b.dx*=-1; b.dy*=-1; ping.play();
+          }
+        });
       });
 
       b.el.style.left=x+'px';
@@ -184,8 +198,8 @@ window.onload = function() {
   }
   animate();
 
-  // CONFETTIS au clic sur le bouton
-  document.getElementById('discoverBtn').addEventListener('click',()=>{
+  // Confettis et redirection au clic
+  function handleClick(url){
     for(let i=0;i<30;i++){
       let conf = document.createElement('div');
       conf.className='confetti';
@@ -209,9 +223,12 @@ window.onload = function() {
       fall();
     }
 
-    // ouvre la page Serena après un petit délai
-    setTimeout(()=>{window.location.href='serena.html';},500);
-  });
+    setTimeout(()=>{window.location.href=url;},500);
+  }
+
+  document.getElementById('discoverSerena').addEventListener('click',()=>{ handleClick('serena.html'); });
+  document.getElementById('discoverMegan').addEventListener('click',()=>{ handleClick('megan.html'); });
+
 };
 </script>
 </body>
