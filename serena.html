@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Serena Williams – Palmarès RA épuré</title>
+<title>Serena Williams – Palmarès RA lisible</title>
 
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -45,44 +45,62 @@ body {
     <a-entity id="palmares" visible="false">
 
       <!-- TROPHÉE -->
-      <a-entity id="trophy" gltf-model="#trophyModel"
-        position="0 0.6 0"
-        scale="0 0 0">
+      <a-entity id="trophyGroup" position="0 0.6 0">
+        <a-entity
+          gltf-model="#trophyModel"
+          scale="0 0 0"
+          position="0 0 0"
+          id="trophy">
+        </a-entity>
 
         <a-text
-          value="🏆 23 titres du Grand Chelem"
-          position="0 -0.8 0"
+          value="23 titres du Grand Chelem"
+          position="0 -0.9 0.01"
           align="center"
-          color="#ffffff"
-          width="3">
+          color="#ff4fd8"
+          width="3.5"
+          outline-color="#300018"
+          outline-width="3">
         </a-text>
       </a-entity>
 
       <!-- MÉDAILLE -->
-      <a-entity id="medal" gltf-model="#medalModel"
-        position="-1.8 0.3 0"
-        scale="0 0 0">
+      <a-entity id="medalGroup" position="-2 0.3 0">
+        <a-entity
+          gltf-model="#medalModel"
+          scale="0 0 0"
+          position="0 0 0"
+          id="medal">
+        </a-entity>
 
         <a-text
-          value="🥇 4 médailles d’or olympiques"
-          position="0 -0.8 0"
+          value="4 m&eacute;dailles d'or olympiques"
+          position="0 -0.9 0.01"
           align="center"
-          color="#ffffff"
-          width="3">
+          color="#ffd700"
+          width="3.5"
+          outline-color="#3a2a00"
+          outline-width="3">
         </a-text>
       </a-entity>
 
       <!-- BALLE -->
-      <a-entity id="ball" gltf-model="#ballModel"
-        position="1.8 0.3 0"
-        scale="0 0 0">
+      <a-entity id="ballGroup" position="2 0.3 0">
+        <a-entity
+          gltf-model="#ballModel"
+          scale="0 0 0"
+          position="0 0 0"
+          id="ball">
+        </a-entity>
 
         <a-text
-          value="🎾 3 titres consécutifs à Roland-Garros"
-          position="0 -0.8 0"
+          value="3 titres cons&eacute;cutifs &agrave; Roland-Garros"
+          position="0 -0.9 0.01"
           align="center"
-          color="#ffffff"
-          width="3">
+          color="#00ffd5"
+          width="3.8"
+          outline-color="#003830"
+          outline-width="3">
         </a-text>
       </a-entity>
 
@@ -97,22 +115,28 @@ const videoPlane = document.querySelector('#videoPlane');
 const palmares = document.querySelector('#palmares');
 const target = document.querySelector('#target');
 
-// Ratio vidéo
+// Ajuste ratio vidéo
 video.addEventListener('loadedmetadata', () => {
   const r = video.videoWidth / video.videoHeight;
   const h = 1.6;
-  videoPlane.setAttribute('geometry', `primitive: plane; width:${h*r}; height:${h}`);
+  videoPlane.setAttribute(
+    'geometry',
+    `primitive: plane; width:${h*r}; height:${h}`
+  );
 });
 
-// Animation apparition simple et propre
-function showEntity(entity, scale, delay) {
+// Animation propre
+function showModel(id, scale, delay) {
+  const el = document.querySelector(id);
   setTimeout(() => {
-    entity.setAttribute('animation',
-      `property: scale; from:0 0 0; to:${scale} ${scale} ${scale}; dur:600; easing:easeOutBack`);
+    el.setAttribute(
+      'animation',
+      `property: scale; from:0 0 0; to:${scale} ${scale} ${scale}; dur:600; easing:easeOutBack`
+    );
   }, delay);
 }
 
-// Image détectée
+// Détection image
 target.addEventListener('targetFound', () => {
   palmares.setAttribute('visible','false');
   videoPlane.setAttribute('visible','true');
@@ -120,14 +144,14 @@ target.addEventListener('targetFound', () => {
   video.play();
 });
 
-// Fin vidéo → palmarès
+// Fin vidéo
 video.addEventListener('ended', () => {
   videoPlane.setAttribute('visible','false');
   palmares.setAttribute('visible','true');
 
-  showEntity(document.querySelector('#trophy'), 0.9, 0);
-  showEntity(document.querySelector('#medal'), 0.8, 1000);
-  showEntity(document.querySelector('#ball'), 0.8, 2000);
+  showModel('#trophy', 1.0, 0);
+  showModel('#medal', 0.9, 1200);
+  showModel('#ball', 0.9, 2400);
 });
 </script>
 
