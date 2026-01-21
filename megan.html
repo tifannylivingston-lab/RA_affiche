@@ -2,17 +2,16 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Megan Rapinoe – Palmarès RA Fun</title>
+<title>Megan Rapinoe – Palmarès RA harmonisé</title>
 
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
 <style>
-body { margin:0; overflow:hidden; font-family: Arial, Helvetica, sans-serif; background:linear-gradient(135deg,#6a1b9a,#ec407a); }
-.neon-text { 
-  color:#00ffff; /* couleur néon cyan */
-  font-weight:bold;
-  text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 20px #00ffff;
+body {
+  margin: 0;
+  overflow: hidden;
+  background: black;
 }
 </style>
 </head>
@@ -28,39 +27,89 @@ body { margin:0; overflow:hidden; font-family: Arial, Helvetica, sans-serif; bac
 
   <a-assets>
     <a-asset-item id="trophyModel" src="Trophy.glb"></a-asset-item>
-    <a-asset-item id="medalModel" src="medal.glb"></a-asset-item>
     <a-asset-item id="ballModel" src="ball foot.glb"></a-asset-item>
     <video id="video-megan" src="megan.mp4" preload="auto" playsinline muted></video>
   </a-assets>
 
-  <a-entity id="target" mindar-image-target="targetIndex:0">
+  <a-entity mindar-image-target="targetIndex:0">
 
     <!-- VIDEO -->
-    <a-plane id="videoPlane" material="shader: flat; src: #video-megan" visible="false"></a-plane>
+    <a-plane id="videoPlane"
+      material="shader: flat; src: #video-megan"
+      visible="false">
+    </a-plane>
 
-    <!-- PALMARES FUN -->
-    <a-entity id="palmares3D" visible="false">
+    <!-- PALMARES -->
+    <a-entity id="palmares" visible="false">
 
-      <!-- Trophée -->
-     <a-entity id="trophyBubble" position="-1.5 0.6 -0.2" scale="0 0 0">
-  <a-sphere radius="0.5" color="#00ffcc" opacity="0.4"></a-sphere>
-  <a-entity gltf-model="#trophyModel" position="0 0.05 0.2" scale="0.8 0.8 0.8"></a-entity>
-  <a-text value="2 Coupes du Monde" position="0 -0.9 0.2" align="center" width="1.6" class="neon-text"></a-text>
-</a-entity>
+      <!-- TROPHÉE -->
+      <a-entity position="-2 0.3 0">
+        <a-entity
+          id="trophy"
+          gltf-model="#trophyModel"
+          scale="0.6 0.6 0.6"
+          position="0 0 0">
+        </a-entity>
+        <a-text
+          value="2 Coupes du Monde"
+          position="0 -0.8 0.05"
+          align="center"
+          color="#ff4fd8"
+          width="3.5"
+          outline-color="#2a0016"
+          outline-width="4">
+        </a-text>
+      </a-entity>
 
-      <!-- Médaille -->
-    <a-entity id="medalBubble" position="0 0.6 -0.2" scale="0 0 0">
-  <a-sphere radius="0.5" color="#ff4fd8" opacity="0.4"></a-sphere>
-  <a-entity gltf-model="#medalModel" position="0 0.05 0.2" scale="0.8 0.8 0.8"></a-entity>
-  <a-text value="1 médaille d'or olympique" position="0 -0.9 0.2" align="center" width="1.6" class="neon-text"></a-text>
-</a-entity>
+      <!-- MÉDAILLE (ruban + cercle, même taille apparente que le trophée) -->
+      <a-entity position="0 0.3 0" scale="0.6 0.6 0.6">
 
-      <!-- Ballon -->
-     <a-entity id="medalBubble" position="0 0.6 -0.2" scale="0 0 0">
-  <a-sphere radius="0.5" color="#ff4fd8" opacity="0.4"></a-sphere>
-  <a-entity gltf-model="#medalModel" position="0 0.05 0.2" scale="0.8 0.8 0.8"></a-entity>
-  <a-text value="1 médaille d'or olympique" position="0 -0.9 0.2" align="center" width="1.6" class="neon-text"></a-text>
-</a-entity>
+        <!-- Ruban -->
+        <a-cylinder
+          height="0.6"
+          radius="0.05"
+          color="#ff4fd8"
+          position="0 0.4 0"
+          scale="1 1 1">
+        </a-cylinder>
+
+        <!-- Médaille -->
+        <a-circle
+          radius="0.25"
+          color="#ffd700"
+          position="0 0 0.01"
+          scale="1 1 1">
+        </a-circle>
+
+        <a-text
+          value="1 medaille d or olympique"
+          position="0 -0.8 0.05"
+          align="center"
+          color="#ffd700"
+          width="3.5"
+          outline-color="#3a2a00"
+          outline-width="4">
+        </a-text>
+      </a-entity>
+
+      <!-- BALLON -->
+      <a-entity position="2 0.3 0">
+        <a-entity
+          id="ball"
+          gltf-model="#ballModel"
+          scale="0.6 0.6 0.6"
+          position="0 0 0">
+        </a-entity>
+        <a-text
+          value="1 titre NWSL"
+          position="0 -0.8 0.05"
+          align="center"
+          color="#00ffd5"
+          width="3.5"
+          outline-color="#003830"
+          outline-width="4">
+        </a-text>
+      </a-entity>
 
     </a-entity>
 
@@ -70,8 +119,7 @@ body { margin:0; overflow:hidden; font-family: Arial, Helvetica, sans-serif; bac
 <script>
 const video = document.querySelector('#video-megan');
 const videoPlane = document.querySelector('#videoPlane');
-const pal3D = document.querySelector('#palmares3D');
-const target = document.querySelector('#target');
+const palmares = document.querySelector('#palmares');
 
 video.addEventListener('loadedmetadata', () => {
   const r = video.videoWidth / video.videoHeight;
@@ -79,30 +127,17 @@ video.addEventListener('loadedmetadata', () => {
   videoPlane.setAttribute('geometry', `primitive: plane; width:${h*r}; height:${h}`);
 });
 
-// Fonction pop séquentiel
-function animatePop(entity, delay){
-  setTimeout(()=>{
-    entity.setAttribute('animation__scale', 
-      `property: scale; from:0 0 0; to:1 1 1; dur:800; easing:easeOutElastic`);
-  }, delay);
-}
+document.querySelector('[mindar-image-target]')
+  .addEventListener('targetFound', () => {
+    palmares.setAttribute('visible','false');
+    videoPlane.setAttribute('visible','true');
+    video.currentTime = 0;
+    video.play();
+  });
 
-// Détection image
-target.addEventListener('targetFound', () => {
-  pal3D.setAttribute('visible','false');
-  videoPlane.setAttribute('visible','true');
-  video.currentTime = 0;
-  video.play();
-});
-
-// Fin vidéo → apparition séquentielle
 video.addEventListener('ended', () => {
   videoPlane.setAttribute('visible','false');
-  pal3D.setAttribute('visible','true');
-
-  animatePop(document.querySelector('#trophyBubble'),0);
-  animatePop(document.querySelector('#medalBubble'),1200);
-  animatePop(document.querySelector('#ballBubble'),2400);
+  palmares.setAttribute('visible','true');
 });
 </script>
 
