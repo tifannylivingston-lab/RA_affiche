@@ -80,12 +80,14 @@ video.addEventListener('loadedmetadata', () => {
   videoPlane.setAttribute('geometry', `primitive: plane; width:${h*r}; height:${h}`);
 });
 
-document.querySelector('[mindar-image-target]').addEventListener('targetFound', () => {
-  palmares.setAttribute('visible','false');
-  videoPlane.setAttribute('visible','true');
-  video.currentTime = 0;
-  video.play();
-});
+// Détection image
+document.querySelector('[mindar-image-target]')
+  .addEventListener('targetFound', () => {
+    palmares.setAttribute('visible','false');
+    videoPlane.setAttribute('visible','true');
+    video.currentTime = 0;
+    video.play();
+  });
 
 video.addEventListener('ended', () => {
   videoPlane.setAttribute('visible','false');
