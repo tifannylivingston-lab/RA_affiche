@@ -2,16 +2,17 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Megan Rapinoe – Palmarès RA football</title>
+<title>Megan Rapinoe – Palmarès RA Fun</title>
 
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
 <style>
-body {
-  margin: 0;
-  overflow: hidden;
-  background: black;
+body { margin:0; overflow:hidden; font-family: Arial, Helvetica, sans-serif; background:linear-gradient(135deg,#6a1b9a,#ec407a); }
+.neon-text { 
+  color:#ff4fd8; 
+  font-weight:bold;
+  text-shadow: 0 0 10px #ff4fd8, 0 0 20px #ff4fd8, 0 0 30px #ff4fd8;
 }
 </style>
 </head>
@@ -27,72 +28,38 @@ body {
 
   <a-assets>
     <a-asset-item id="trophyModel" src="Trophy.glb"></a-asset-item>
-    <a-asset-item id="ballModel" src="ball foot.glb"></a-asset-item>
     <a-asset-item id="medalModel" src="medal.glb"></a-asset-item>
+    <a-asset-item id="ballModel" src="ball foot.glb"></a-asset-item>
     <video id="video-megan" src="megan.mp4" preload="auto" playsinline muted></video>
   </a-assets>
 
-  <a-entity mindar-image-target="targetIndex:0">
+  <a-entity id="target" mindar-image-target="targetIndex:0">
 
     <!-- VIDEO -->
-    <a-plane id="videoPlane"
-      material="shader: flat; src: #video-megan"
-      visible="false">
-    </a-plane>
+    <a-plane id="videoPlane" material="shader: flat; src: #video-megan" visible="false"></a-plane>
 
-    <!-- PALMARES -->
-    <a-entity id="palmares" visible="false">
+    <!-- PALMARES FUN -->
+    <a-entity id="palmares3D" visible="false">
 
-      <!-- TROPHÉE -->
-      <a-entity position="-2 0.3 0">
-        <a-entity
-          gltf-model="#trophyModel"
-          scale="0.6 0.6 0.6"
-          position="0 0 0">
-        </a-entity>
-        <a-text
-          value="2 Coupes du Monde ⚽️"
-          position="0 -0.8 0.05"
-          align="center"
-          color="#ff4fd8"
-          width="3.5"
-          outline-color="#2a0016"
-          outline-width="4">
-        </a-text>
+      <!-- Bulle Trophée -->
+      <a-entity id="trophyBubble" position="-1 0.6 0" scale="0 0 0">
+        <a-sphere radius="0.8" color="#00ffcc" opacity="0.6"></a-sphere>
+        <a-entity gltf-model="#trophyModel" position="0 0 0" scale="0.6 0.6 0.6"></a-entity>
+        <a-text value="2 Coupes du Monde" position="0 -1 0" align="center" width="2" class="neon-text"></a-text>
       </a-entity>
 
-      <!-- MÉDAILLE / BADGE -->
-      <a-entity position="0 0.3 0" scale="0.6 0.6 0.6">
-
-        <a-entity gltf-model="#medalModel" scale="1 1 1" position="0 0 0"></a-entity>
-
-        <a-text
-          value="Joueuse de l'année FIFA 2019"
-          position="0 -0.8 0.05"
-          align="center"
-          color="#ffd700"
-          width="3.5"
-          outline-color="#3a2a00"
-          outline-width="4">
-        </a-text>
+      <!-- Bulle Médaille -->
+      <a-entity id="medalBubble" position="0 0.6 0" scale="0 0 0">
+        <a-sphere radius="0.7" color="#ff4fd8" opacity="0.6"></a-sphere>
+        <a-entity gltf-model="#medalModel" position="0 0 0" scale="0.5 0.5 0.5"></a-entity>
+        <a-text value="1 medaille d or olympique" position="0 -0.9 0" align="center" width="1.8" class="neon-text"></a-text>
       </a-entity>
 
-      <!-- BALLON DE FOOT -->
-      <a-entity position="2 0.3 0">
-        <a-entity
-          gltf-model="#ballModel"
-          scale="0.6 0.6 0.6"
-          position="0 0 0">
-        </a-entity>
-        <a-text
-          value="Médaillée d’or Olympique 2012"
-          position="0 -0.8 0.05"
-          align="center"
-          color="#00ffd5"
-          width="3.5"
-          outline-color="#003830"
-          outline-width="4">
-        </a-text>
+      <!-- Bulle Ballon -->
+      <a-entity id="ballBubble" position="1 0.6 0" scale="0 0 0">
+        <a-sphere radius="0.8" color="#ffb600" opacity="0.6"></a-sphere>
+        <a-entity gltf-model="#ballModel" position="0 0 0" scale="0.6 0.6 0.6"></a-entity>
+        <a-text value="1 titre NWSL" position="0 -1 0" align="center" width="2" class="neon-text"></a-text>
       </a-entity>
 
     </a-entity>
@@ -103,7 +70,8 @@ body {
 <script>
 const video = document.querySelector('#video-megan');
 const videoPlane = document.querySelector('#videoPlane');
-const palmares = document.querySelector('#palmares');
+const pal3D = document.querySelector('#palmares3D');
+const target = document.querySelector('#target');
 
 video.addEventListener('loadedmetadata', () => {
   const r = video.videoWidth / video.videoHeight;
@@ -111,17 +79,30 @@ video.addEventListener('loadedmetadata', () => {
   videoPlane.setAttribute('geometry', `primitive: plane; width:${h*r}; height:${h}`);
 });
 
-document.querySelector('[mindar-image-target]')
-  .addEventListener('targetFound', () => {
-    palmares.setAttribute('visible','false');
-    videoPlane.setAttribute('visible','true');
-    video.currentTime = 0;
-    video.play();
-  });
+// Fonction pop séquentiel
+function animatePop(entity, delay){
+  setTimeout(()=>{
+    entity.setAttribute('animation__scale', 
+      `property: scale; from:0 0 0; to:1 1 1; dur:800; easing:easeOutElastic`);
+  }, delay);
+}
 
+// Détection image
+target.addEventListener('targetFound', () => {
+  pal3D.setAttribute('visible','false');
+  videoPlane.setAttribute('visible','true');
+  video.currentTime = 0;
+  video.play();
+});
+
+// Fin vidéo → apparition séquentielle
 video.addEventListener('ended', () => {
   videoPlane.setAttribute('visible','false');
-  palmares.setAttribute('visible','true');
+  pal3D.setAttribute('visible','true');
+
+  animatePop(document.querySelector('#trophyBubble'),0);
+  animatePop(document.querySelector('#medalBubble'),1200);
+  animatePop(document.querySelector('#ballBubble'),2400);
 });
 </script>
 
