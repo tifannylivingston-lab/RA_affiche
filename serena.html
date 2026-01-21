@@ -2,13 +2,17 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Serena Williams – Palmarès RA fiable</title>
+<title>Serena Williams – Palmarès RA harmonisé</title>
 
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
 <style>
-body { margin:0; overflow:hidden; background:black; }
+body {
+  margin: 0;
+  overflow: hidden;
+  background: black;
+}
 </style>
 </head>
 
@@ -39,35 +43,50 @@ body { margin:0; overflow:hidden; background:black; }
     <a-entity id="palmares" visible="false">
 
       <!-- TROPHÉE -->
-      <a-entity position="0 0.6 0">
-        <a-entity gltf-model="#trophyModel" scale="1 1 1"></a-entity>
+      <a-entity position="-2 0.3 0">
+        <a-entity
+          id="trophy"
+          gltf-model="#trophyModel"
+          scale="0.6 0.6 0.6"
+          position="0 0 0">
+        </a-entity>
         <a-text
           value="23 titres du Grand Chelem"
-          position="0 -0.9 0.05"
+          position="0 -0.8 0.05"
           align="center"
           color="#ff4fd8"
-          width="3.8"
+          width="3.5"
           outline-color="#2a0016"
           outline-width="4">
         </a-text>
       </a-entity>
 
-      <!-- MÉDAILLE (SANS GLB – 100% FIABLE) -->
-      <a-entity position="-2 0.3 0">
+      <!-- MÉDAILLE (sans GLB, même taille apparente que le trophée) -->
+      <a-entity position="0 0.3 0" scale="0.6 0.6 0.6">
 
-        <!-- RUBAN -->
-        <a-cylinder height="0.6" radius="0.05" color="#ff4fd8" position="0 0.4 0" scale="1 1 1"></a-cylinder>
+        <!-- Ruban -->
+        <a-cylinder
+          height="0.6"
+          radius="0.05"
+          color="#ff4fd8"
+          position="0 0.4 0"
+          scale="1 1 1">
+        </a-cylinder>
 
-        <!-- MÉDAILLE -->
-        <a-circle radius="0.35" color="#ffd700" position="0 0 0.01"></a-circle>
-        <a-circle radius="0.28" color="#ffec8b" position="0 0 0.02"></a-circle>
+        <!-- Médaille -->
+        <a-circle
+          radius="0.25"
+          color="#ffd700"
+          position="0 0 0.01"
+          scale="1 1 1">
+        </a-circle>
 
         <a-text
           value="4 medailles d or olympiques"
-          position="0 -0.9 0.05"
+          position="0 -0.8 0.05"
           align="center"
           color="#ffd700"
-          width="3.8"
+          width="3.5"
           outline-color="#3a2a00"
           outline-width="4">
         </a-text>
@@ -75,13 +94,18 @@ body { margin:0; overflow:hidden; background:black; }
 
       <!-- BALLE -->
       <a-entity position="2 0.3 0">
-        <a-entity gltf-model="#ballModel" scale="1 1 1"></a-entity>
+        <a-entity
+          id="ball"
+          gltf-model="#ballModel"
+          scale="0.6 0.6 0.6"
+          position="0 0 0">
+        </a-entity>
         <a-text
-          value="3 titres consecutifs Roland-Garros"
-          position="0 -0.9 0.05"
+          value="3 titres consecutifs a Roland-Garros"
+          position="0 -0.8 0.05"
           align="center"
           color="#00ffd5"
-          width="4"
+          width="3.5"
           outline-color="#003830"
           outline-width="4">
         </a-text>
