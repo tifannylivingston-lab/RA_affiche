@@ -2,234 +2,101 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Découvre les championnes</title>
+<title>Sportives d’exception – Réalité augmentée</title>
+
 <style>
 body {
   margin:0;
   height:100vh;
-  background: linear-gradient(135deg,#7b1fa2,#ec407a);
+  background: linear-gradient(135deg,#4a148c,#ec407a);
   overflow:hidden;
   font-family: Arial, sans-serif;
   display:flex;
   justify-content:center;
   align-items:center;
-  flex-direction:column;
-  position: relative;
 }
 
-h1{
-  font-size:2.2em;
-  color:white;
-  text-shadow:2px 2px 6px #000;
-  margin-bottom:40px;
-  animation:pulse 2s infinite;
-  text-align:center;
-}
-@keyframes pulse{
-  0%,100%{transform:scale(1);}
-  50%{transform:scale(1.1);}
-}
-
-button.discoverBtn{
-  padding:18px 40px;
-  font-size:1.3em;
-  border-radius:25px;
-  border:none;
-  cursor:pointer;
-  background: linear-gradient(45deg,#FFD700,#FFB600);
-  color:#000;
-  font-weight:bold;
-  box-shadow:0 6px 15px rgba(0,0,0,0.5);
-  transition:all 0.3s;
+.container {
+  display:flex;
+  gap:40px;
   z-index:10;
-  margin:10px;
-}
-button.discoverBtn:hover{
-  transform: scale(1.1) rotate(-2deg);
-  box-shadow:0 8px 20px rgba(0,0,0,0.6);
 }
 
-/* Cadre blanc */
-#court {
+.card {
+  width:260px;
+  height:340px;
+  background: rgba(255,255,255,0.08);
+  border:3px solid white;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.5);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.card:hover {
+  transform:scale(1.08);
+  background: rgba(255,255,255,0.15);
+}
+
+.card h2 {
+  color:white;
+  margin-bottom:15px;
+  text-align:center;
+  text-shadow:2px 2px 6px black;
+}
+
+.card span {
+  font-size:4em;
+  margin-bottom:20px;
+}
+
+.footer {
   position:absolute;
-  top:50%;
-  left:50%;
-  width:90%;
-  height:50%;
-  transform:translate(-50%,-50%);
-  background-color: rgba(255,255,255,0.05);
-  border:4px solid white;
-  border-radius:12px;
-  box-sizing:border-box;
-  z-index:0;
-}
-
-/* Balles et accessoires */
-.moving {
-  position:absolute;
-  background-size:cover;
-  background-position:center;
-}
-.rotate {
-  animation:rotate 4s linear infinite;
-}
-@keyframes rotate{
-  0%{transform:rotate(0deg);}
-  50%{transform:rotate(15deg);}
-  100%{transform:rotate(0deg);}
-}
-
-/* Silhouettes */
-.silhouette{
-  width:150px;
-  height:150px;
-  animation:floaty 3s ease-in-out infinite;
-  z-index:100;
-  background-size:contain;
-  background-repeat:no-repeat;
-  background-position:center;
-}
-@keyframes floaty{
-  0%{transform:translate(-50%,-50%) translateY(0);}
-  50%{transform:translate(-50%,-50%) translateY(-15px);}
-  100%{transform:translate(-50%,-50%) translateY(0);}
-}
-
-/* Confettis */
-.confetti {
-  position:absolute;
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  pointer-events:none;
-  z-index:20;
+  bottom:20px;
+  color:white;
+  opacity:0.7;
+  font-size:0.9em;
 }
 </style>
 </head>
+
 <body>
 
-<h1>Découvre nos championnes !</h1>
-<button class="discoverBtn" id="discoverSerena">Découvrir Serena Williams 🎾</button>
-<button class="discoverBtn" id="discoverMegan">Découvrir Megan Rapinoe ⚽️</button>
+<div class="container">
 
-<div id="court"></div>
+  <!-- SERENA -->
+  <div class="card" onclick="go('serena.html')">
+    <span>🎾</span>
+    <h2>Serena<br>Williams</h2>
+  </div>
 
-<!-- Son optionnel -->
-<audio id="ping" src="ping.mp3" preload="auto"></audio>
+  <!-- MEGAN -->
+  <div class="card" onclick="go('megan.html')">
+    <span>⚽</span>
+    <h2>Megan<br>Rapinoe</h2>
+  </div>
+
+  <!-- KATIE -->
+  <div class="card" onclick="go('katie.html')">
+    <span>🏊‍♀️</span>
+    <h2>Katie<br>Ledecky</h2>
+  </div>
+
+</div>
+
+<div class="footer">
+  Scanne l’affiche pour découvrir une championne en réalité augmentée
+</div>
 
 <script>
-window.onload = function() {
-  const court = document.getElementById('court');
-  const courtRect = court.getBoundingClientRect();
-  const ping = document.getElementById('ping');
-
-  function createMovingElements(imgSrc, count, width, height){
-    let elements = [];
-    for(let i=0;i<count;i++){
-      let el = document.createElement('div');
-      el.className='moving';
-      el.style.backgroundImage=`url('${imgSrc}')`;
-      el.style.width=width+'px';
-      el.style.height=height+'px';
-      el.style.left=Math.random()*(courtRect.width-width)+'px';
-      el.style.top=Math.random()*(courtRect.height-height)+'px';
-      court.appendChild(el);
-      let dx = (Math.random()*2+1)*(Math.random()<0.5?1:-1);
-      let dy = (Math.random()*2+1)*(Math.random()<0.5?1:-1);
-      elements.push({el, dx, dy});
-    }
-    return elements;
-  }
-
-  // Balles tennis
-  let balls = createMovingElements('balle_tennis.png',5,40,40);
-  // Raquettes
-  let rackets = createMovingElements('raquette_tennis.png',5,60,60);
-  rackets.forEach(r=>r.el.classList.add('rotate'));
-
-  // Silhouette Serena
-  let silhouetteSerena = document.createElement('div');
-  silhouetteSerena.className='silhouette';
-  silhouetteSerena.style.backgroundImage="url('silhouette_sportive.png')";
-  silhouetteSerena.style.left='30%';
-  silhouetteSerena.style.top='50%';
-  court.appendChild(silhouetteSerena);
-
-  // Ballons foot
-  let ballsFoot = createMovingElements('ball_foot.png',5,40,40);
-  // Accessoires foot (chaussures)
-  let shoes = createMovingElements('shoe_foot.png',5,60,60);
-  shoes.forEach(r=>r.el.classList.add('rotate'));
-
-  // Silhouette Megan
-  let silhouetteMegan = document.createElement('div');
-  silhouetteMegan.className='silhouette';
-  silhouetteMegan.style.backgroundImage="url('silhouette_foot.png')";
-  silhouetteMegan.style.left='70%';
-  silhouetteMegan.style.top='50%';
-  court.appendChild(silhouetteMegan);
-
-  // Animation simple rebond
-  function animate(){
-    let allMoving = balls.concat(rackets, ballsFoot, shoes);
-    allMoving.forEach(b=>{
-      let x=parseFloat(b.el.style.left);
-      let y=parseFloat(b.el.style.top);
-      x+=b.dx; y+=b.dy;
-
-      if(x<0 || x>courtRect.width-parseFloat(b.el.style.width)){b.dx*=-1; ping.play();}
-      if(y<0 || y>courtRect.height-parseFloat(b.el.style.height)){b.dy*=-1; ping.play();}
-
-      // collision simple
-      [rackets, shoes].forEach(group=>{
-        group.forEach(r=>{
-          let rx=parseFloat(r.el.style.left), ry=parseFloat(r.el.style.top);
-          let rw=parseFloat(r.el.style.width), rh=parseFloat(r.el.style.height);
-          if(x+parseFloat(b.el.style.width)>rx && x<rx+rw && y+parseFloat(b.el.style.height)>ry && y<ry+rh){
-            b.dx*=-1; b.dy*=-1; ping.play();
-          }
-        });
-      });
-
-      b.el.style.left=x+'px';
-      b.el.style.top=y+'px';
-    });
-    requestAnimationFrame(animate);
-  }
-  animate();
-
-  // Confettis et redirection au clic
-  function handleClick(url){
-    for(let i=0;i<30;i++){
-      let conf = document.createElement('div');
-      conf.className='confetti';
-      conf.style.left=Math.random()*courtRect.width+'px';
-      conf.style.top=Math.random()*courtRect.height+'px';
-      conf.style.backgroundColor=`hsl(${Math.random()*360},100%,60%)`;
-      court.appendChild(conf);
-
-      let ty=parseFloat(conf.style.top);
-      let vx=(Math.random()-0.5)*2;
-      let vy=Math.random()*3+2;
-      function fall(){
-        ty+=vy;
-        let tx=parseFloat(conf.style.left);
-        tx+=vx;
-        conf.style.top=ty+'px';
-        conf.style.left=tx+'px';
-        if(ty<courtRect.height) requestAnimationFrame(fall);
-        else conf.remove();
-      }
-      fall();
-    }
-
-    setTimeout(()=>{window.location.href=url;},500);
-  }
-
-  document.getElementById('discoverSerena').addEventListener('click',()=>{ handleClick('serena.html'); });
-  document.getElementById('discoverMegan').addEventListener('click',()=>{ handleClick('megan.html'); });
-
-};
+function go(page){
+  window.location.href = page;
+}
 </script>
+
 </body>
 </html>
