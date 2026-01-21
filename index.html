@@ -17,14 +17,15 @@ body {
 }
 
 .container {
-  display:flex;
-  gap:40px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:35px;
   z-index:10;
 }
 
 .card {
-  width:260px;
-  height:340px;
+  width:240px;
+  height:320px;
   background: rgba(255,255,255,0.08);
   border:3px solid white;
   border-radius:20px;
@@ -42,21 +43,21 @@ body {
   background: rgba(255,255,255,0.15);
 }
 
-.card h2 {
-  color:white;
-  margin-bottom:15px;
-  text-align:center;
-  text-shadow:2px 2px 6px black;
-}
-
 .card span {
   font-size:4em;
   margin-bottom:20px;
 }
 
+.card h2 {
+  color:white;
+  text-align:center;
+  text-shadow:2px 2px 6px black;
+  line-height:1.2;
+}
+
 .footer {
   position:absolute;
-  bottom:20px;
+  bottom:15px;
   color:white;
   opacity:0.7;
   font-size:0.9em;
@@ -86,10 +87,22 @@ body {
     <h2>Katie<br>Ledecky</h2>
   </div>
 
+  <!-- SIMONE -->
+  <div class="card" onclick="go('simone.html')">
+    <span>🤸‍♀️</span>
+    <h2>Simone<br>Biles</h2>
+  </div>
+
+  <!-- ALLYSON -->
+  <div class="card" onclick="go('allyson.html')">
+    <span>🏃‍♀️</span>
+    <h2>Allyson<br>Felix</h2>
+  </div>
+
 </div>
 
 <div class="footer">
-  Scanne l’affiche pour découvrir une championne en réalité augmentée
+  Choisis une sportive et scanne l’affiche correspondante
 </div>
 
 <script>
