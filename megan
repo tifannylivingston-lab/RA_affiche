@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Megan Rapinoe – Palmarès RA football</title>
+
+<script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+<style>
+body {
+  margin: 0;
+  overflow: hidden;
+  background: black;
+}
+</style>
+</head>
+
+<body>
+
+<a-scene
+  mindar-image="imageTargetSrc: megan.mind;"
+  vr-mode-ui="enabled:false"
+  device-orientation-permission-ui="enabled:true">
+
+  <a-camera look-controls="false"></a-camera>
+
+  <a-assets>
+    <a-asset-item id="trophyModel" src="Trophy.glb"></a-asset-item>
+    <a-asset-item id="ballModel" src="ball foot.glb"></a-asset-item>
+    <a-asset-item id="medalModel" src="medal.glb"></a-asset-item>
+    <video id="video-megan" src="megan.mp4" preload="auto" playsinline muted></video>
+  </a-assets>
+
+  <a-entity mindar-image-target="targetIndex:0">
+
+    <!-- VIDEO -->
+    <a-plane id="videoPlane"
+      material="shader: flat; src: #video-megan"
+      visible="false">
+    </a-plane>
+
+    <!-- PALMARES -->
+    <a-entity id="palmares" visible="false">
+
+      <!-- TROPHÉE -->
+      <a-entity position="-2 0.3 0">
+        <a-entity
+          gltf-model="#trophyModel"
+          scale="0.6 0.6 0.6"
+          position="0 0 0">
+        </a-entity>
+        <a-text
+          value="2 Coupes du Monde ⚽️"
+          position="0 -0.8 0.05"
+          align="center"
+          color="#ff4fd8"
+          width="3.5"
+          outline-color="#2a0016"
+          outline-width="4">
+        </a-text>
+      </a-entity>
+
+      <!-- MÉDAILLE / BADGE -->
+      <a-entity position="0 0.3 0" scale="0.6 0.6 0.6">
+
+        <a-entity gltf-model="#medalModel" scale="1 1 1" position="0 0 0"></a-entity>
+
+        <a-text
+          value="Joueuse de l'année FIFA 2019"
+          position="0 -0.8 0.05"
+          align="center"
+          color="#ffd700"
+          width="3.5"
+          outline-color="#3a2a00"
+          outline-width="4">
+        </a-text>
+      </a-entity>
+
+      <!-- BALLON DE FOOT -->
+      <a-entity position="2 0.3 0">
+        <a-entity
+          gltf-model="#ballModel"
+          scale="0.6 0.6 0.6"
+          position="0 0 0">
+        </a-entity>
+        <a-text
+          value="Médaillée d’or Olympique 2012"
+          position="0 -0.8 0.05"
+          align="center"
+          color="#00ffd5"
+          width="3.5"
+          outline-color="#003830"
+          outline-width="4">
+        </a-text>
+      </a-entity>
+
+    </a-entity>
+
+  </a-entity>
+</a-scene>
+
+<script>
+const video = document.querySelector('#video-megan');
+const videoPlane = document.querySelector('#videoPlane');
+const palmares = document.querySelector('#palmares');
+
+video.addEventListener('loadedmetadata', () => {
+  const r = video.videoWidth / video.videoHeight;
+  const h = 1.6;
+  videoPlane.setAttribute('geometry', `primitive: plane; width:${h*r}; height:${h}`);
+});
+
+document.querySelector('[mindar-image-target]')
+  .addEventListener('targetFound', () => {
+    palmares.setAttribute('visible','false');
+    videoPlane.setAttribute('visible','true');
+    video.currentTime = 0;
+    video.play();
+  });
+
+video.addEventListener('ended', () => {
+  videoPlane.setAttribute('visible','false');
+  palmares.setAttribute('visible','true');
+});
+</script>
+
+</body>
+</html>
