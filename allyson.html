@@ -2,21 +2,17 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Allyson Felix – Palmarès RA harmonisé</title>
+<title>Allyson Felix – Palmarès RA Athletisme</title>
 
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
 <style>
-html, body {
+body {
   margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
   overflow: hidden;
-  background: transparent;
+  background: black;
 }
-
 </style>
 </head>
 
@@ -24,10 +20,8 @@ html, body {
 
 <a-scene
   mindar-image="imageTargetSrc: allyson.mind;"
-   mindar-image-ui="enabled:true"
   vr-mode-ui="enabled:false"
-  device-orientation-permission-ui="enabled:true"
-  mindar-image-ui="enabled:true">
+  device-orientation-permission-ui="enabled:true">
 
   <a-camera look-controls="false"></a-camera>
 
@@ -45,7 +39,7 @@ html, body {
       visible="false">
     </a-plane>
 
-    <!-- PALMARES -->
+    <!-- PALMARÈS -->
     <a-entity id="palmares" visible="false">
 
       <!-- TROPHÉE -->
@@ -59,21 +53,21 @@ html, body {
           value="14 titres mondiaux"
           position="0 -0.8 0.05"
           align="center"
-          color="#ff8c00"
+          color="#00eaff"
           width="3.5"
-          outline-color="#3a1f00"
+          outline-color="#00333a"
           outline-width="4">
         </a-text>
       </a-entity>
 
-      <!-- MEDAILLE -->
+      <!-- MÉDAILLE (version dessinée, fiable) -->
       <a-entity position="0 0.3 0" scale="0.6 0.6 0.6">
 
         <!-- Ruban -->
         <a-cylinder
           height="0.6"
           radius="0.05"
-          color="#ff8c00"
+          color="#00eaff"
           position="0 0.4 0">
         </a-cylinder>
 
@@ -95,7 +89,7 @@ html, body {
         </a-text>
       </a-entity>
 
-      <!-- ATHLÈTE STYLISÉE (SPRINT) -->
+    <!-- ATHLÈTE STYLISÉE (SPRINT) -->
       <a-entity position="2 0.3 0" scale="0.6 0.6 0.6">
 
         <!-- TETE -->
@@ -160,6 +154,8 @@ html, body {
         </a-text>
       </a-entity>
 
+      </a-entity>
+
     </a-entity>
 
   </a-entity>
@@ -170,6 +166,7 @@ const video = document.querySelector('#video-allyson');
 const videoPlane = document.querySelector('#videoPlane');
 const palmares = document.querySelector('#palmares');
 
+// Ajustement ratio vidéo
 video.addEventListener('loadedmetadata', () => {
   const r = video.videoWidth / video.videoHeight;
   const h = 1.6;
@@ -179,8 +176,8 @@ video.addEventListener('loadedmetadata', () => {
   );
 });
 
-document
-  .querySelector('[mindar-image-target]')
+// Détection image
+document.querySelector('[mindar-image-target]')
   .addEventListener('targetFound', () => {
     palmares.setAttribute('visible','false');
     videoPlane.setAttribute('visible','true');
@@ -188,6 +185,7 @@ document
     video.play();
   });
 
+// Fin vidéo → palmarès
 video.addEventListener('ended', () => {
   videoPlane.setAttribute('visible','false');
   palmares.setAttribute('visible','true');
