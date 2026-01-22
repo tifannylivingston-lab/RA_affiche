@@ -90,59 +90,12 @@ body {
         </a-text>
       </a-entity>
 
-    <!-- ATHLÈTE STYLISÉE (SPRINT) -->
-      <a-entity position="2 0.3 0" scale="0.6 0.6 0.6">
-
-        <!-- TETE -->
-        <a-sphere
-          radius="0.12"
-          color="#00e0ff"
-          position="0 0.75 0">
-        </a-sphere>
-
-        <!-- TRONC -->
-        <a-cylinder
-          height="0.5"
-          radius="0.07"
-          color="#00e0ff"
-          position="0 0.4 0">
-        </a-cylinder>
-
-        <!-- BRAS AVANT -->
-        <a-cylinder
-          height="0.45"
-          radius="0.04"
-          color="#ff8c00"
-          position="0.25 0.55 0"
-          rotation="0 0 -60">
-        </a-cylinder>
-
-        <!-- BRAS ARRIÈRE -->
-        <a-cylinder
-          height="0.45"
-          radius="0.04"
-          color="#ff8c00"
-          position="-0.25 0.45 0"
-          rotation="0 0 40">
-        </a-cylinder>
-
-        <!-- JAMBE AVANT -->
-        <a-cylinder
-          height="0.55"
-          radius="0.06"
-          color="#00e0ff"
-          position="0.18 0.05 0"
-          rotation="0 0 -25">
-        </a-cylinder>
-
-        <!-- JAMBE ARRIÈRE -->
-        <a-cylinder
-          height="0.5"
-          radius="0.06"
-          color="#00e0ff"
-          position="-0.15 0.1 0"
-          rotation="0 0 30">
-        </a-cylinder>
+     <!-- HAIES -->
+      <a-entity position="2 0.3 0">
+        <a-entity
+          gltf-model="#haiesModel"
+          scale="0.1 0.1 0.1">
+        </a-entity>
 
         <a-text
           value="Legende du sprint mondial"
