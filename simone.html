@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Simone Biles – Palmarès RA harmonisé</title>
+<title>Simone Biles – Palmarès RA Gymnastique</title>
 
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
@@ -20,10 +20,8 @@ body {
 
 <a-scene
   mindar-image="imageTargetSrc: simone.mind;"
-   mindar-image-ui="enabled:true"
   vr-mode-ui="enabled:false"
-  device-orientation-permission-ui="enabled:true"
-  mindar-image-ui="enabled:true">
+  device-orientation-permission-ui="enabled:true">
 
   <a-camera look-controls="false"></a-camera>
 
@@ -41,7 +39,7 @@ body {
       visible="false">
     </a-plane>
 
-    <!-- PALMARES -->
+    <!-- PALMARÈS -->
     <a-entity id="palmares" visible="false">
 
       <!-- TROPHÉE -->
@@ -55,21 +53,21 @@ body {
           value="30 titres mondiaux"
           position="0 -0.8 0.05"
           align="center"
-          color="#ff4fd8"
+          color="#00eaff"
           width="3.5"
-          outline-color="#2a0016"
+          outline-color="#00333a"
           outline-width="4">
         </a-text>
       </a-entity>
 
-      <!-- MEDAILLE -->
+      <!-- MÉDAILLE (version dessinée, fiable) -->
       <a-entity position="0 0.3 0" scale="0.6 0.6 0.6">
 
         <!-- Ruban -->
         <a-cylinder
           height="0.6"
           radius="0.05"
-          color="#ff4fd8"
+          color="#00eaff"
           position="0 0.4 0">
         </a-cylinder>
 
@@ -91,7 +89,7 @@ body {
         </a-text>
       </a-entity>
 
-      <!-- GYMNASTE STYLISÉ -->
+    <!-- GYMNASTE STYLISÉ -->
       <a-entity position="2 0.3 0" scale="0.6 0.6 0.6">
 
         <!-- TETE -->
@@ -146,6 +144,8 @@ body {
         </a-text>
       </a-entity>
 
+      </a-entity>
+
     </a-entity>
 
   </a-entity>
@@ -156,6 +156,7 @@ const video = document.querySelector('#video-simone');
 const videoPlane = document.querySelector('#videoPlane');
 const palmares = document.querySelector('#palmares');
 
+// Ajustement ratio vidéo
 video.addEventListener('loadedmetadata', () => {
   const r = video.videoWidth / video.videoHeight;
   const h = 1.6;
@@ -165,8 +166,8 @@ video.addEventListener('loadedmetadata', () => {
   );
 });
 
-document
-  .querySelector('[mindar-image-target]')
+// Détection image
+document.querySelector('[mindar-image-target]')
   .addEventListener('targetFound', () => {
     palmares.setAttribute('visible','false');
     videoPlane.setAttribute('visible','true');
@@ -174,6 +175,7 @@ document
     video.play();
   });
 
+// Fin vidéo → palmarès
 video.addEventListener('ended', () => {
   videoPlane.setAttribute('visible','false');
   palmares.setAttribute('visible','true');
