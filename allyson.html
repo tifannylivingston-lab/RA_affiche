@@ -2,13 +2,17 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Allyson Felix – Palmarès RA</title>
+<title>Allyson Felix – Palmarès RA harmonisé</title>
 
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
 <style>
-body { margin:0; overflow:hidden; background:black; }
+body {
+  margin: 0;
+  overflow: hidden;
+  background: black;
+}
 </style>
 </head>
 
@@ -18,49 +22,136 @@ body { margin:0; overflow:hidden; background:black; }
   mindar-image="imageTargetSrc: allyson.mind;"
   vr-mode-ui="enabled:false"
   device-orientation-permission-ui="enabled:true"
-  mindar-image-ui="enabled:true"> <!-- CADRAN SCAN -->
+  mindar-image-ui="enabled:true">
 
   <a-camera look-controls="false"></a-camera>
 
   <a-assets>
     <a-asset-item id="trophyModel" src="Trophy.glb"></a-asset-item>
-    <a-asset-item id="ballModel" src="ball.glb"></a-asset-item>
     <video id="video-allyson" src="allyson.mp4" preload="auto" playsinline muted></video>
   </a-assets>
 
   <a-entity mindar-image-target="targetIndex:0">
 
     <!-- VIDEO -->
-    <a-plane id="videoPlane" material="shader: flat; src: #video-allyson" visible="false"></a-plane>
+    <a-plane
+      id="videoPlane"
+      material="shader: flat; src: #video-allyson"
+      visible="false">
+    </a-plane>
 
     <!-- PALMARES -->
     <a-entity id="palmares" visible="false">
 
       <!-- TROPHÉE -->
       <a-entity position="-2 0.3 0">
-        <a-entity gltf-model="#trophyModel" scale="0.6 0.6 0.6"></a-entity>
-        <a-text value="20 médailles mondiales" position="0 -0.8 0.05"
-          align="center" color="#ff7a18" width="3.5"
-          outline-color="#2a1400" outline-width="4">
+        <a-entity
+          gltf-model="#trophyModel"
+          scale="0.6 0.6 0.6">
+        </a-entity>
+
+        <a-text
+          value="14 titres mondiaux"
+          position="0 -0.8 0.05"
+          align="center"
+          color="#ff8c00"
+          width="3.5"
+          outline-color="#3a1f00"
+          outline-width="4">
         </a-text>
       </a-entity>
 
-      <!-- MÉDAILLE -->
+      <!-- MEDAILLE -->
       <a-entity position="0 0.3 0" scale="0.6 0.6 0.6">
-        <a-cylinder height="0.6" radius="0.05" color="#ff7a18" position="0 0.4 0"></a-cylinder>
-        <a-circle radius="0.25" color="#ffd700" position="0 0 0.01"></a-circle>
-        <a-text value="11 médailles olympiques" position="0 -0.8 0.05"
-          align="center" color="#ffd700" width="3.5"
-          outline-color="#3a2a00" outline-width="4">
+
+        <!-- Ruban -->
+        <a-cylinder
+          height="0.6"
+          radius="0.05"
+          color="#ff8c00"
+          position="0 0.4 0">
+        </a-cylinder>
+
+        <!-- Médaille -->
+        <a-circle
+          radius="0.25"
+          color="#ffd700"
+          position="0 0 0.01">
+        </a-circle>
+
+        <a-text
+          value="11 medailles olympiques"
+          position="0 -0.8 0.05"
+          align="center"
+          color="#ffd700"
+          width="3.5"
+          outline-color="#3a2a00"
+          outline-width="4">
         </a-text>
       </a-entity>
 
-      <!-- COURSE -->
-      <a-entity position="2 0.3 0">
-        <a-entity gltf-model="#ballModel" scale="0.6 0.6 0.6"></a-entity>
-        <a-text value="Légende du sprint américain" position="0 -0.8 0.05"
-          align="center" color="#00ffd5" width="3.5"
-          outline-color="#003830" outline-width="4">
+      <!-- ATHLÈTE STYLISÉE (SPRINT) -->
+      <a-entity position="2 0.3 0" scale="0.6 0.6 0.6">
+
+        <!-- TETE -->
+        <a-sphere
+          radius="0.12"
+          color="#00e0ff"
+          position="0 0.75 0">
+        </a-sphere>
+
+        <!-- TRONC -->
+        <a-cylinder
+          height="0.5"
+          radius="0.07"
+          color="#00e0ff"
+          position="0 0.4 0">
+        </a-cylinder>
+
+        <!-- BRAS AVANT -->
+        <a-cylinder
+          height="0.45"
+          radius="0.04"
+          color="#ff8c00"
+          position="0.25 0.55 0"
+          rotation="0 0 -60">
+        </a-cylinder>
+
+        <!-- BRAS ARRIÈRE -->
+        <a-cylinder
+          height="0.45"
+          radius="0.04"
+          color="#ff8c00"
+          position="-0.25 0.45 0"
+          rotation="0 0 40">
+        </a-cylinder>
+
+        <!-- JAMBE AVANT -->
+        <a-cylinder
+          height="0.55"
+          radius="0.06"
+          color="#00e0ff"
+          position="0.18 0.05 0"
+          rotation="0 0 -25">
+        </a-cylinder>
+
+        <!-- JAMBE ARRIÈRE -->
+        <a-cylinder
+          height="0.5"
+          radius="0.06"
+          color="#00e0ff"
+          position="-0.15 0.1 0"
+          rotation="0 0 30">
+        </a-cylinder>
+
+        <a-text
+          value="Legende du sprint mondial"
+          position="0 -0.9 0.05"
+          align="center"
+          color="#00e0ff"
+          width="3.5"
+          outline-color="#002f3a"
+          outline-width="4">
         </a-text>
       </a-entity>
 
@@ -77,18 +168,21 @@ const palmares = document.querySelector('#palmares');
 video.addEventListener('loadedmetadata', () => {
   const r = video.videoWidth / video.videoHeight;
   const h = 1.6;
-  videoPlane.setAttribute('geometry', `primitive: plane; width:${h*r}; height:${h}`);
+  videoPlane.setAttribute(
+    'geometry',
+    `primitive: plane; width:${h*r}; height:${h}`
+  );
 });
 
-  // Détection image
-document.querySelector('[mindar-image-target]')
+document
+  .querySelector('[mindar-image-target]')
   .addEventListener('targetFound', () => {
     palmares.setAttribute('visible','false');
     videoPlane.setAttribute('visible','true');
     video.currentTime = 0;
     video.play();
   });
-  
+
 video.addEventListener('ended', () => {
   videoPlane.setAttribute('visible','false');
   palmares.setAttribute('visible','true');
