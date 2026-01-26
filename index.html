@@ -9,12 +9,13 @@ body {
   margin:0;
   height:100vh;
   background: #4a148c; /* fond uniforme violet */
-  overflow:hidden;
+  overflow:auto;
   font-family: Arial, sans-serif;
   display:flex;
-  justify-content:center;
-  align-items:center;
   flex-direction:column;
+  justify-content:flex-start; /* titre en haut */
+  align-items:center;
+  padding-top:30px; /* espace du haut */
 }
 
 /* Texte du haut */
@@ -43,6 +44,7 @@ body {
   grid-template-columns: repeat(3, 1fr);
   gap:35px;
   z-index:10;
+  margin-bottom:50px;
 }
 
 /* Cartes individuelles */
