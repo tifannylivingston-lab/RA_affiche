@@ -1,115 +1,115 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Sportives d’exception – Réalité augmentée</title>
+<meta charset="UTF-8" />
+<title>AR – Athlètes féminines</title>
+
+<script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
 <style>
-body {
-  margin:0;
-  height:100vh;
-  background: linear-gradient(135deg,#4a148c,#ec407a);
-  overflow:hidden;
-  font-family: Arial, sans-serif;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff7ad9, #9b6cff);
+    color: white;
+    text-align: center;
+  }
 
-.container {
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:35px;
-  z-index:10;
-}
+  .header {
+    padding: 25px 15px 15px;
+  }
 
-.card {
-  width:240px;
-  height:320px;
-  background: rgba(255,255,255,0.08);
-  border:3px solid white;
-  border-radius:20px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.5);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  transition:0.3s;
-}
+  h1 {
+    font-size: 34px;
+    font-weight: bold;
+    margin: 0;
+  }
 
-.card:hover {
-  transform:scale(1.08);
-  background: rgba(255,255,255,0.15);
-}
+  .subtitle {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
 
-.card span {
-  font-size:4em;
-  margin-bottom:20px;
-}
+  .subtitle::after {
+    content: "";
+    display: block;
+    width: 90px;
+    height: 3px;
+    background: linear-gradient(90deg, #ffffff, #ffd6f6);
+    margin: 12px auto 0;
+    border-radius: 3px;
+  }
 
-.card h2 {
-  color:white;
-  text-align:center;
-  text-shadow:2px 2px 6px black;
-  line-height:1.2;
-}
+  .athletes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 20px;
+    padding: 30px;
+  }
 
-.footer {
-  position:absolute;
-  bottom:15px;
-  color:white;
-  opacity:0.7;
-  font-size:0.9em;
-}
+  .athlete {
+    background: rgba(255,255,255,0.15);
+    border-radius: 15px;
+    padding: 15px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .athlete:hover {
+    transform: scale(1.05);
+  }
+
+  .athlete img {
+    width: 100%;
+    border-radius: 10px;
+  }
+
+  .athlete h3 {
+    margin-top: 12px;
+    font-size: 18px;
+    font-weight: bold;
+  }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="header">
+  <h1>Choisis une athlète</h1>
+  <div class="subtitle">Les 5 meilleures athlètes féminines</div>
+</div>
 
-  <!-- SERENA -->
-  <div class="card" onclick="go('serena.html')">
-    <span>🎾</span>
-    <h2>Serena<br>Williams</h2>
+<div class="athletes">
+
+  <div class="athlete" onclick="location.href='serena.html'">
+    <img src="images/serena-marker.jpg" alt="Serena Williams">
+    <h3>Serena Williams</h3>
   </div>
 
-  <!-- MEGAN -->
-  <div class="card" onclick="go('megan.html')">
-    <span>⚽</span>
-    <h2>Megan<br>Rapinoe</h2>
+  <div class="athlete" onclick="location.href='katie.html'">
+    <img src="images/katie-marker.jpg" alt="Katie Ledecky">
+    <h3>Katie Ledecky</h3>
   </div>
 
-  <!-- KATIE -->
-  <div class="card" onclick="go('katie.html')">
-    <span>🏊‍♀️</span>
-    <h2>Katie<br>Ledecky</h2>
+  <div class="athlete" onclick="location.href='simone.html'">
+    <img src="images/simone-marker.jpg" alt="Simone Biles">
+    <h3>Simone Biles</h3>
   </div>
 
-  <!-- SIMONE -->
-  <div class="card" onclick="go('simone.html')">
-    <span>🤸‍♀️</span>
-    <h2>Simone<br>Biles</h2>
+  <div class="athlete" onclick="location.href='allyson.html'">
+    <img src="images/allyson-marker.jpg" alt="Allyson Felix">
+    <h3>Allyson Felix</h3>
   </div>
 
-  <!-- ALLYSON -->
-  <div class="card" onclick="go('allyson.html')">
-    <span>🏃‍♀️</span>
-    <h2>Allyson<br>Felix</h2>
+  <div class="athlete" onclick="location.href='autre.html'">
+    <img src="images/autre-marker.jpg" alt="Athlète">
+    <h3>Autre athlète</h3>
   </div>
 
 </div>
-
-<div class="footer">
-  Choisis une sportive et scanne l’affiche correspondante
-</div>
-
-<script>
-function go(page){
-  window.location.href = page;
-}
-</script>
 
 </body>
 </html>
+
