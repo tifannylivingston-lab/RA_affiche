@@ -23,8 +23,18 @@ body {
   font-weight:bold;
   color:white;
   text-align:center;
-  margin-bottom:30px;
+  margin-bottom:10px;
   text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+}
+
+/* Sous-titre global */
+.subheader {
+  font-size:1.2em;
+  font-weight:bold;
+  color:#FFD700;
+  text-align:center;
+  margin-bottom:30px;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
 }
 
 /* Container cartes */
@@ -75,33 +85,14 @@ body {
   line-height:1.2;
   margin:0;
 }
-
-/* Sous-titre */
-.card p {
-  color:#FFD700;
-  font-weight:bold;
-  text-align:center;
-  margin-top:5px;
-  font-size:0.9em;
-}
-
-/* Footer */
-.footer {
-  position:absolute;
-  top:20px;
-  font-size:1.5em;
-  font-weight:bold;
-  color:white;
-  text-align:center;
-  width:100%;
-  text-shadow:2px 2px 6px black;
-}
 </style>
 </head>
 
 <body>
 
-<div class="footer">Choisis une sportive et scanne l’affiche correspondante</div>
+<!-- TITRE PRINCIPAL -->
+<div class="header">Choisis une sportive et scanne l’affiche correspondante</div>
+<div class="subheader">Les 5 meilleures athlètes féminines</div>
 
 <div class="container">
 
@@ -109,35 +100,30 @@ body {
   <div class="card" onclick="go('serena.html')">
     <img src="serena_target.png" alt="Affiche Serena Williams">
     <h2>Serena Williams</h2>
-    <p>Les 5 meilleures athlètes féminines</p>
   </div>
 
   <!-- MEGAN -->
   <div class="card" onclick="go('megan.html')">
     <img src="megan_target.png" alt="Affiche Megan Rapinoe">
     <h2>Megan Rapinoe</h2>
-    <p>Les 5 meilleures athlètes féminines</p>
   </div>
 
   <!-- KATIE -->
   <div class="card" onclick="go('katie.html')">
     <img src="katie_target.png" alt="Affiche Katie Ledecky">
     <h2>Katie Ledecky</h2>
-    <p>Les 5 meilleures athlètes féminines</p>
   </div>
 
   <!-- SIMONE -->
   <div class="card" onclick="go('simone.html')">
     <img src="simone_target.png" alt="Affiche Simone Biles">
     <h2>Simone Biles</h2>
-    <p>Les 5 meilleures athlètes féminines</p>
   </div>
 
   <!-- ALLYSON -->
   <div class="card" onclick="go('allyson.html')">
     <img src="allyson_target.png" alt="Affiche Allyson Felix">
     <h2>Allyson Felix</h2>
-    <p>Les 5 meilleures athlètes féminines</p>
   </div>
 
 </div>
