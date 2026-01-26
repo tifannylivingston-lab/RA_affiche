@@ -1,115 +1,157 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<title>AR – Athlètes féminines</title>
-
-<script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+<meta charset="UTF-8">
+<title>Sportives d’exception – Réalité augmentée</title>
 
 <style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #ff7ad9, #9b6cff);
-    color: white;
-    text-align: center;
-  }
+body {
+  margin:0;
+  height:100vh;
+  background: #4a148c; /* fond uniforme violet */
+  overflow:hidden;
+  font-family: Arial, sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+}
 
-  .header {
-    padding: 25px 15px 15px;
-  }
+/* Texte du haut */
+.header {
+  font-size:2em;
+  font-weight:bold;
+  color:white;
+  text-align:center;
+  margin-bottom:30px;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+}
 
-  h1 {
-    font-size: 34px;
-    font-weight: bold;
-    margin: 0;
-  }
+/* Container cartes */
+.container {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:35px;
+  z-index:10;
+}
 
-  .subtitle {
-    font-size: 22px;
-    font-weight: bold;
-    margin-top: 10px;
-  }
+/* Cartes individuelles */
+.card {
+  width:240px;
+  height:320px;
+  background: rgba(255,255,255,0.08);
+  border:3px solid white;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.5);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:0.3s;
+}
 
-  .subtitle::after {
-    content: "";
-    display: block;
-    width: 90px;
-    height: 3px;
-    background: linear-gradient(90deg, #ffffff, #ffd6f6);
-    margin: 12px auto 0;
-    border-radius: 3px;
-  }
+.card:hover {
+  transform:scale(1.08);
+  background: rgba(255,255,255,0.15);
+}
 
-  .athletes {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 20px;
-    padding: 30px;
-  }
+/* Image déclencheuse */
+.card img {
+  width:150px;
+  height:180px;
+  object-fit:contain;
+  margin-bottom:15px;
+  border-radius:12px;
+  border:2px solid #fff;
+}
 
-  .athlete {
-    background: rgba(255,255,255,0.15);
-    border-radius: 15px;
-    padding: 15px;
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
+/* Emoji / icône si besoin (inutile ici) */
+.card span {
+  font-size:4em;
+  margin-bottom:10px;
+}
 
-  .athlete:hover {
-    transform: scale(1.05);
-  }
+/* Nom athlète */
+.card h2 {
+  color:white;
+  text-align:center;
+  text-shadow:2px 2px 6px black;
+  line-height:1.2;
+  margin:0;
+}
 
-  .athlete img {
-    width: 100%;
-    border-radius: 10px;
-  }
+/* Sous-titre */
+.card p {
+  color:#FFD700;
+  font-weight:bold;
+  text-align:center;
+  margin-top:5px;
+  font-size:0.9em;
+}
 
-  .athlete h3 {
-    margin-top: 12px;
-    font-size: 18px;
-    font-weight: bold;
-  }
+/* Footer */
+.footer {
+  position:absolute;
+  top:20px;
+  font-size:1.5em;
+  font-weight:bold;
+  color:white;
+  text-align:center;
+  width:100%;
+  text-shadow:2px 2px 6px black;
+}
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <h1>Choisis une athlète</h1>
-  <div class="subtitle">Les 5 meilleures athlètes féminines</div>
+<div class="footer">Choisis une sportive et scanne l’affiche correspondante</div>
+
+<div class="container">
+
+  <!-- SERENA -->
+  <div class="card" onclick="go('serena.html')">
+    <img src="serena_target.png" alt="Affiche Serena Williams">
+    <h2>Serena Williams</h2>
+    <p>Les 5 meilleures athlètes féminines</p>
+  </div>
+
+  <!-- MEGAN -->
+  <div class="card" onclick="go('megan.html')">
+    <img src="megan_target.png" alt="Affiche Megan Rapinoe">
+    <h2>Megan Rapinoe</h2>
+    <p>Les 5 meilleures athlètes féminines</p>
+  </div>
+
+  <!-- KATIE -->
+  <div class="card" onclick="go('katie.html')">
+    <img src="katie_target.png" alt="Affiche Katie Ledecky">
+    <h2>Katie Ledecky</h2>
+    <p>Les 5 meilleures athlètes féminines</p>
+  </div>
+
+  <!-- SIMONE -->
+  <div class="card" onclick="go('simone.html')">
+    <img src="simone_target.png" alt="Affiche Simone Biles">
+    <h2>Simone Biles</h2>
+    <p>Les 5 meilleures athlètes féminines</p>
+  </div>
+
+  <!-- ALLYSON -->
+  <div class="card" onclick="go('allyson.html')">
+    <img src="allyson_target.png" alt="Affiche Allyson Felix">
+    <h2>Allyson Felix</h2>
+    <p>Les 5 meilleures athlètes féminines</p>
+  </div>
+
 </div>
 
-<div class="athletes">
-
-  <div class="athlete" onclick="location.href='serena.html'">
-    <img src="images/serena-marker.jpg" alt="Serena Williams">
-    <h3>Serena Williams</h3>
-  </div>
-
-  <div class="athlete" onclick="location.href='katie.html'">
-    <img src="images/katie-marker.jpg" alt="Katie Ledecky">
-    <h3>Katie Ledecky</h3>
-  </div>
-
-  <div class="athlete" onclick="location.href='simone.html'">
-    <img src="images/simone-marker.jpg" alt="Simone Biles">
-    <h3>Simone Biles</h3>
-  </div>
-
-  <div class="athlete" onclick="location.href='allyson.html'">
-    <img src="images/allyson-marker.jpg" alt="Allyson Felix">
-    <h3>Allyson Felix</h3>
-  </div>
-
-  <div class="athlete" onclick="location.href='autre.html'">
-    <img src="images/autre-marker.jpg" alt="Athlète">
-    <h3>Autre athlète</h3>
-  </div>
-
-</div>
+<script>
+function go(page){
+  window.location.href = page;
+}
+</script>
 
 </body>
 </html>
-
